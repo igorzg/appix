@@ -47,7 +47,7 @@ describe('logger', () => {
                 call: console.error
             }
         ]);
-        expect(logInstance.hooks).toEqual([]);
+        expect(logInstance.hooks).toEqual(new Set);
 
         logInstance = new Logger({
             console: true,
@@ -91,7 +91,7 @@ describe('logger', () => {
                 call: console.error
             }
         ]);
-        expect(logInstance.hooks.length).toBe(6);
+        expect(logInstance.hooks.size).toBe(6);
     });
 
     it('trace', () => {
@@ -198,15 +198,20 @@ describe('logger', () => {
 
     it('addHook', () => {
         let ctx = {
-            hooks: []
+            hooks: new Set
         };
         function logHook() {
 
         }
+        function* list(data) {
+            for(let item of data) {
+                yield item;
+            }
+        }
         var logInstance = new Logger();
         logInstance.addHook.call(ctx, logHook);
-        expect(ctx.hooks.length).toBe(1);
-        expect(ctx.hooks.shift()).toBe(logHook);
+        expect(ctx.hooks.size).toBe(1);
+        expect(list(ctx.hooks).next().value).toBe(logHook);
     });
 
     it('log', (done) => {

@@ -25,13 +25,13 @@ class Logger extends Type {
     constructor(config) {
         super({
             config: Type.OBJECT,
-            hooks: Type.ARRAY,
+            hooks: Type.OBJECT,
             levels: Type.ARRAY
         });
         if (!Type.isObject(config)) {
             config = {};
         }
-        this.hooks = [];
+        this.hooks = new Set();
         this.levels = [
             {
                 name: 'TRACE',
@@ -206,11 +206,11 @@ class Logger extends Type {
                 }
             };
 
-            this.hooks.forEach(hook => {
+            for(let hook of this.hooks) {
                 process.nextTick(() => {
                     hook(log);
                 });
-            });
+            }
         });
 
     }
@@ -229,7 +229,7 @@ class Logger extends Type {
         if (!Type.isFunction(callback)) {
             throw new error.Exception('Logger hook must be function');
         }
-        this.hooks.push(callback);
+        this.hooks.add(callback);
     }
 
     /**
