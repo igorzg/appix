@@ -1,0 +1,7 @@
+.idea
+tests/
+node_modules/
+gulpfile.js
+/npm-debug.log
+/coverage
+.jscsrc

@@ -1,0 +1,17 @@
+{
+  "preset": "google",
+  "validateIndentation": 4,
+  "requirePaddingNewLinesAfterUseStrict": true,
+  "requireCamelCaseOrUpperCaseIdentifiers": "ignoreProperties",
+  "disallowTrailingWhitespace": "ignoreEmptyLines",
+  "disallowMultipleVarDecl": {
+    "allExcept": [
+      "undefined"
+    ]
+  },
+  "validateQuoteMarks": {
+    "mark": "'",
+    "escape": true
+  },
+  "maximumLineLength": 120
+}
