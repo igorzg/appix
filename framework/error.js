@@ -28,10 +28,6 @@ class Exception extends Type {
         this.stack = core.traceStack();
         throw this;
     }
-
-    toString() {
-        return JSON.stringify(Object.assign({}, this.__dynamic__));
-    }
 }
 /**
  * @license Mit Licence 2015

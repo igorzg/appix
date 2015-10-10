@@ -12,7 +12,6 @@ class Bootstrap extends Type {
         super({
 
         });
-
     }
 }
 

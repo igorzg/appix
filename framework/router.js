@@ -2,9 +2,19 @@
 
 let di = require('di-node');
 let Type = di.load('typed-js');
+let error = di.load('@{en}/error');
 let RouteRule = di.load('@{en}/route-rule');
 let component = di.load('en/component');
 let logger = component.get('logger');
+/**
+ * Yield rule item
+ * @param data
+ */
+function* list(data) {
+    for (let item of data) {
+        yield item;
+    }
+}
 /**
  * @license Mit Licence 2015
  * @since 0.1.0
@@ -63,6 +73,49 @@ class Router extends Type {
         logger.info('Router.add', rule);
         this.routes.add(rule);
     }
+
+    /**
+     * @since 0.1.0
+     * @author Igor Ivanovic
+     * @function
+     * @name Router#parseRequest
+     * @param {String} pathName
+     * @param {String} method
+     *
+     * @description
+     * Parse request based on pathName and method
+     */
+    parseRequest(pathName, method) {
+        let routes = list(this.routes);
+        let promises = new Set();
+        for (let route of routes) {
+            let parsedRequest = route.parseRequest(pathName, method);
+            if (!!parsedRequest) {
+                promises.add(parsedRequest);
+            }
+        }
+        return Promise.all(promises).then(values => {
+            let gen = list(new Set(values));
+            let item = gen.next();
+
+            if (item.done && !!item.value) {
+                return item.value;
+            }
+
+            while (!item.done) {
+                if (!!item.value) {
+                    return item.value;
+                }
+                item = gen.next();
+            }
+
+            throw new error.HttpException(404, 'Router.parseRequest: no request found', {
+                pathName,
+                method
+            });
+        });
+    }
+
     /**
      * @since 0.1.0
      * @author Igor Ivanovic
