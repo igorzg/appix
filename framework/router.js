@@ -1,10 +1,9 @@
 'use strict';
 
-let di = require('./di');
+let di = require('di-node');
 let Type = di.load('typed-js');
 let RouteRule = di.load('@{en}/route-rule');
-let error = di.load('@{en}/error');
-let component = di.load('@{en}/component');
+let component = di.load('en/component');
 let logger = component.get('logger');
 /**
  * @license Mit Licence 2015
@@ -18,14 +17,12 @@ let logger = component.get('logger');
  */
 class Router extends Type {
     constructor(config) {
-        super(
-            {
-                routes: Type.ARRAY,
-                methods: Type.ARRAY,
-                errorRoute: Type.STRING
-            }
-        );
-        this.routes = [];
+        super({
+            routes: Type.OBJECT,
+            methods: Type.ARRAY,
+            errorRoute: Type.STRING
+        });
+        this.routes = new Set();
         this.errorRoute = config.errorRoute || 'error/handler';
         this.methods = ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'TRACE', 'OPTIONS', 'CONNECT', 'PATCH'];
 
@@ -46,7 +43,7 @@ class Router extends Type {
      * @since 0.1.0
      * @author Igor Ivanovic
      * @function
-     * @name DI#add
+     * @name Router#add
      * @param {Object|Array} rule
      *
      * @description
@@ -65,6 +62,20 @@ class Router extends Type {
 
         logger.info('Router.add', rule);
         this.routes.add(rule);
+    }
+    /**
+     * @since 0.1.0
+     * @author Igor Ivanovic
+     * @function
+     * @name Router#createUrl
+     * @param {String} route
+     * @param {Object} params
+     *
+     * @description
+     * Create url based on route and params
+     */
+    createUrl(route, params) {
+
     }
 }
 

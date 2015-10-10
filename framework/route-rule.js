@@ -1,9 +1,9 @@
 'use strict';
 
-let di = require('./di');
+let di = require('di-node');
 let Type = di.load('typed-js');
-let component = di.load('@{en}/component');
-let logger = component.get('logger');
+let component = di.load('en/component');
+let logger = component.get('en/logger');
 const IS_ANY_PATTERN = /<([^>]+)>/;
 const PATTERN_MATCH = /<(\w+):([^>]+)>/g;
 const HAS_GROUP = /^\(([^\)]+)\)$/;
@@ -74,22 +74,23 @@ class RouteRule extends Type {
                     }
                     return false;
                 },
+                keys() {
+                    return this.patterns.slice().map(item => item.key);
+                },
                 match(value) {
                     if (!this.pattern.test(value)) {
                         return false;
                     }
-                    let result = {};
+                    let result = new Map();
                     let matches = value.match(this.pattern).slice(1);
                     matches.forEach((item, index) => {
-                        let key = this.getKey(index);
-                        result[key] = item;
+                        result.set(this.getKey(index), item);
                     });
                     return result;
                 },
                 replace(params) {
                     let source = obj.original;
-                    Object.keys(params).forEach(key => {
-                        let value = params[key];
+                    params.forEach((value, key) => {
                         let patterns = this.patterns.slice();
                         while (patterns.length > 0) {
                             let pattern = patterns.shift();
@@ -203,11 +204,11 @@ class RouteRule extends Type {
         if (this.pattern.length !== url.length || this.methods.indexOf(method) === -1) {
             return false;
         }
-        let query = {};
+        let query = new Map();
         let isValidRequest = this.pattern.every((pattern, index) => {
             let part = url[index];
             let result = pattern.match(part);
-            query = Object.assign(query, result);
+            result.forEach((k, v) => query.set(k, v));
             return Type.isObject(result);
         });
         if (!isValidRequest) {
@@ -226,7 +227,7 @@ class RouteRule extends Type {
      * @function
      * @name RouteRule#createUrl
      * @param {String} route
-     * @param {Object} params
+     * @param {Map} params
      *
      * @description
      * Create url based on parameters and route
@@ -237,15 +238,38 @@ class RouteRule extends Type {
         }
         let matches = [];
         let patterns = this.pattern.slice();
+        let paramsMap = new Map();
+
+        if (params instanceof Map) {
+            paramsMap = new Map(params);
+        } else if (Type.isObject(params)) {
+            Object.keys(params).forEach(k => paramsMap.set(k, params[k]));
+        }
+
+        let keys = new Set();
+
         while (patterns.length > 0) {
             let pattern = patterns.shift();
-            let url = pattern.replace(params);
+            let url = pattern.replace(paramsMap);
             if (IS_ANY_PATTERN.test(url) || PATTERN_MATCH.test(url)) {
                 return false;
             }
+            pattern.keys().forEach(item => keys.add(item));
             matches.push(url);
         }
-        return '/' + matches.join('/');
+
+        keys.forEach(key => paramsMap.delete(key));
+
+        let url = matches.join('/');
+
+        if (paramsMap.size > 0) {
+            url += '?';
+            paramsMap.forEach((v, k) => {
+                url += k + '=' + encodeURIComponent(v);
+            });
+        }
+
+        return '/' + url;
     }
 }
 

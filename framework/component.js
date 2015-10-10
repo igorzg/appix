@@ -1,8 +1,7 @@
 'use strict';
 
-let di = require('./di');
+let di = require('di-node');
 let Type = di.load('typed-js');
-
 /**
  * @license Mit Licence 2015
  * @since 0.1.0
@@ -15,11 +14,9 @@ let Type = di.load('typed-js');
  */
 class Component extends Type {
     constructor() {
-        super(
-            {
-                components: Type.OBJECT
-            }
-        );
+        super({
+            components: Type.OBJECT
+        });
         this.components = new Map();
     }
 

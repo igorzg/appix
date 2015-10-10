@@ -5,7 +5,7 @@
   "version": "0.1.0",
   "dependencies": {
     "di-node": "0.1.x",
-    "typed-js": "0.1.x"
+    "typed-js": "0.2.x"
   },
   "devDependencies": {
     "gulp": "3.9.x",

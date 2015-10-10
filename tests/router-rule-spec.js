@@ -2,7 +2,22 @@
 
 describe('router rule', () => {
     let di = require('../');
-    let RouteRule = di.load('@{en}/route-rule');
+    let logger = {
+        info: function () {
+
+        }
+    };
+    let component = {
+        get: function (key) {
+            if (key === 'en/logger') {
+                return logger;
+            }
+        }
+    };
+    let RouteRule = di.mock('@{en}/route-rule', {
+        'en/component': component,
+        'typed-js': di.load('typed-js')
+    });
 
     it('pattern check /can<any>one/<name:\\w+>/should<now:\\W+>do-it/<see:(\\w+)>-<nice:([a-zA-Z]+)>-now-<only:\\d+>-not/user/<id:\\d+>', () => {
         let rule = new RouteRule({
@@ -13,33 +28,38 @@ describe('router rule', () => {
         let url = '/canbeone/igor/should#+do-it/whata-smile-now-2306-not/user/1412';
         let parsed = rule.parseRequest(url, 'GET');
 
+        let paramsMap = new Map();
+        let params = {
+            any: 'be',
+            name: 'igor',
+            now: '#+',
+            see: 'whata',
+            nice: 'smile',
+            only: '2306',
+            id: '1412'
+        };
+        Object.keys(params).forEach(k => paramsMap.set(k, params[k]));
         expect(parsed).toEqual({
             pathname: '/canbeone/igor/should#+do-it/whata-smile-now-2306-not/user/1412',
             method: 'GET',
-            query: {
-                any: 'be',
-                name: 'igor',
-                now: '#+',
-                see: 'whata',
-                nice: 'smile',
-                only: '2306',
-                id: '1412'
-            }
+            query: paramsMap
         });
 
-        let urlResult = rule.createUrl('user/view', parsed.query);
-        expect(urlResult).toBe(url);
-        urlResult = rule.createUrl('user/view', Object.assign({a: 1}, parsed.query));
+        let urlResult = rule.createUrl('user/view', paramsMap);
         expect(urlResult).toBe(url);
 
-        let b = Object.assign({a: 1}, parsed.query);
-        delete b.id;
-        urlResult = rule.createUrl('user/view', b);
+        let nmap = new Map(paramsMap);
+        nmap.set('g', '1 und 1');
+        urlResult = rule.createUrl('user/view', nmap);
+        expect(urlResult).toBe(url + '?g=1%20und%201');
+
+        parsed.query.delete('id');
+
+        urlResult = rule.createUrl('user/view', new Map(parsed.query));
         expect(urlResult).toBe(false);
 
-        b = Object.assign({a: 1}, parsed.query);
-        b.id = 'MY TEST';
-        urlResult = rule.createUrl('user/view', b);
+        parsed.query.set('id', 'MY TEST');
+        urlResult = rule.createUrl('user/view', new Map(parsed.query));
         expect(urlResult).toBe(false);
     });
 
