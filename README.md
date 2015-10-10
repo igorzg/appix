@@ -1,2 +1,2 @@
 # easynode
-es6 Node.js framework
+es6 Node.js framework dev version 
