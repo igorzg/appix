@@ -41,8 +41,12 @@ class Exception extends Type {
  */
 class HttpException extends Exception {
     constructor(code, message, data) {
-        super(message, data);
-        this.code = code;
+        try {
+            super(message, data);
+        } catch (e) {
+            e.code = code;
+            throw e;
+        }
     }
 }
 

@@ -5,7 +5,7 @@ let Type = di.load('typed-js');
 let error = di.load('@{en}/error');
 let RouteRule = di.load('@{en}/route-rule');
 let component = di.load('en/component');
-let logger = component.get('logger');
+let logger = component.get('en/logger');
 /**
  * @function
  * @name list
@@ -35,17 +35,21 @@ class Router extends Type {
             methods: Type.ARRAY,
             errorRoute: Type.STRING
         });
+        if (!Type.isObject(config)) {
+            config = {};
+        }
         this.routes = new Set();
         this.errorRoute = config.errorRoute || 'error/handler';
         this.methods = ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'TRACE', 'OPTIONS', 'CONNECT', 'PATCH'];
 
-        if (Type.isObject(config) && config.useCustomErrorHandler) {
+        if (Type.isObject(config) && !!config.useCustomErrorHandler) {
             this.add(Object.assign({
                 url: '/error',
                 route: 'error/handler',
                 methods: this.methods
             }, config));
         }
+
         logger.info('Router.constructor', {
             config: config,
             instance: this
@@ -64,13 +68,15 @@ class Router extends Type {
      */
     add(rule) {
         if (Type.isArray(rule)) {
-            return rule.forEach(this.add);
+            return rule.forEach(item => this.add(item));
         } else if (Type.isObject(rule) && !(rule instanceof RouteRule)) {
             return this.add(new RouteRule(rule));
         }
 
         if (!(rule instanceof RouteRule)) {
-            throw new error.HttpError(500, 'rule must be instance of RouteRule class', rule);
+            throw new error.HttpException(500, 'rule must be instance of RouteRule class', {
+                rule: rule
+            });
         }
 
         logger.info('Router.add', rule);
@@ -134,6 +140,7 @@ class Router extends Type {
             }
         }
         return Promise.all(promises).then(values => {
+
             while (values.length > 0) {
                 let value = values.shift();
                 if (!!value) {
