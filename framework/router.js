@@ -7,8 +7,11 @@ let RouteRule = di.load('@{en}/route-rule');
 let component = di.load('en/component');
 let logger = component.get('logger');
 /**
+ * @function
+ * @name list
+ * @param {Object} data
+ * @description
  * Yield rule item
- * @param data
  */
 function* list(data) {
     for (let item of data) {
@@ -95,18 +98,12 @@ class Router extends Type {
             }
         }
         return Promise.all(promises).then(values => {
-            let gen = list(new Set(values));
-            let item = gen.next();
 
-            if (item.done && !!item.value) {
-                return item.value;
-            }
-
-            while (!item.done) {
-                if (!!item.value) {
-                    return item.value;
+            while (values.length > 0) {
+                let value = values.shift();
+                if (!!value) {
+                    return value;
                 }
-                item = gen.next();
             }
 
             throw new error.HttpException(404, 'Router.parseRequest: no request found', {
@@ -121,14 +118,38 @@ class Router extends Type {
      * @author Igor Ivanovic
      * @function
      * @name Router#createUrl
-     * @param {String} route
+     * @param {String} routeName
      * @param {Object} params
      *
      * @description
      * Create url based on route and params
      */
-    createUrl(route, params) {
+    createUrl(routeName, params) {
+        let routes = list(this.routes);
+        let promises = new Set();
+        for (let route of routes) {
+            let parsedRequest = route.createUrl(routeName, params);
+            if (!!parsedRequest) {
+                promises.add(parsedRequest);
+            }
+        }
+        return Promise.all(promises).then(values => {
+            while (values.length > 0) {
+                let value = values.shift();
+                if (!!value) {
+                    return value;
+                }
+            }
 
+            if (params.size > 0) {
+                routeName += '?';
+                params.forEach((v, k) => {
+                    routeName += k + '=' + encodeURIComponent(v);
+                });
+            }
+
+            return '/' + routeName;
+        });
     }
 }
 

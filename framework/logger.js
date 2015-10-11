@@ -206,7 +206,7 @@ class Logger extends Type {
                 }
             };
 
-            for(let hook of this.hooks) {
+            for (let hook of this.hooks) {
                 process.nextTick(() => {
                     hook(log);
                 });
@@ -253,6 +253,7 @@ class Logger extends Type {
         }
         return message;
     }
+
     /**
      * @since 0.0.1
      * @author Igor Ivanovic

@@ -2,6 +2,7 @@
 
 let di = require('di-node');
 let Type = di.load('typed-js');
+let error = di.load('@{en}/error');
 let component = di.load('en/component');
 let logger = component.get('en/logger');
 const IS_ANY_PATTERN = /<([^>]+)>/;
