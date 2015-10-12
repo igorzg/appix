@@ -1,17 +1,25 @@
 'use strict';
 
-let di = require('di-node');
+let di = require('./di');
 let Type = di.load('typed-js');
-
-// Bootstrap component
 let Component = di.load('@{en}/component');
-di.setModule('en/component', new Component());
 
 class Bootstrap extends Type {
     constructor(config) {
         super({
-
+            listenPort: Type.NUMBER,
+            listenHost: null,
+            initialized: Type.BOOLEAN,
+            component: Type.OBJECT
         });
+        if (Type.isObject(config)) {
+            config = {};
+        }
+        this.initialized = false;
+        this.listenPort = config.listenPort || 9000;
+        this.listenHost = config.listenPort;
+        this.component = new Component();
+        di.setModule('en/component', this.component);
     }
 }
 

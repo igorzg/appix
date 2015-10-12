@@ -191,9 +191,9 @@ describe('logger', () => {
 
             logInstance.addHook(1);
         } catch (e) {
-            m = e.toString();
+            m = e.message;
         }
-        expect(m.indexOf('Logger hook must be function')).toBe(12);
+        expect(m).toBe('Logger hook must be function');
     });
 
     it('addHook', () => {

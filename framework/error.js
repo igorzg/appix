@@ -1,6 +1,6 @@
 'use strict';
 
-let di = require('di-node');
+let di = require('./di');
 let Type = di.load('typed-js');
 let core = di.load('@{en}/core');
 /**

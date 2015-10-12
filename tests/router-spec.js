@@ -37,11 +37,10 @@ describe('router', () => {
         routerInstance = new Router({
             url: '/error',
             route: 'error/handler',
-            errorRoute: 'error/handler',
+            errorRoute: 'error/handle',
             useCustomErrorHandler: true
         });
-        let str = '{"routes":{},"errorRoute":"error/handler","methods":["GET","HEAD","POST","PUT","DELETE","TRACE","OPTIONS","CONNECT","PATCH"]}';
-        expect(routerInstance.toString()).toBe(str);
+        expect(routerInstance.errorRoute).toBe('error/handle');
         expect(logger.info).toHaveBeenCalled();
         routerInstance = new Router({
             url: '/error-1',
@@ -49,14 +48,12 @@ describe('router', () => {
             errorRoute: 'test/handler',
             useCustomErrorHandler: true
         });
-        str = '{"routes":{},"errorRoute":"test/handler","methods":["GET","HEAD","POST","PUT","DELETE","TRACE","OPTIONS","CONNECT","PATCH"]}';
-        expect(routerInstance.toString()).toBe(str);
+        expect(routerInstance.errorRoute).toBe('test/handler');
 
         routerInstance = new Router({
             useCustomErrorHandler: false
         });
-        str = '{"routes":{},"errorRoute":"error/handler","methods":["GET","HEAD","POST","PUT","DELETE","TRACE","OPTIONS","CONNECT","PATCH"]}';
-        expect(routerInstance.toString()).toBe(str);
+        expect(routerInstance.errorRoute).toBe('error/handler');
 
     });
 

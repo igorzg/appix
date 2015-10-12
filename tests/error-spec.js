@@ -9,8 +9,8 @@ describe('error', () => {
         try {
             new error.Exception('This is an test');
         } catch (e) {
-            m = e.toString();
+            m = e.message;
         }
-        expect(m.indexOf('This is an test')).toBe(12);
+        expect(m).toBe('This is an test');
     });
 });
