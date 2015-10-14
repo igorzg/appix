@@ -20,15 +20,16 @@ describe('router', () => {
         }
     };
     let Router = di.mock('@{en}/router', {
-        '@{en}/route-rule': RouteRule,
-        'en/component': component,
+        'typed-js': di.load('typed-js'),
         '@{en}/error': di.load('@{en}/error'),
-        'typed-js': di.load('typed-js')
+        '@{en}/route-rule': RouteRule,
+        'en/component': component
     });
     let routerInstance;
 
     beforeEach(() => {
         routerInstance = new Router();
+
     });
 
     it('constructs', () => {

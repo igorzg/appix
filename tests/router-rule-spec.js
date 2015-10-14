@@ -16,8 +16,10 @@ describe('router rule', () => {
     };
     let RouteRule = di.mock('@{en}/route-rule', {
         'en/component': component,
+        '@{en}/error': di.load('@{en}/error'),
         'typed-js': di.load('typed-js')
     });
+
 
     it('pattern check /can<any>one/<name:\\w+>/should<now:\\W+>do-it/<see:(\\w+)>-<nice:([a-zA-Z]+)>-now-<only:\\d+>-not/user/<id:\\d+>', () => {
         let rule = new RouteRule({

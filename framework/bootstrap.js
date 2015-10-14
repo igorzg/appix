@@ -17,9 +17,7 @@ class Bootstrap extends Type {
         }
         this.initialized = false;
         this.listenPort = config.listenPort || 9000;
-        this.listenHost = config.listenPort;
-        this.component = new Component();
-        di.setModule('en/component', this.component);
+        this.listenHost = config.listenHost;
     }
 }
 
