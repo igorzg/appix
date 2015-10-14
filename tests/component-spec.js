@@ -77,47 +77,4 @@ describe('component', () => {
         expect(componentInstance.size.call(ctx)).toBe(1);
     });
 
-    it('entries', () => {
-        var ctx = {
-            components: {
-                entries: function () {}
-            }
-        };
-        spyOn(ctx.components, 'entries').and.callThrough();
-        componentInstance.entries.call(ctx);
-        expect(ctx.components.entries).toHaveBeenCalled();
-    });
-
-    it('clear', () => {
-        var ctx = {
-            components: {
-                clear: function () {}
-            }
-        };
-        spyOn(ctx.components, 'clear').and.callThrough();
-        componentInstance.clear.call(ctx);
-        expect(ctx.components.clear).toHaveBeenCalled();
-    });
-
-    it('keys', () => {
-        var ctx = {
-            components: {
-                keys: function () {}
-            }
-        };
-        spyOn(ctx.components, 'keys').and.callThrough();
-        componentInstance.keys.call(ctx);
-        expect(ctx.components.keys).toHaveBeenCalled();
-    });
-
-    it('values', () => {
-        var ctx = {
-            components: {
-                values: function () {}
-            }
-        };
-        spyOn(ctx.components, 'values').and.callThrough();
-        componentInstance.values.call(ctx);
-        expect(ctx.components.values).toHaveBeenCalled();
-    });
 });

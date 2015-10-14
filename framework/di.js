@@ -66,7 +66,7 @@ class DI extends Type {
      */
     mock(file, mocks) {
         let load = DI.prototype.load;
-        // mock load
+
         DI.prototype.load = name => {
             if (!mocks.hasOwnProperty(name)) {
                 throw new Error(`Missing module: ${name} in mocks`, {name, mocks});

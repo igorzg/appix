@@ -4,8 +4,7 @@ let di = require('./di');
 let Type = di.load('typed-js');
 let error = di.load('@{en}/error');
 let RouteRule = di.load('@{en}/route-rule');
-let component = di.load('en/component');
-let logger = component.get('en/logger');
+let logger;
 /**
  * @function
  * @name list
@@ -29,15 +28,19 @@ function* list(data) {
  * Router handler for easy node
  */
 class Router extends Type {
-    constructor(config) {
+    constructor(app, config) {
         super({
             routes: Type.OBJECT,
+            app: Type.OBJECT,
             methods: Type.ARRAY,
             errorRoute: Type.STRING
         });
         if (!Type.isObject(config)) {
             config = {};
         }
+
+        this.app = app;
+
         this.routes = new Set();
         this.errorRoute = config.errorRoute || 'error/handler';
         this.methods = ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'TRACE', 'OPTIONS', 'CONNECT', 'PATCH'];
@@ -50,6 +53,7 @@ class Router extends Type {
             }, config));
         }
 
+        logger = app.getComponent('en/logger');
         logger.info('Router.constructor', {
             config: config,
             instance: this
@@ -70,7 +74,7 @@ class Router extends Type {
         if (Type.isArray(rule)) {
             return rule.forEach(item => this.add(item));
         } else if (Type.isObject(rule) && !(rule instanceof RouteRule)) {
-            return this.add(new RouteRule(rule));
+            return this.add(new RouteRule(this.app, rule));
         }
 
         if (!(rule instanceof RouteRule)) {

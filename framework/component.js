@@ -105,61 +105,6 @@ class Component extends Type {
         return this.components.size;
     }
 
-    /**
-     * @since 0.1.0
-     * @author Igor Ivanovic
-     * @function
-     * @name Component#entries
-     *
-     * @description
-     * Returns a new Iterator object that contains an array of [key, value]
-     * for each element in the Map object in insertion order.
-     */
-    entries() {
-        return this.components.entries();
-    }
-
-    /**
-     * @since 0.1.0
-     * @author Igor Ivanovic
-     * @function
-     * @name Component#clear
-     *
-     * @description
-     * Removes all key/value pairs from the components object.
-     */
-    clear() {
-        this.components.clear();
-        return this;
-    }
-
-    /**
-     * @since 0.1.0
-     * @author Igor Ivanovic
-     * @function
-     * @name Component#clear
-     *
-     * @description
-     * Returns a new Iterator object that contains the keys for each
-     * element in the components object in insertion order.
-     */
-    keys() {
-        return this.components.keys();
-    }
-
-    /**
-     * @since 0.1.0
-     * @author Igor Ivanovic
-     * @function
-     * @name Component#values
-     *
-     * @description
-     * Returns a new Iterator object that contains the values for each
-     * element in the components object in insertion order.
-     */
-    values() {
-        return this.components.values();
-    }
 }
 
 module.exports = Component;

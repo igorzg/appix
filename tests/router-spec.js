@@ -12,30 +12,30 @@ describe('router', () => {
         info: () => {
         }
     };
-    let component = {
-        get: key => {
+    let app = {
+        getComponent: function (key) {
             if (key === 'en/logger') {
                 return logger;
             }
         }
     };
+
     let Router = di.mock('@{en}/router', {
         'typed-js': di.load('typed-js'),
         '@{en}/error': di.load('@{en}/error'),
-        '@{en}/route-rule': RouteRule,
-        'en/component': component
+        '@{en}/route-rule': RouteRule
     });
     let routerInstance;
 
     beforeEach(() => {
-        routerInstance = new Router();
+        routerInstance = new Router(app);
 
     });
 
     it('constructs', () => {
 
         spyOn(logger, 'info').and.callThrough();
-        routerInstance = new Router({
+        routerInstance = new Router(app, {
             url: '/error',
             route: 'error/handler',
             errorRoute: 'error/handle',
@@ -43,7 +43,7 @@ describe('router', () => {
         });
         expect(routerInstance.errorRoute).toBe('error/handle');
         expect(logger.info).toHaveBeenCalled();
-        routerInstance = new Router({
+        routerInstance = new Router(app, {
             url: '/error-1',
             route: 'test/handler',
             errorRoute: 'test/handler',
@@ -51,7 +51,7 @@ describe('router', () => {
         });
         expect(routerInstance.errorRoute).toBe('test/handler');
 
-        routerInstance = new Router({
+        routerInstance = new Router(app, {
             useCustomErrorHandler: false
         });
         expect(routerInstance.errorRoute).toBe('error/handler');
@@ -63,12 +63,12 @@ describe('router', () => {
             url: '/home',
             route: 'home/index'
         };
-        routerInstance = new Router({
+        routerInstance = new Router(app, {
             useCustomErrorHandler: false
         });
         spyOn(logger, 'info').and.callThrough();
         routerInstance.add(route);
-        expect(logger.info).toHaveBeenCalledWith('Router.add', new RouteRule(route));
+        expect(logger.info).toHaveBeenCalledWith('Router.add', new RouteRule(app, route));
         expect(routerInstance.routes.size).toBe(1);
 
         routerInstance.add([route, route]);
@@ -91,7 +91,7 @@ describe('router', () => {
             route: 'home/index'
         };
         spyOn(RouteRule.prototype, 'parseRequest').and.callThrough();
-        routerInstance = new Router({
+        routerInstance = new Router(app, {
             useCustomErrorHandler: false
         });
         routerInstance.add(route);
@@ -116,7 +116,7 @@ describe('router', () => {
         RouteRule.prototype.parseRequest = () => {
             return Promise.resolve(true);
         };
-        routerInstance = new Router({
+        routerInstance = new Router(app, {
             useCustomErrorHandler: false
         });
         routerInstance.add(route);
@@ -133,7 +133,7 @@ describe('router', () => {
             url: '/home',
             route: 'home/index'
         };
-        routerInstance = new Router({
+        routerInstance = new Router(app, {
             useCustomErrorHandler: false
         });
         routerInstance.add(route);
@@ -157,7 +157,7 @@ describe('router', () => {
         };
         spyOn(RouteRule.prototype, 'createUrl').and.callThrough();
 
-        routerInstance = new Router({
+        routerInstance = new Router(app, {
             useCustomErrorHandler: false
         });
         routerInstance.add(route);

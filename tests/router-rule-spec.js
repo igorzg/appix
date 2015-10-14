@@ -7,22 +7,21 @@ describe('router rule', () => {
 
         }
     };
-    let component = {
-        get: function (key) {
+    let app = {
+        getComponent: function (key) {
             if (key === 'en/logger') {
                 return logger;
             }
         }
     };
     let RouteRule = di.mock('@{en}/route-rule', {
-        'en/component': component,
         '@{en}/error': di.load('@{en}/error'),
         'typed-js': di.load('typed-js')
     });
 
 
     it('pattern check /can<any>one/<name:\\w+>/should<now:\\W+>do-it/<see:(\\w+)>-<nice:([a-zA-Z]+)>-now-<only:\\d+>-not/user/<id:\\d+>', () => {
-        let rule = new RouteRule({
+        let rule = new RouteRule(app, {
             url: '/can<any>one/<name:\\w+>/should<now:\\W+>do-it/<see:(\\w+)>-<nice:([a-zA-Z]+)>-now-<only:\\d+>-not/user/<id:\\d+>',
             route: 'user/view'
         });
@@ -67,7 +66,7 @@ describe('router rule', () => {
 
     it('getPattern', () => {
 
-        var rule = new RouteRule({
+        var rule = new RouteRule(app, {
             url: '/can<any>one/<name:\\w+>/should<now:\\W+>do-it/<see:(\\w+)>-<nice:([a-zA-Z]+)>-now-<only:\\d+>-not/user/<id:\\d+>',
             route: 'user/view'
         });
@@ -108,8 +107,8 @@ describe('router rule', () => {
 
     it('shouldInherit', () => {
         class DynamicRule extends RouteRule {
-            constructor(config) {
-                super(config, true);
+            constructor(app, config) {
+                super(app, config, true);
             }
             parseRequest() {
 
@@ -119,7 +118,7 @@ describe('router rule', () => {
             }
         }
 
-        var rule = new DynamicRule({});
+        var rule = new DynamicRule(app, {});
         expect(rule instanceof RouteRule).toBe(true);
     });
 });

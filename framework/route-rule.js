@@ -3,8 +3,8 @@
 let di = require('./di');
 let Type = di.load('typed-js');
 let error = di.load('@{en}/error');
-let component = di.load('en/component');
-let logger = component.get('en/logger');
+let bootstrap = di.getInstance();
+let logger;
 const IS_ANY_PATTERN = /<([^>]+)>/;
 const PATTERN_MATCH = /<(\w+):([^>]+)>/g;
 const HAS_GROUP = /^\(([^\)]+)\)$/;
@@ -19,7 +19,8 @@ const HAS_GROUP = /^\(([^\)]+)\)$/;
  * Router handler for easy node
  */
 class RouteRule extends Type {
-    constructor(config, dynamic) {
+    constructor(app, config, dynamic) {
+
         super({
             pattern: Type.ARRAY,
             url: Type.STRING,
@@ -27,6 +28,9 @@ class RouteRule extends Type {
             validMethods: Type.ARRAY,
             methods: Type.ARRAY
         });
+
+        logger = app.getComponent('en/logger');
+
         this.validMethods = ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'TRACE', 'OPTIONS', 'CONNECT', 'PATCH'];
         this.methods = ['GET'];
         if (Type.isArray(config.methods) && !config.methods.every(item => this.validMethods.indexOf(item) > -1)) {

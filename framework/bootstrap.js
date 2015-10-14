@@ -18,6 +18,13 @@ class Bootstrap extends Type {
         this.initialized = false;
         this.listenPort = config.listenPort || 9000;
         this.listenHost = config.listenHost;
+        this.component = new Component();
+    }
+    setComponent(key, val) {
+        return this.component.set(key, val);
+    }
+    getComponent(key) {
+        return this.component.get(key);
     }
 }
 
