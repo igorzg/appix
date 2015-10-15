@@ -2,31 +2,32 @@
 
 describe('bootstrap', () => {
     let di = require('../');
+    let fs = {};
+    let path = {};
     let Bootstrap = di.mock('@{en}/bootstrap', {
         '@{en}/component': Map,
+        'fs': fs,
+        'path': path,
         'typed-js': di.load('typed-js')
     });
     let bootstrap;
-    beforeEach(function () {
+    beforeEach(() =>  {
         bootstrap = new Bootstrap({});
     });
     it('construct', () => {
         bootstrap = new Bootstrap({});
-        expect(bootstrap.listenPort).toEqual(9000);
-        expect(bootstrap.listenHost).toEqual(undefined);
-        expect(bootstrap.component).toEqual(new Map);
-        bootstrap = new Bootstrap({
-            listenPort: 8000,
-            listenHost: 'localhost'
-        });
-        expect(bootstrap.listenPort).toEqual(8000);
-        expect(bootstrap.listenHost).toEqual('localhost');
+        expect(bootstrap.component).toEqual(new Map());
+    });
+
+    it('bootstrap', () => {
+        bootstrap = new Bootstrap({});
+
     });
 
     it('setComponent', () => {
         var ctx = {
             component: {
-                set: function () {}
+                set:  () => {}
             }
         };
         spyOn(ctx.component, 'set').and.callThrough();
@@ -37,13 +38,12 @@ describe('bootstrap', () => {
     it('getComponent', () => {
         var ctx = {
             component: {
-                get: function () {}
+                get: () => {}
             }
         };
         spyOn(ctx.component, 'get').and.callThrough();
         bootstrap.getComponent.call(ctx, 'key');
         expect(ctx.component.get).toHaveBeenCalledWith('key');
     });
-
 
 });
