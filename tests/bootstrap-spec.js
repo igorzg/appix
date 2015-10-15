@@ -10,8 +10,17 @@ describe('bootstrap', () => {
     beforeEach(function () {
         bootstrap = new Bootstrap({});
     });
-    it('bootstrap', () => {
+    it('construct', () => {
+        bootstrap = new Bootstrap({});
+        expect(bootstrap.listenPort).toEqual(9000);
+        expect(bootstrap.listenHost).toEqual(undefined);
         expect(bootstrap.component).toEqual(new Map);
+        bootstrap = new Bootstrap({
+            listenPort: 8000,
+            listenHost: 'localhost'
+        });
+        expect(bootstrap.listenPort).toEqual(8000);
+        expect(bootstrap.listenHost).toEqual('localhost');
     });
 
     it('setComponent', () => {

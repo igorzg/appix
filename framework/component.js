@@ -4,7 +4,7 @@ let di = require('./di');
 let Type = di.load('typed-js');
 /**
  * @license Mit Licence 2015
- * @since 0.1.0
+ * @since 1.0.0
  * @author Igor Ivanovic
  * @name Component
  *
@@ -21,7 +21,7 @@ class Component extends Type {
     }
 
     /**
-     * @since 0.1.0
+     * @since 1.0.0
      * @author Igor Ivanovic
      * @function
      * @name Component#set
@@ -37,7 +37,7 @@ class Component extends Type {
     }
 
     /**
-     * @since 0.1.0
+     * @since 1.0.0
      * @author Igor Ivanovic
      * @function
      * @name Component#get
@@ -51,7 +51,7 @@ class Component extends Type {
     }
 
     /**
-     * @since 0.1.0
+     * @since 1.0.0
      * @author Igor Ivanovic
      * @function
      * @name Component#delete
@@ -65,7 +65,7 @@ class Component extends Type {
     }
 
     /**
-     * @since 0.1.0
+     * @since 1.0.0
      * @author Igor Ivanovic
      * @function
      * @name Component#has
@@ -79,7 +79,7 @@ class Component extends Type {
     }
 
     /**
-     * @since 0.1.0
+     * @since 1.0.0
      * @author Igor Ivanovic
      * @function
      * @name Component#forEach
@@ -93,7 +93,7 @@ class Component extends Type {
     }
 
     /**
-     * @since 0.1.0
+     * @since 1.0.0
      * @author Igor Ivanovic
      * @function
      * @name Component#size

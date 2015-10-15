@@ -4,7 +4,7 @@ let diNode = require('di-node');
 let Type = diNode.load('typed-js');
 /**
  * @license Mit Licence 2015
- * @since 0.1.0
+ * @since 1.0.0
  * @author Igor Ivanovic
  * @name DI
  *
@@ -24,7 +24,7 @@ class DI extends Type {
         this.instances = new Map();
     }
     /**
-     * @since 0.1.0
+     * @since 1.0.0
      * @author Igor Ivanovic
      * @function
      * @name DI#setInstance
@@ -41,7 +41,7 @@ class DI extends Type {
         this.instances.set(key, value);
     }
     /**
-     * @since 0.1.0
+     * @since 1.0.0
      * @author Igor Ivanovic
      * @function
      * @name DI#getInstance
@@ -54,7 +54,7 @@ class DI extends Type {
         return this.instances.get(key);
     }
     /**
-     * @since 0.1.0
+     * @since 1.0.0
      * @author Igor Ivanovic
      * @function
      * @name DI#mock

@@ -19,7 +19,7 @@ function* list(data) {
 }
 /**
  * @license Mit Licence 2015
- * @since 0.1.0
+ * @since 1.0.0
  * @author Igor Ivanovic
  * @name Router
  *
@@ -61,7 +61,7 @@ class Router extends Type {
     }
 
     /**
-     * @since 0.1.0
+     * @since 1.0.0
      * @author Igor Ivanovic
      * @function
      * @name Router#add
@@ -88,7 +88,7 @@ class Router extends Type {
     }
 
     /**
-     * @since 0.1.0
+     * @since 1.0.0
      * @author Igor Ivanovic
      * @function
      * @name Router#parseRequest
@@ -124,7 +124,7 @@ class Router extends Type {
     }
 
     /**
-     * @since 0.1.0
+     * @since 1.0.0
      * @author Igor Ivanovic
      * @function
      * @name Router#createUrl

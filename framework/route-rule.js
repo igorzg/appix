@@ -10,7 +10,7 @@ const PATTERN_MATCH = /<(\w+):([^>]+)>/g;
 const HAS_GROUP = /^\(([^\)]+)\)$/;
 /**
  * @license Mit Licence 2015
- * @since 0.1.0
+ * @since 1.0.0
  * @author Igor Ivanovic
  * @name Router
  *
@@ -57,7 +57,7 @@ class RouteRule extends Type {
     }
 
     /**
-     * @since 0.1.0
+     * @since 1.0.0
      * @author Igor Ivanovic
      * @function
      * @name RouteRule#getPattern
@@ -194,7 +194,7 @@ class RouteRule extends Type {
     }
 
     /**
-     * @since 0.1.0
+     * @since 1.0.0
      * @author Igor Ivanovic
      * @function
      * @name RouteRule#parseRequest
@@ -227,7 +227,7 @@ class RouteRule extends Type {
     }
 
     /**
-     * @since 0.1.0
+     * @since 1.0.0
      * @author Igor Ivanovic
      * @function
      * @name RouteRule#createUrl

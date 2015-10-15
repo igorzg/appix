@@ -1,8 +1,8 @@
 {
   "name": "easynode",
   "main": "./framework/di.js",
-  "description": "Easynode is lightweight easy node js framework",
-  "version": "0.1.0",
+  "description": "Easynode is lightweight node js framework",
+  "version": "1.0.0",
   "dependencies": {
     "di-node": "0.1.x",
     "typed-js": "0.2.x"

@@ -6,7 +6,7 @@
   "noarg": true,
   "eqnull": true,
   "expr": true,
-  "predef": ["__dirname", "require", "describe", "it", "expect", "spyOn"],
+  "predef": ["__dirname", "require", "describe", "it", "expect", "spyOn", "beforeEach"],
   "globalstrict": true,
   "unused": true,
   "undef": true,

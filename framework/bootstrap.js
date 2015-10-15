@@ -5,7 +5,7 @@ let Type = di.load('typed-js');
 let Component = di.load('@{en}/component');
 /**
  * @license Mit Licence 2015
- * @since 0.1.0
+ * @since 1.0.0
  * @author Igor Ivanovic
  * @name Bootstrap
  *
@@ -30,7 +30,7 @@ class Bootstrap extends Type {
         this.component = new Component();
     }
     /**
-     * @since 0.0.1
+     * @since 1.0.0
      * @author Igor Ivanovic
      * @function
      * @name Bootstrap#setComponent
@@ -42,7 +42,7 @@ class Bootstrap extends Type {
         return this.component.set(key, val);
     }
     /**
-     * @since 0.0.1
+     * @since 1.0.0
      * @author Igor Ivanovic
      * @function
      * @name Bootstrap#getComponent

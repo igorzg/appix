@@ -5,7 +5,7 @@ let Type = di.load('typed-js');
 let core = di.load('@{en}/core');
 /**
  * @license Mit Licence 2015
- * @since 0.1.0
+ * @since 1.0.0
  * @author Igor Ivanovic
  * @name Exception
  *
@@ -31,7 +31,7 @@ class Exception extends Type {
 }
 /**
  * @license Mit Licence 2015
- * @since 0.1.0
+ * @since 1.0.0
  * @author Igor Ivanovic
  * @name HttpException
  *

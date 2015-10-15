@@ -13,7 +13,7 @@ for (var i = 0; i < 100; ++i) {
 }
 /**
  * @license Mit Licence 2015
- * @since 0.1.0
+ * @since 1.0.0
  * @author Igor Ivanovic
  * @name Logger
  *
@@ -82,7 +82,7 @@ class Logger extends Type {
     }
 
     /**
-     * @since 0.0.1
+     * @since 1.0.0
      * @author Igor Ivanovic
      * @function
      * @name Logger#trace
@@ -95,7 +95,7 @@ class Logger extends Type {
     }
 
     /**
-     * @since 0.0.1
+     * @since 1.0.0
      * @author Igor Ivanovic
      * @function
      * @name Logger#info
@@ -108,7 +108,7 @@ class Logger extends Type {
     }
 
     /**
-     * @since 0.0.1
+     * @since 1.0.0
      * @author Igor Ivanovic
      * @function
      * @name Logger#debug
@@ -121,7 +121,7 @@ class Logger extends Type {
     }
 
     /**
-     * @since 0.0.1
+     * @since 1.0.0
      * @author Igor Ivanovic
      * @function
      * @name Logger#warn
@@ -134,7 +134,7 @@ class Logger extends Type {
     }
 
     /**
-     * @since 0.0.1
+     * @since 1.0.0
      * @author Igor Ivanovic
      * @function
      * @name Logger#error
@@ -147,7 +147,7 @@ class Logger extends Type {
     }
 
     /**
-     * @since 0.0.1
+     * @since 1.0.0
      * @author Igor Ivanovic
      * @function
      * @name Logger#fatal
@@ -160,7 +160,7 @@ class Logger extends Type {
     }
 
     /**
-     * @since 0.0.1
+     * @since 1.0.0
      * @author Igor Ivanovic
      * @function
      * @name Logger#getLevelName
@@ -179,7 +179,7 @@ class Logger extends Type {
     }
 
     /**
-     * @since 0.0.1
+     * @since 1.0.0
      * @author Igor Ivanovic
      * @function
      * @name Logger#log
@@ -216,7 +216,7 @@ class Logger extends Type {
     }
 
     /**
-     * @since 0.1.0
+     * @since 1.0.0
      * @author Igor Ivanovic
      * @function
      * @name Logger#addHook
@@ -233,7 +233,7 @@ class Logger extends Type {
     }
 
     /**
-     * @since 0.0.1
+     * @since 1.0.0
      * @author Igor Ivanovic
      * @function
      * @name Logger#clean
@@ -255,7 +255,7 @@ class Logger extends Type {
     }
 
     /**
-     * @since 0.0.1
+     * @since 1.0.0
      * @author Igor Ivanovic
      * @function
      * @name Logger#inspect
