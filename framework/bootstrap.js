@@ -17,11 +17,11 @@ class Bootstrap extends Type {
     constructor(config) {
         super({
             listenPort: Type.NUMBER,
-            listenHost: null,
+            listenHost: Type.STRING,
             initialized: Type.BOOLEAN,
             component: Type.OBJECT
         });
-        if (Type.isObject(config)) {
+        if (!Type.isObject(config)) {
             config = {};
         }
         this.initialized = false;
