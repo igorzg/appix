@@ -16,6 +16,7 @@ describe('bootstrap', () => {
     });
     it('construct', () => {
         bootstrap = new Bootstrap({});
+        expect(bootstrap.components).toEqual([]);
         expect(bootstrap.component).toEqual(new Map());
     });
 
