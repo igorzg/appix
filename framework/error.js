@@ -26,7 +26,6 @@ class Exception extends Type {
         this.data = data;
         this.trace = core.traceCall();
         this.stack = core.traceStack();
-        throw this;
     }
 }
 /**
@@ -41,16 +40,19 @@ class Exception extends Type {
  */
 class HttpException extends Exception {
     constructor(code, message, data) {
-        try {
-            super(message, data);
-        } catch (e) {
-            e.code = code;
-            throw e;
-        }
+        super(message, data);
+        this.code = code;
     }
 }
-
+// make it throwable
 module.exports = {
-    HttpException,
-    Exception
+    SilentException: function SilentException(code, message, data) {
+        return new HttpException(code, message, data);
+    },
+    HttpException: function HttpExceptionThrow(code, message, data) {
+        throw new HttpException(code, message, data);
+    },
+    Exception: function ExceptionThrow(message, data) {
+        throw new Exception(message, data);
+    }
 };

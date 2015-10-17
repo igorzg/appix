@@ -27,6 +27,24 @@ class DI extends Type {
      * @since 1.0.0
      * @author Igor Ivanovic
      * @function
+     * @name DI#uuid
+     *
+     * @description
+     * Generate universally unique identifier
+     */
+    uuid() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+            let r = Math.random() * 16 | 0;
+            if (c === 'x') {
+                return r.toString(16);
+            }
+            return (r & 0x3 | 0x8).toString(16);
+        });
+    }
+    /**
+     * @since 1.0.0
+     * @author Igor Ivanovic
+     * @function
      * @name DI#setInstance
      * @param {String} key
      * @param {Object} value

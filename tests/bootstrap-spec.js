@@ -8,6 +8,7 @@ describe('bootstrap', () => {
         '@{en}/component': Map,
         'fs': fs,
         'path': path,
+        '@{en}/error': di.load('@{en}/error'),
         'typed-js': di.load('typed-js')
     });
     let bootstrap;
@@ -16,8 +17,7 @@ describe('bootstrap', () => {
     });
     it('construct', () => {
         bootstrap = new Bootstrap({});
-        expect(bootstrap.components).toEqual([]);
-        expect(bootstrap.component).toEqual(new Map());
+        expect(bootstrap.components).toEqual(new Map);
     });
 
     it('bootstrap', () => {
@@ -27,24 +27,25 @@ describe('bootstrap', () => {
 
     it('setComponent', () => {
         var ctx = {
-            component: {
+            components: {
                 set:  () => {}
             }
         };
-        spyOn(ctx.component, 'set').and.callThrough();
+        spyOn(ctx.components, 'set').and.callThrough();
         bootstrap.setComponent.call(ctx, 'key', 'val');
-        expect(ctx.component.set).toHaveBeenCalledWith('key', 'val');
+        expect(ctx.components.set).toHaveBeenCalledWith('key', 'val');
     });
 
     it('getComponent', () => {
         var ctx = {
-            component: {
+            components: {
                 get: () => {}
-            }
+            },
+            hasComponent: () => true
         };
-        spyOn(ctx.component, 'get').and.callThrough();
+        spyOn(ctx.components, 'get').and.callThrough();
         bootstrap.getComponent.call(ctx, 'key');
-        expect(ctx.component.get).toHaveBeenCalledWith('key');
+        expect(ctx.components.get).toHaveBeenCalledWith('key');
     });
 
 });

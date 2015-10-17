@@ -15,7 +15,7 @@ describe('server', () => {
     let httpMock = {
         createServer: () => server
     };
-    let Server = di.mock('@{en}/server', {
+    let Server = di.mock('@{en}/components/server', {
         'http': httpMock,
         'typed-js': di.load('typed-js')
     });

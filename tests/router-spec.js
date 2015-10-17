@@ -20,7 +20,7 @@ describe('router', () => {
         }
     };
 
-    let Router = di.mock('@{en}/router', {
+    let Router = di.mock('@{en}/components/router', {
         'typed-js': di.load('typed-js'),
         '@{en}/error': di.load('@{en}/error'),
         '@{en}/route-rule': RouteRule
