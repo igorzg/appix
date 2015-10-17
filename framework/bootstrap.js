@@ -119,7 +119,8 @@ class Bootstrap extends Type {
                     } else {
                         component = di.load(item.name);
                     }
-                    this.components.push(component);
+                    item.component = component;
+                    this.components.push(item);
                 }
             });
         }
