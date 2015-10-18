@@ -53,7 +53,7 @@ class Router extends Type {
      * @author Igor Ivanovic
      * @function
      * @name Router#add
-     * @param {Object|Array} rule
+     * @param {Object|Array|Function} rule
      *
      * @description
      * Add route to resolve list
@@ -63,6 +63,8 @@ class Router extends Type {
             return rule.forEach(item => this.add(item));
         } else if (Type.isObject(rule) && !(rule instanceof RouteRule)) {
             return this.add(new RouteRule(this.app, rule));
+        } else if (Type.isFunction(rule)) {
+            return this.add(new rule);
         }
 
         if (!(rule instanceof RouteRule)) {

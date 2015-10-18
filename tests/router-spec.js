@@ -99,7 +99,7 @@ describe('router', () => {
         return routerInstance
             .parseRequest('/home', 'GET')
             .catch((error) => {
-                expect(error.message).toBe('Router.parseRequest: no request found');
+                expect(error.message).toBe('Router.parseRequest: no route found');
                 expect(error.code).toBe(404);
                 expect(RouteRule.prototype.parseRequest).toHaveBeenCalledWith('/home', 'GET');
             })

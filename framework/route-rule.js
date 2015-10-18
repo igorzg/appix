@@ -19,15 +19,15 @@ const HAS_GROUP = /^\(([^\)]+)\)$/;
  * Router handler for easy node
  */
 class RouteRule extends Type {
-    constructor(app, config, dynamic) {
+    constructor(app, config, extend) {
 
-        super({
+        super(Object.assign({
             pattern: Type.ARRAY,
             url: Type.STRING,
             route: Type.STRING,
             validMethods: Type.ARRAY,
             methods: Type.ARRAY
-        });
+        }, extend));
 
         logger = app.getComponent('en/logger');
 
@@ -41,7 +41,7 @@ class RouteRule extends Type {
         } else if (Type.isArray(config.methods)) {
             this.methods = config.methods;
         }
-        if (!dynamic) {
+        if (config.hasOwnProperty("url") || config.hasOwnProperty("route")) {
             if (!config.url) {
                 throw new error.HttpError(500, 'RouteRule: rule object must have an pattern property', config);
             }

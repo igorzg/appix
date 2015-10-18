@@ -107,9 +107,6 @@ describe('router rule', () => {
 
     it('shouldInherit', () => {
         class DynamicRule extends RouteRule {
-            constructor(app, config) {
-                super(app, config, true);
-            }
             parseRequest() {
 
             }
