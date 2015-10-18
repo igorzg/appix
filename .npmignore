@@ -5,3 +5,4 @@ gulpfile.js
 /npm-debug.log
 /coverage
 .jscsrc
+/.travis.yml

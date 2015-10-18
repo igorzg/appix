@@ -103,7 +103,7 @@ class Router extends Type {
                 }
             }
 
-            throw new error.HttpException(404, 'Router.parseRequest: no request found', {
+            throw new error.HttpException(404, 'Router.parseRequest: no route found', {
                 pathName,
                 method
             });

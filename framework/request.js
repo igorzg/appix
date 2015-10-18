@@ -25,7 +25,9 @@ class Request extends Type {
             router: Type.OBJECT,
             url: Type.STRING,
             parsedUrl: Type.OBJECT,
-            data: Type.ARRAY
+            data: Type.ARRAY,
+            id: Type.STRING,
+            events: Type.OBJECT
         });
         logger = bootstrap.getComponent('en/logger');
         router = bootstrap.getComponent('en/router');
@@ -213,10 +215,21 @@ class Request extends Type {
         // on data end process request
         return new Promise(resolve => this.request.on('end', resolve))
             .then(() => {
+                logger.info('Route.parseRequest', {
+                    path: this.getPathname(),
+                    method: this.getMethod()
+                });
                 return router.parseRequest(this.getPathname(), this.getMethod());
             })
             .then(route => {
                 console.log('route', route);
+
+                this.request.end(JSON.stringify(route));
+            })
+            .catch(error => {
+                console.log('instanceof', error.toString());
+                this.response.write(error.toString());
+                this.response.end();
             });
     }
 }

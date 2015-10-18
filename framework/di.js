@@ -1,7 +1,7 @@
 'use strict';
 
-let diNode = require('di-node');
-let Type = diNode.load('typed-js');
+let DiNode = require('di-node');
+let Type = require('typed-js');
 /**
  * @license Mit Licence 2015
  * @since 1.0.0
@@ -12,15 +12,11 @@ let Type = diNode.load('typed-js');
  * @description
  * Extend di implementation
  */
-class DI extends Type {
+class DI extends DiNode {
     constructor() {
-        super({
-            aliases: Type.OBJECT,
-            modules: Type.OBJECT,
+        super(require, {
             instances: Type.OBJECT
         });
-        this.aliases = {};
-        this.modules = {};
         this.instances = new Map();
     }
     /**
@@ -107,19 +103,10 @@ class DI extends Type {
         }
     }
 }
-// mixin extend prototype with actual DI
-let diPrototype = Object.getPrototypeOf(diNode);
-Object
-    .getOwnPropertyNames(diPrototype)
-    .forEach(k => {
-        let exclude = ['mock', 'constructor'];
-        if (exclude.indexOf(k) === -1) {
-            DI.prototype[k] = diPrototype[k];
-        }
-    });
 // Instantiate new di
 let di = new DI();
 // set Alias of easy node
 di.setAlias('en', __dirname);
+
 // export new di
 module.exports = di;

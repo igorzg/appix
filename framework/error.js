@@ -38,10 +38,21 @@ class Exception extends Type {
  * @description
  * HttpException
  */
-class HttpException extends Exception {
+class HttpException extends Type {
     constructor(code, message, data) {
-        super(message, data);
+        super({
+            message: Type.STRING,
+            data: Type.OBJECT,
+            trace: Type.STRING,
+            stack: Type.ARRAY,
+            code: Type.NUMBER
+        });
+        this.message = message;
+        this.data = data || {};
+        this.trace = core.traceCall();
+        this.stack = core.traceStack();
         this.code = code;
+        console.log('EEE, ', super.toString.toString());
     }
 }
 // make it throwable

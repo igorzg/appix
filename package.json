@@ -4,7 +4,7 @@
   "description": "Easynode is lightweight node js framework",
   "version": "1.0.0",
   "dependencies": {
-    "di-node": "0.1.x",
+    "di-node": "0.2.x",
     "typed-js": "0.2.x"
   },
   "devDependencies": {
