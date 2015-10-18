@@ -52,7 +52,6 @@ class HttpException extends Type {
         this.trace = core.traceCall();
         this.stack = core.traceStack();
         this.code = code;
-        console.log('EEE, ', super.toString.toString());
     }
 }
 // make it throwable

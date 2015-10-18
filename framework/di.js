@@ -13,7 +13,7 @@ let Type = require('typed-js');
  * Extend di implementation
  */
 class DI extends DiNode {
-    constructor() {
+    constructor(require) {
         super(require, {
             instances: Type.OBJECT
         });
@@ -104,7 +104,7 @@ class DI extends DiNode {
     }
 }
 // Instantiate new di
-let di = new DI();
+let di = new DI(require);
 // set Alias of easy node
 di.setAlias('en', __dirname);
 

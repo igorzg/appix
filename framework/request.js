@@ -222,12 +222,10 @@ class Request extends Type {
                 return router.parseRequest(this.getPathname(), this.getMethod());
             })
             .then(route => {
-                console.log('route', route);
 
                 this.request.end(JSON.stringify(route));
             })
             .catch(error => {
-                console.log('instanceof', error.toString());
                 this.response.write(error.toString());
                 this.response.end();
             });
