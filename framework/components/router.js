@@ -6,18 +6,6 @@ let error = di.load('@{en}/error');
 let RouteRule = di.load('@{en}/route-rule');
 let logger;
 /**
- * @function
- * @name list
- * @param {Object} data
- * @description
- * Yield rule item
- */
-function* list(data) {
-    for (let item of data) {
-        yield item;
-    }
-}
-/**
  * @license Mit Licence 2015
  * @since 1.0.0
  * @author Igor Ivanovic
@@ -99,9 +87,8 @@ class Router extends Type {
      * Parse request based on pathName and method
      */
     parseRequest(pathName, method) {
-        let routes = list(this.routes);
         let promises = new Set();
-        for (let route of routes) {
+        for (let route of this.routes) {
             let parsedRequest = route.parseRequest(pathName, method);
             if (!!parsedRequest) {
                 promises.add(parsedRequest);
@@ -135,9 +122,8 @@ class Router extends Type {
      * Create url based on route and params
      */
     createUrl(routeName, params) {
-        let routes = list(this.routes);
         let promises = new Set();
-        for (let route of routes) {
+        for (let route of this.routes) {
             let parsedRequest = route.createUrl(routeName, params);
             if (!!parsedRequest) {
                 promises.add(parsedRequest);
