@@ -46,7 +46,7 @@ class Logger extends Type {
             {
                 name: 'DEBUG',
                 level: 30,
-                call: console.info
+                call: console.log
             },
             {
                 name: 'WARN',
@@ -73,11 +73,11 @@ class Logger extends Type {
         }, config);
 
         if (this.config.console) {
-            this.levels.forEach(item => {
-                this.addHook(function write(log) {
-                    item.call(item.name, JSON.stringify(log));
-                });
-            });
+            this.levels.forEach(item => this.addHook(log => {
+                if (log.level === item.level)  {
+                    item.call(log.prettify());
+                }
+            }));
         }
     }
 
@@ -188,9 +188,10 @@ class Logger extends Type {
      * Write to file and exec hooks
      */
     log(message, data, level) {
-        if (!this.config.enabled) {
+        if (!this.config.enabled || level < this.config.level) {
             return false;
         }
+        let configLevel = this.config.inspectLevel;
         process.nextTick(() => {
             let log = {
                 level: level,
@@ -198,11 +199,28 @@ class Logger extends Type {
                 message: message,
                 trace: core.traceCall(),
                 stack: core.traceStack(),
-                data: Logger.inspect(data, this.config.inspectLevel),
+                data: data,
                 created: new Date().toISOString(),
+                prettify(clean) {
+
+                    let cLog = Logger.inspect({
+                        level: this.level,
+                        type: this.type,
+                        message: this.message,
+                        trace: this.trace,
+                        stack: this.stack,
+                        data: this.data,
+                        created: this.created
+                    }, configLevel);
+
+                    if (!!clean) {
+                        cLog = Logger.clean(cLog);
+                    }
+
+                    return cLog;
+                },
                 toString() {
-                    this.data = Logger.clean(this.data);
-                    return JSON.stringify(this);
+                    return JSON.stringify(this.prettify(true));
                 }
             };
 
@@ -212,7 +230,6 @@ class Logger extends Type {
                 });
             }
         });
-
     }
 
     /**

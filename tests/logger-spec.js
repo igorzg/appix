@@ -29,7 +29,7 @@ describe('logger', () => {
             {
                 name: 'DEBUG',
                 level: 30,
-                call: console.info
+                call: console.log
             },
             {
                 name: 'WARN',
@@ -73,7 +73,7 @@ describe('logger', () => {
             {
                 name: 'DEBUG',
                 level: 30,
-                call: console.info
+                call: console.log
             },
             {
                 name: 'WARN',

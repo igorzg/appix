@@ -28,7 +28,7 @@ function* list(data) {
  * Router handler for easy node
  */
 class Router extends Type {
-    constructor(app, config) {
+    constructor(config, app) {
         super({
             routes: Type.OBJECT,
             app: Type.OBJECT,

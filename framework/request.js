@@ -4,6 +4,8 @@ let di = require('./di');
 let Type = di.load('typed-js');
 let EventEmitter = di.load('events');
 let URLParser = di.load('url');
+let logger;
+let router;
 /**
  * @license Mit Licence 2015
  * @since 1.0.0
@@ -22,22 +24,77 @@ class Request extends Type {
             logger: Type.OBJECT,
             router: Type.OBJECT,
             url: Type.STRING,
-            parsedUrl: Type.OBJECT
+            parsedUrl: Type.OBJECT,
+            data: Type.ARRAY
         });
-        this.logger = bootstrap.getComponent('en/logger');
-        this.router = bootstrap.getComponent('en/router');
+        logger = bootstrap.getComponent('en/logger');
+        router = bootstrap.getComponent('en/router');
         this.response = config.response;
         this.request = config.request;
         this.id = di.uuid();
         this.url = url;
         this.parsedUrl = URLParser.parse(this.url, true);
+        this.data = [];
         this.events = new EventEmitter();
     }
 
     /**
-     * @since 0.0.1
+     * @since 1.0.0
      * @author Igor Ivanovic
-     * @method Request#getRequestHeaders
+     * @function
+     * @name Request#getParsedUrl
+     *
+     * @description
+     * Return parsed url
+     */
+    getParsedUrl() {
+        return Object.assign({}, this.parsedUrl);
+    }
+
+    /**
+     * @since 1.0.0
+     * @author Igor Ivanovic
+     * @function
+     * @name Request#getMethod
+     *
+     * @description
+     * Return method
+     */
+    getMethod() {
+        return this.request.method;
+    }
+
+    /**
+     * @since 1.0.0
+     * @author Igor Ivanovic
+     * @function
+     * @name Request#getPathname
+     *
+     * @description
+     * Return request pathname
+     */
+    getPathname() {
+        return this.parsedUrl.pathname;
+    }
+
+    /**
+     * @since 1.0.0
+     * @author Igor Ivanovic
+     * @function
+     * @name Request#getParams
+     *
+     * @description
+     * Return request url query
+     */
+    getParams() {
+        return new Map(this.parsedUrl.query);
+    }
+
+    /**
+     * @since 1.0.0
+     * @author Igor Ivanovic
+     * @function
+     * @name Request#getRequestHeaders
      *
      * @description
      * Return request headers
@@ -47,9 +104,10 @@ class Request extends Type {
     }
 
     /**
-     * @since 0.0.1
+     * @since 1.0.0
      * @author Igor Ivanovic
-     * @method Request#getRequestDomain
+     * @function
+     * @name Request#getRequestDomain
      *
      * @description
      * Return request domain
@@ -59,9 +117,10 @@ class Request extends Type {
     }
 
     /**
-     * @since 0.0.1
+     * @since 1.0.0
      * @author Igor Ivanovic
-     * @method Request#getRequestIpAddres
+     * @function
+     * @name Request#getRequestIpAddres
      *
      * @description
      * Request remote ip address
@@ -71,9 +130,10 @@ class Request extends Type {
     }
 
     /**
-     * @since 0.0.1
+     * @since 1.0.0
      * @author Igor Ivanovic
-     * @method Request#getRequestRemotePort
+     * @function
+     * @name Request#getRequestRemotePort
      *
      * @description
      * Request remote port
@@ -83,9 +143,10 @@ class Request extends Type {
     }
 
     /**
-     * @since 0.0.1
+     * @since 1.0.0
      * @author Igor Ivanovic
-     * @method Request#getRequestLocalAddress
+     * @function
+     * @name Request#getRequestLocalAddress
      *
      * @description
      * Request locals address
@@ -95,9 +156,10 @@ class Request extends Type {
     }
 
     /**
-     * @since 0.0.1
+     * @since 1.0.0
      * @author Igor Ivanovic
-     * @method Request#getRequestLocalPort
+     * @function
+     * @name Request#getRequestLocalPort
      *
      * @description
      * Request local port
@@ -107,9 +169,10 @@ class Request extends Type {
     }
 
     /**
-     * @since 0.0.1
+     * @since 1.0.0
      * @author Igor Ivanovic
-     * @method Request#onEnd
+     * @function
+     * @name Request#onEnd
      *
      * @description
      * On end process destroy event
@@ -119,9 +182,23 @@ class Request extends Type {
     }
 
     /**
-     * @since 0.0.1
+     * @since 1.0.0
      * @author Igor Ivanovic
-     * @method Request#process
+     * @function
+     * @name Request#getRequestBody
+     *
+     * @description
+     * Return request body
+     */
+    getRequestBody() {
+        return Buffer.concat(this.data);
+    }
+
+    /**
+     * @since 1.0.0
+     * @author Igor Ivanovic
+     * @function
+     * @name Request#process
      *
      * @description
      * Process request
@@ -131,7 +208,16 @@ class Request extends Type {
         this.response.once('finish', () => this.events.emit('destory'));
         // destroy if connection was terminated before end
         this.response.once('close', () => this.events.emit('destory'));
-
+        // push data
+        this.request.on('data', item => this.data.push(item));
+        // on data end process request
+        return new Promise(resolve => this.request.on('end', resolve))
+            .then(() => {
+                return router.parseRequest(this.getPathname(), this.getMethod());
+            })
+            .then(route => {
+                console.log('route', route);
+            });
     }
 }
 

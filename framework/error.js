@@ -23,7 +23,7 @@ class Exception extends Type {
             code: Type.NUMBER
         });
         this.message = message;
-        this.data = data;
+        this.data = data || {};
         this.trace = core.traceCall();
         this.stack = core.traceStack();
     }

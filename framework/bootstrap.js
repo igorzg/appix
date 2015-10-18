@@ -21,23 +21,14 @@ const COMPONENTS = [
  * This class is used for component delivery service and bootstraping application
  */
 class Bootstrap extends Type {
-    constructor() {
+
+    constructor(appConfig) {
+
         super({
             components: Type.OBJECT
         });
-        this.components = new Map();
-    }
 
-    /**
-     * @since 1.0.0
-     * @author Igor Ivanovic
-     * @function
-     * @name Bootstrap#bootstrap
-     *
-     * @description
-     * Bootstrap application
-     */
-    bootstrap(appConfig) {
+        this.components = new Map();
 
         if (!Type.isObject(appConfig)) {
             throw new error.Exception('Config must be object type', appConfig);
@@ -94,7 +85,8 @@ class Bootstrap extends Type {
             if (!Type.isObject(config.aliases)) {
                 throw new error.Exception('environment aliases must be object type', config.aliases);
             }
-            let aliases = new Map(config.aliases);
+            let aliases = new Map();
+            Object.keys(config.aliases).forEach(key => aliases.set(key, config.aliases[key]));
             aliases.forEach((key, value) => di.setAlias(key, value));
         }
 
@@ -110,8 +102,8 @@ class Bootstrap extends Type {
             if (!Type.isObject(config.components)) {
                 throw new error.Exception('environment components must be object type', config.components);
             }
-            let components = new Map(config.components);
-
+            let components = new Map();
+            Object.keys(config.components).forEach(key => components.set(key, config.components[key]));
             COMPONENTS.forEach(key => {
                 if (components.has(key)) {
                     this.initializeComponent(key, components.get(key));
@@ -126,6 +118,7 @@ class Bootstrap extends Type {
 
         let logger = this.getComponent('en/logger');
         let server = this.getComponent('en/server');
+
         let Request = di.load('@{en}/request');
 
         server.on('request', (request, response) => {
@@ -145,7 +138,7 @@ class Bootstrap extends Type {
             server.listen(defaults.listenPort);
         }
 
-        process.on('uncaughtException', function (error) {
+        process.on('uncaughtException', error => {
             logger.fatal(error.message, {
                 stack: error.stack,
                 config: defaults
@@ -155,6 +148,7 @@ class Bootstrap extends Type {
 
         logger.info('Listen server', defaults);
     }
+
 
     /**
      * @since 1.0.0
@@ -180,7 +174,7 @@ class Bootstrap extends Type {
                 new error.Exception('Component must be function type');
             }
 
-            let initialized = new Component(this, config);
+            let initialized = new Component(config, this);
 
             if (!(initialized instanceof Type)) {
                 new error.Exception('Component must be inherited from typed-js');
