@@ -213,8 +213,11 @@ class RouteRule extends Type {
         let isValidRequest = this.pattern.every((pattern, index) => {
             let part = url[index];
             let result = pattern.match(part);
-            result.forEach((k, v) => query.set(k, v));
-            return Type.isObject(result);
+            if (result) {
+                result.forEach((k, v) => query.set(k, v));
+                return Type.isObject(result);
+            }
+            return false;
         });
         if (!isValidRequest) {
             return false;

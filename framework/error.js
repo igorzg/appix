@@ -2,7 +2,6 @@
 
 let di = require('./di');
 let Type = di.load('typed-js');
-let core = di.load('@{en}/core');
 /**
  * @license Mit Licence 2015
  * @since 1.0.0
@@ -16,16 +15,26 @@ let core = di.load('@{en}/core');
 class Exception extends Type {
     constructor(message, data) {
         super({
-            message: Type.STRING,
             data: Type.OBJECT,
-            trace: Type.STRING,
-            stack: Type.ARRAY,
-            code: Type.NUMBER
+            message: Type.STRING,
+            code: Type.NUMBER,
+            stack: Type.STRING
         });
         this.message = message;
         this.data = data || {};
-        this.trace = core.traceCall();
-        this.stack = core.traceStack();
+
+        let error = new Error(this.message);
+        if (this.data.error instanceof Error) {
+            error.stack = this.data.error.stack + '\n\n' + error.stack;
+            let cdata = Object.assign({}, this.data);
+            delete cdata.error;
+            error.stack += '\n' + JSON.stringify(cdata);
+        }
+        this.stack = error.stack;
+        let str = this.toString();
+        error.toString = () => str;
+        this.destroy();
+        return error;
     }
 }
 /**
@@ -41,24 +50,31 @@ class Exception extends Type {
 class HttpException extends Type {
     constructor(code, message, data) {
         super({
-            message: Type.STRING,
             data: Type.OBJECT,
-            trace: Type.STRING,
-            stack: Type.ARRAY,
-            code: Type.NUMBER
+            message: Type.STRING,
+            stack: Type.STRING
         });
         this.message = message;
         this.data = data || {};
-        this.trace = core.traceCall();
-        this.stack = core.traceStack();
-        this.code = code;
+
+        let error = new Error(this.message);
+        if (this.data.error instanceof Error) {
+            error.stack = this.data.error.stack + '\n\n' + error.stack;
+            let cdata = Object.assign({}, this.data);
+            cdata.code = code;
+            delete cdata.error;
+            error.stack += '\n' + JSON.stringify(cdata);
+        }
+        this.stack = error.stack;
+        let str = this.toString();
+        error.toString = () => str;
+        this.destroy();
+        return error;
     }
 }
 // make it throwable
 module.exports = {
-    SilentException: function SilentException(code, message, data) {
-        return new HttpException(code, message, data);
-    },
+    SilentException: HttpException,
     HttpException: function HttpExceptionThrow(code, message, data) {
         throw new HttpException(code, message, data);
     },

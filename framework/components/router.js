@@ -21,31 +21,34 @@ class Router extends Type {
             routes: Type.OBJECT,
             app: Type.OBJECT,
             methods: Type.ARRAY,
-            errorRoute: Type.STRING
+            error: Type.OBJECT,
+            useCustomErrorHandler: Type.BOOLEAN
         });
         if (!Type.isObject(config)) {
             config = {};
         }
 
         this.app = app;
-
         this.routes = new Set();
-        this.errorRoute = config.errorRoute || 'error/handler';
+        this.error = {};
         this.methods = ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'TRACE', 'OPTIONS', 'CONNECT', 'PATCH'];
-
-        if (Type.isObject(config) && !!config.useCustomErrorHandler) {
-            this.add(Object.assign({
-                url: '/error',
-                route: 'error/handler',
-                methods: this.methods
-            }, config));
-        }
+        this.useCustomErrorHandler = config.useCustomErrorHandler;
 
         logger = app.getComponent('en/logger');
         logger.info('Router.constructor', {
             config: config,
             instance: this
         });
+
+        if (Type.isObject(config) && !!config.useCustomErrorHandler) {
+            this.error = Object.assign({
+                url: '/error',
+                route: 'error/handler',
+                methods: this.methods
+            }, config);
+            this.add(this.error);
+        }
+
     }
 
     /**
@@ -53,28 +56,28 @@ class Router extends Type {
      * @author Igor Ivanovic
      * @function
      * @name Router#add
-     * @param {Object|Array|Function} rule
+     * @param {Object|Array|Function} Rule
      *
      * @description
      * Add route to resolve list
      */
-    add(rule) {
-        if (Type.isArray(rule)) {
-            return rule.forEach(item => this.add(item));
-        } else if (Type.isObject(rule) && !(rule instanceof RouteRule)) {
-            return this.add(new RouteRule(this.app, rule));
-        } else if (Type.isFunction(rule)) {
-            return this.add(new rule);
+    add(Rule) {
+        if (Type.isArray(Rule)) {
+            return Rule.forEach(item => this.add(item));
+        } else if (Type.isObject(Rule) && !(Rule instanceof RouteRule)) {
+            return this.add(new RouteRule(this.app, Rule));
+        } else if (Type.isFunction(Rule)) {
+            return this.add(new Rule());
         }
 
-        if (!(rule instanceof RouteRule)) {
+        if (!(Rule instanceof RouteRule)) {
             throw new error.HttpException(500, 'rule must be instance of RouteRule class', {
-                rule: rule
+                rule: Rule
             });
         }
 
-        logger.info('Router.add', rule);
-        this.routes.add(rule);
+        logger.info('Router.add', Rule);
+        this.routes.add(Rule);
     }
 
     /**
@@ -105,7 +108,7 @@ class Router extends Type {
                 }
             }
 
-            throw new error.HttpException(404, 'Router.parseRequest: no route found', {
+            throw new error.HttpException(404, `Router.parseRequest: ${pathName} no route found, method: ${method}`, {
                 pathName,
                 method
             });

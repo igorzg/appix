@@ -15,6 +15,8 @@ const COMPONENTS = [
  * @since 1.0.0
  * @author Igor Ivanovic
  * @name Bootstrap
+ * @param {Object} appConfig
+ * @param {Function} callback
  *
  * @constructor
  * @description
@@ -22,19 +24,20 @@ const COMPONENTS = [
  */
 class Bootstrap extends Type {
 
-    constructor(appConfig) {
+    constructor(appConfig, callback) {
 
         super({
-            components: Type.OBJECT
+            components: Type.OBJECT,
+            defaults: Type.OBJECT
         });
 
-        this.components = new Map();
 
         if (!Type.isObject(appConfig)) {
             throw new error.Exception('Config must be object type', appConfig);
         }
 
-        let defaults = Object.assign({
+        this.components = new Map();
+        this.defaults = Object.assign({
             appPath: null,
             envFile: 'env.json',
             envPath: null,
@@ -44,21 +47,21 @@ class Bootstrap extends Type {
             modulesPath: '@{appPath}/modules/'
         }, appConfig);
 
-        if (!Type.isString(defaults.appPath)) {
-            throw new error.Exception('appPath must be defined in configuration object', defaults);
+        if (!Type.isString(this.defaults.appPath)) {
+            throw new error.Exception('appPath must be defined in configuration object', this.defaults);
         }
 
-        di.setAlias('appPath', defaults.appPath);
+        di.setAlias('appPath', this.defaults.appPath);
 
-        if (!!defaults.envPath) {
-            di.setAlias('envPath', defaults.envPath);
+        if (!!this.defaults.envPath) {
+            di.setAlias('envPath', this.defaults.envPath);
         } else {
-            di.setAlias('envPath', defaults.appPath);
+            di.setAlias('envPath', this.defaults.appPath);
         }
 
         // load file
         let fileBuffer;
-        let envFile = di.normalize('@{envPath}/' + defaults.envFile);
+        let envFile = di.normalize('@{envPath}/' + this.defaults.envFile);
         try {
             fileBuffer = fs.readFileSync(envFile);
         } catch (e) {
@@ -91,64 +94,90 @@ class Bootstrap extends Type {
         }
 
         if (!di.hasAlias('controllersPath')) {
-            di.setAlias('controllersPath', defaults.controllersPath);
+            di.setAlias('controllersPath', this.defaults.controllersPath);
         }
 
         if (!di.hasAlias('modulesPath')) {
-            di.setAlias('modulesPath', defaults.modulesPath);
+            di.setAlias('modulesPath', this.defaults.modulesPath);
         }
+
 
         if (!Type.isUndefined(config.components)) {
             if (!Type.isObject(config.components)) {
                 throw new error.Exception('environment components must be object type', config.components);
             }
             let components = new Map();
-            Object.keys(config.components).forEach(key => components.set(key, config.components[key]));
-            COMPONENTS.forEach(key => {
+
+            if (Type.isFunction(callback)) {
+                callback(components);
+            }
+
+            Object.keys(config.components).forEach(key => {
                 if (components.has(key)) {
-                    this.initializeComponent(key, components.get(key));
+                    throw new error.Exception('redeclaring component is not allowed', {
+                        key,
+                        config: config.components[key]
+                    });
+                }
+                components.set(key, config.components[key]);
+            });
+
+            COMPONENTS.forEach(key => {
+                if (components.has(key) && !this.hasComponent(key)) {
+                    this.setComponent(key, components.get(key));
                     components.delete(key);
-                } else {
-                    this.initializeComponent(key, {});
+                } else if (!this.hasComponent(key)) {
+                    this.setComponent(key, {});
                 }
             });
 
-            components.forEach((key, item) => this.initializeComponent(key, item));
+            components.forEach((item, key) => this.setComponent(key, item));
         }
 
+    }
+
+    /**
+     * @since 1.0.0
+     * @author Igor Ivanovic
+     * @function
+     * @name Bootstrap#listen
+     *
+     * @description
+     * Listen server
+     */
+    listen() {
         let logger = this.getComponent('en/logger');
         let server = this.getComponent('en/server');
 
         let Request = di.load('@{en}/request');
 
         server.on('request', (request, response) => {
-            di.setAlias('controllersPath', defaults.controllersPath);
-            di.setAlias('modulesPath', defaults.modulesPath);
+            di.setAlias('controllersPath', this.defaults.controllersPath);
+            di.setAlias('modulesPath', this.defaults.modulesPath);
             let nRequest = new Request(this, {
                 request,
                 response
             }, request.url);
-            nRequest.process();
             nRequest.onEnd(nRequest.destroy.bind(nRequest));
+            nRequest.process();
         });
 
-        if (Type.isString(defaults.listenHost)) {
-            server.listen(defaults.listenPort, defaults.listenHost);
+        if (Type.isString(this.defaults.listenHost)) {
+            server.listen(this.defaults.listenPort, this.defaults.listenHost);
         } else {
-            server.listen(defaults.listenPort);
+            server.listen(this.defaults.listenPort);
         }
 
         process.on('uncaughtException', error => {
             logger.fatal(error.message, {
                 stack: error.stack,
-                config: defaults
+                config: this.defaults
             });
             setTimeout(() => process.exit(1), 100);
         });
 
-        logger.info('Listen server', defaults);
+        logger.info('Listen server', this.defaults);
     }
-
 
     /**
      * @since 1.0.0
@@ -159,15 +188,23 @@ class Bootstrap extends Type {
      * @description
      * Set component
      */
-    initializeComponent(name, config) {
+    setComponent(key, config) {
+        if (this.hasComponent(key)) {
+            throw new error.Exception('Component is already initialized', {
+                name: key,
+                config
+            });
+        }
+
         try {
             let Component;
+
             if (Type.isString(config.filePath)) {
                 Component = di.load(config.filePath);
-            } else if (COMPONENTS.indexOf(name) > -1) {
-                Component = di.load('@{en}/components/' + name.slice(3));
+            } else if (COMPONENTS.indexOf(key) > -1) {
+                Component = di.load('@{en}/components/' + key.slice(3));
             } else {
-                Component = di.load(name);
+                Component = di.load(key);
             }
 
             if (!Type.isFunction(Component)) {
@@ -180,27 +217,16 @@ class Bootstrap extends Type {
                 new error.Exception('Component must be inherited from typed-js');
             }
 
-            this.setComponent(name, initialized);
+            this.components.set(key, initialized);
+
         } catch (e) {
             throw new error.Exception('Component is not initialized', {
-                name,
+                name: key,
                 config,
-                stack: e.stack
+                error: e
             });
         }
-    }
 
-    /**
-     * @since 1.0.0
-     * @author Igor Ivanovic
-     * @function
-     * @name Bootstrap#setComponent
-     *
-     * @description
-     * Set component
-     */
-    setComponent(key, val) {
-        return this.components.set(key, val);
     }
 
     /**

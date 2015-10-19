@@ -192,44 +192,36 @@ class Logger extends Type {
             return false;
         }
         let configLevel = this.config.inspectLevel;
-        process.nextTick(() => {
-            let log = {
-                level: level,
-                type: this.getLevelName(level),
-                message: message,
-                trace: core.traceCall(),
-                stack: core.traceStack(),
-                data: data,
-                created: new Date().toISOString(),
-                prettify(clean) {
+        let log = {
+            level: level,
+            type: this.getLevelName(level),
+            message: message,
+            data: data instanceof Error ? data.stack : data,
+            created: new Date().toISOString(),
+            prettify(clean) {
 
-                    let cLog = Logger.inspect({
-                        level: this.level,
-                        type: this.type,
-                        message: this.message,
-                        trace: this.trace,
-                        stack: this.stack,
-                        data: this.data,
-                        created: this.created
-                    }, configLevel);
+                let cLog = Logger.inspect({
+                    level: this.level,
+                    type: this.type,
+                    message: this.message,
+                    data: this.data,
+                    created: this.created
+                }, configLevel);
 
-                    if (!!clean) {
-                        cLog = Logger.clean(cLog);
-                    }
-
-                    return cLog;
-                },
-                toString() {
-                    return JSON.stringify(this.prettify(true));
+                if (!!clean) {
+                    cLog = Logger.clean(cLog);
                 }
-            };
 
-            for (let hook of this.hooks) {
-                process.nextTick(() => {
-                    hook(log);
-                });
+                return cLog;
+            },
+            toString() {
+                return JSON.stringify(this.prettify(true));
             }
-        });
+        };
+
+        for (let hook of this.hooks) {
+            hook(log);
+        }
     }
 
     /**

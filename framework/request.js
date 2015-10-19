@@ -27,16 +27,22 @@ class Request extends Type {
             parsedUrl: Type.OBJECT,
             data: Type.ARRAY,
             id: Type.STRING,
-            events: Type.OBJECT
+            events: Type.OBJECT,
+            params: Type.OBJECT,
+            bootstrap: Type.OBJECT,
+            isCustomError: Type.BOOLEAN
         });
         logger = bootstrap.getComponent('en/logger');
         router = bootstrap.getComponent('en/router');
+        this.bootstrap = bootstrap;
         this.response = config.response;
         this.request = config.request;
+        this.params = config.params || {};
+        this.isCustomError = config.isCustomError || false;
         this.id = di.uuid();
         this.url = url;
         this.parsedUrl = URLParser.parse(this.url, true);
-        this.data = [];
+        this.data = Type.isArray(config.data) ? config.data : [];
         this.events = new EventEmitter();
     }
 
@@ -89,7 +95,7 @@ class Request extends Type {
      * Return request url query
      */
     getParams() {
-        return new Map(this.parsedUrl.query);
+        return new Map(Object.assign({}, this.parsedUrl.query, this.params));
     }
 
     /**
@@ -200,6 +206,46 @@ class Request extends Type {
      * @since 1.0.0
      * @author Igor Ivanovic
      * @function
+     * @name Request#render
+     *
+     * @description
+     * Render data
+     */
+    render(data) {
+        this.response.write(data);
+        this.response.end();
+    }
+
+    /**
+     * @since 1.0.0
+     * @author Igor Ivanovic
+     * @function
+     * @name Request#forward
+     *
+     * @description
+     * Forward to new request
+     */
+    forward(url, config) {
+        if (url === this.url) {
+            throw new error.HttpException(500, 'Cannot be forwarded to same url', {
+                url,
+                config
+            });
+        }
+        let nRequest = new Request(this.bootstrap, Object.assign({
+            request: this.request,
+            response: this.response
+        }, config), url);
+        nRequest.onEnd(nRequest.destroy.bind(nRequest));
+        let process = nRequest.process();
+        nRequest.request.emit('end');
+        return process;
+    }
+
+    /**
+     * @since 1.0.0
+     * @author Igor Ivanovic
+     * @function
      * @name Request#process
      *
      * @description
@@ -222,13 +268,21 @@ class Request extends Type {
                 return router.parseRequest(this.getPathname(), this.getMethod());
             })
             .then(route => {
-
-                this.request.end(JSON.stringify(route));
+                this.render(route.pathname);
             })
             .catch(error => {
-                this.response.write(error.toString());
-                this.response.end();
-            });
+                logger.error(error.message, error);
+                if (router.useCustomErrorHandler && !this.isCustomError) {
+                    return this.forward(router.error.url, {
+                        params: {
+                            error: error
+                        },
+                        isCustomError: true
+                    });
+                }
+                return this.render(error.toString());
+            })
+            .catch(error => this.render(error.toString()));
     }
 }
 
