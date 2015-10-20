@@ -65,6 +65,7 @@ class HttpException extends Type {
             delete cdata.error;
             error.stack += '\n' + JSON.stringify(cdata);
         }
+        error.code = code;
         this.stack = error.stack;
         let str = this.toString();
         error.toString = () => str;

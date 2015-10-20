@@ -41,20 +41,18 @@ describe('router', () => {
             errorRoute: 'error/handle',
             useCustomErrorHandler: true
         }, app);
-        expect(routerInstance.errorRoute).toBe('error/handle');
         expect(logger.info).toHaveBeenCalled();
         routerInstance = new Router({
             url: '/error-1',
             route: 'test/handler',
-            errorRoute: 'test/handler',
             useCustomErrorHandler: true
         }, app);
-        expect(routerInstance.errorRoute).toBe('test/handler');
+        expect(routerInstance.error.route).toBe('test/handler');
 
         routerInstance = new Router({
             useCustomErrorHandler: false
         }, app);
-        expect(routerInstance.errorRoute).toBe('error/handler');
+        expect(routerInstance.error.route).toBe(undefined);
 
     });
 
@@ -99,7 +97,7 @@ describe('router', () => {
         return routerInstance
             .parseRequest('/home', 'GET')
             .catch((error) => {
-                expect(error.message).toBe('Router.parseRequest: no route found');
+                expect(error.message).toBe('Router.parseRequest: /home no route found, method: GET');
                 expect(error.code).toBe(404);
                 expect(RouteRule.prototype.parseRequest).toHaveBeenCalledWith('/home', 'GET');
             })
