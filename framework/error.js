@@ -15,7 +15,7 @@ let core = di.load('@{en}/core');
 class Exception extends Error {
     constructor(message, data) {
         super(message);
-        this.stack += '\n\nDATA: ' + core.inspect(data);
+        this.stack += '\n\nDATA: ' + core.inspect(data, 5, true);
     }
 }
 /**
@@ -31,7 +31,7 @@ class Exception extends Error {
 class HttpException extends Exception {
     constructor(code, message, data) {
         super(message, data);
-        this.stack += '\n\nCODE: ' + core.inspect(code);
+        this.stack += '\n\nCODE: ' + core.inspect(code, 5, true);
         this.code = code;
     }
 }

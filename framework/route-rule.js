@@ -40,7 +40,7 @@ class RouteRule extends Type {
         } else if (Type.isArray(config.methods)) {
             this.methods = config.methods;
         }
-        if (config.hasOwnProperty("url") || config.hasOwnProperty("route")) {
+        if (config.hasOwnProperty('url') || config.hasOwnProperty('route')) {
             if (!config.url) {
                 throw new error.HttpError(500, 'RouteRule: rule object must have an pattern property', config);
             }

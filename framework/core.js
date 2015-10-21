@@ -44,12 +44,12 @@ function traceStack() {
  * @description
  * Inspect data output
  */
-function inspect(data, level) {
+function inspect(data, level, withoutColors) {
     if (!Type.isNumber(level)) {
         level = 5;
     }
     if (Type.isObject(data)) {
-        return util.inspect(data, {colors: true, depth: level});
+        return util.inspect(data, {colors: !withoutColors, depth: level});
     }
     return data;
 }
