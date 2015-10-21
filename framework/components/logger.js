@@ -3,14 +3,7 @@
 let di = require('../di');
 let Type = di.load('typed-js');
 let core = di.load('@{en}/core');
-let util = di.load('util');
 let error = di.load('@{en}/error');
-// cleanups on inspect
-let replace = [];
-// remove colors from inspect
-for (var i = 0; i < 100; ++i) {
-    replace.push(new RegExp('\\[' + i + 'm', 'ig'));
-}
 /**
  * @license Mit Licence 2015
  * @since 1.0.0
@@ -252,15 +245,7 @@ class Logger extends Type {
      * @return {String} message
      */
     static clean(message) {
-        if (Type.isString(message)) {
-            replace.forEach(value => {
-                message = message.replace(value, '');
-            });
-            message = message.replace(/\\'/g, '\'');
-            message = message.replace(/\\n/g, '\n');
-            return message.replace(/\\u001b/g, '\u001b');
-        }
-        return message;
+        return core.clean(message);
     }
 
     /**
@@ -273,13 +258,7 @@ class Logger extends Type {
      * Inspect log data output
      */
     static inspect(data, level) {
-        if (!Type.isNumber(level)) {
-            level = 5;
-        }
-        if (Type.isObject(data)) {
-            return util.inspect(data, {colors: true, depth: level});
-        }
-        return data;
+        return core.inspect(data, level);
     }
 }
 

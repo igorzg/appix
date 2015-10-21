@@ -1,7 +1,7 @@
 'use strict';
 
 let di = require('./di');
-let Type = di.load('typed-js');
+let core = di.load('@{en}/core');
 /**
  * @license Mit Licence 2015
  * @since 1.0.0
@@ -12,29 +12,10 @@ let Type = di.load('typed-js');
  * @description
  * Exception
  */
-class Exception extends Type {
+class Exception extends Error {
     constructor(message, data) {
-        super({
-            data: Type.OBJECT,
-            message: Type.STRING,
-            code: Type.NUMBER,
-            stack: Type.STRING
-        });
-        this.message = message;
-        this.data = data || {};
-
-        let error = new Error(this.message);
-        if (this.data.error instanceof Error) {
-            error.stack = this.data.error.stack + '\n\n' + error.stack;
-            let cdata = Object.assign({}, this.data);
-            delete cdata.error;
-            error.stack += '\n' + JSON.stringify(cdata);
-        }
-        this.stack = error.stack;
-        let str = this.toString();
-        error.toString = () => str;
-        this.destroy();
-        return error;
+        super(message);
+        this.stack += '\n\nDATA: ' + core.inspect(data);
     }
 }
 /**
@@ -47,30 +28,11 @@ class Exception extends Type {
  * @description
  * HttpException
  */
-class HttpException extends Type {
+class HttpException extends Exception {
     constructor(code, message, data) {
-        super({
-            data: Type.OBJECT,
-            message: Type.STRING,
-            stack: Type.STRING
-        });
-        this.message = message;
-        this.data = data || {};
-
-        let error = new Error(this.message);
-        if (this.data.error instanceof Error) {
-            error.stack = this.data.error.stack + '\n\n' + error.stack;
-            let cdata = Object.assign({}, this.data);
-            cdata.code = code;
-            delete cdata.error;
-            error.stack += '\n' + JSON.stringify(cdata);
-        }
-        error.code = code;
-        this.stack = error.stack;
-        let str = this.toString();
-        error.toString = () => str;
-        this.destroy();
-        return error;
+        super(message, data);
+        this.stack += '\n\nCODE: ' + core.inspect(code);
+        this.code = code;
     }
 }
 // make it throwable

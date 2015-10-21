@@ -3,7 +3,6 @@
 let di = require('./di');
 let Type = di.load('typed-js');
 let error = di.load('@{en}/error');
-let bootstrap = di.getInstance();
 let logger;
 const IS_ANY_PATTERN = /<([^>]+)>/;
 const PATTERN_MATCH = /<(\w+):([^>]+)>/g;

@@ -1,8 +1,30 @@
 'use strict';
 
-xdescribe('bootstrap', () => {
+describe('bootstrap\n', () => {
     let di = require('../');
-    let fs = {};
+    let Type = di.load('typed-js');
+    let fs = {
+        readFileSync: () => {
+            return new Buffer(`{
+  "aliases": {
+    "models": "@{appPath}/models",
+    "views": "@{appPath}/views",
+    "helpers": "@{appPath}/helpers"
+  },
+  "components": {
+    "en/logger": {
+      "enabled": false,
+      "console": true,
+      "level": 10
+    },
+    "en/router": {
+      "useCustomErrorHandler": true
+    }
+  }
+}`);
+        }
+
+    };
     let path = {};
     let Bootstrap = di.mock('@{en}/bootstrap', {
         '@{en}/component': Map,
@@ -13,24 +35,25 @@ xdescribe('bootstrap', () => {
     });
     let bootstrap;
     it('construct', () => {
-        bootstrap = new Bootstrap({});
+        bootstrap = new Bootstrap({
+            appPath: __dirname + '/app'
+        });
         expect(bootstrap.components).toEqual(new Map);
     });
 
-    it('bootstrap', () => {
-        bootstrap = new Bootstrap({});
 
-    });
 
     it('setComponent', () => {
         var ctx = {
             components: {
                 set:  () => {}
-            }
+            },
+            hasComponent: () => false
         };
         spyOn(ctx.components, 'set').and.callThrough();
-        bootstrap.setComponent.call(ctx, 'key', 'val');
-        expect(ctx.components.set).toHaveBeenCalledWith('key', 'val');
+        class A extends Type{};
+        bootstrap.setComponent.call(ctx, 'key', A);
+        expect(ctx.components.set).toHaveBeenCalled();
     });
 
     it('getComponent', () => {

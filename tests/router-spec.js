@@ -13,7 +13,7 @@ describe('router', () => {
         }
     };
     let app = {
-        getComponent: function (key) {
+        getComponent: (key) => {
             if (key === 'en/logger') {
                 return logger;
             }
@@ -29,7 +29,6 @@ describe('router', () => {
 
     beforeEach(() => {
         routerInstance = new Router({}, app);
-
     });
 
     it('constructs', () => {

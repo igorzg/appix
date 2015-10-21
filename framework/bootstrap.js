@@ -4,7 +4,6 @@ let di = require('./di');
 let Type = di.load('typed-js');
 let error = di.load('@{en}/error');
 let fs = di.load('fs');
-let path = di.load('path');
 const COMPONENTS = [
     'en/logger',
     'en/router',
@@ -30,7 +29,6 @@ class Bootstrap extends Type {
             components: Type.OBJECT,
             defaults: Type.OBJECT
         });
-
 
         if (!Type.isObject(appConfig)) {
             throw new error.Exception('Config must be object type', appConfig);
@@ -65,7 +63,7 @@ class Bootstrap extends Type {
         try {
             fileBuffer = fs.readFileSync(envFile);
         } catch (e) {
-            throw new error.Exception('Problem with loading file, do you have your environment file json in path: ', {
+            throw new error.Exception(`Problem with loading file, do you have your environment file json in path: ${envFile}`, {
                 envFile,
                 stack: e.stack
             });
@@ -101,7 +99,6 @@ class Bootstrap extends Type {
             di.setAlias('modulesPath', this.defaults.modulesPath);
         }
 
-
         if (!Type.isUndefined(config.components)) {
             if (!Type.isObject(config.components)) {
                 throw new error.Exception('environment components must be object type', config.components);
@@ -133,7 +130,6 @@ class Bootstrap extends Type {
 
             components.forEach((item, key) => this.setComponent(key, item));
         }
-
     }
 
     /**
@@ -189,6 +185,7 @@ class Bootstrap extends Type {
      * Set component
      */
     setComponent(key, config) {
+        let Component = config;
         if (this.hasComponent(key)) {
             throw new error.Exception('Component is already initialized', {
                 name: key,
@@ -197,13 +194,13 @@ class Bootstrap extends Type {
         }
 
         try {
-            let Component;
+
 
             if (Type.isString(config.filePath)) {
                 Component = di.load(config.filePath);
             } else if (COMPONENTS.indexOf(key) > -1) {
                 Component = di.load('@{en}/components/' + key.slice(3));
-            } else {
+            } else if (!Type.isFunction(config)) {
                 Component = di.load(key);
             }
 
