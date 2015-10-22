@@ -41,7 +41,16 @@ describe('bootstrap\n', () => {
         expect(bootstrap.components).toEqual(new Map);
     });
 
-
+    it('hasComponent', () => {
+        var ctx = {
+            components: {
+                has:  () => {}
+            }
+        };
+        spyOn(ctx.components, 'has').and.callThrough();
+        bootstrap.hasComponent.call(ctx, 'key');
+        expect(ctx.components.has).toHaveBeenCalled();
+    });
 
     it('setComponent', () => {
         var ctx = {
