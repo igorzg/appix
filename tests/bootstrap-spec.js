@@ -63,6 +63,14 @@ describe('bootstrap\n', () => {
         class A extends Type{};
         bootstrap.setComponent.call(ctx, 'key', A);
         expect(ctx.components.set).toHaveBeenCalled();
+        bootstrap.setComponent('key', A);
+        let m;
+        try {
+            bootstrap.setComponent( 'key', A);
+        } catch (e) {
+            m = e.message;
+        }
+        expect(m).toBe('Component is already initialized');
     });
 
     it('getComponent', () => {
