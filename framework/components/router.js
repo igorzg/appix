@@ -87,14 +87,15 @@ class Router extends Type {
      * @name Router#parseRequest
      * @param {String} pathName
      * @param {String} method
+     * @param {Object} headers
      *
      * @description
      * Parse request based on pathName and method
      */
-    parseRequest(pathName, method) {
+    parseRequest(pathName, method, headers) {
         let promises = new Set();
         for (let route of this.routes) {
-            let parsedRequest = route.parseRequest(pathName, method);
+            let parsedRequest = route.parseRequest(pathName, method, headers);
             if (!!parsedRequest) {
                 promises.add(parsedRequest);
             }

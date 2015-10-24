@@ -224,7 +224,8 @@ class RouteRule extends Type {
         return {
             pathname,
             method,
-            query
+            query,
+            route: this.route
         };
     }
 

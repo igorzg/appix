@@ -11,7 +11,18 @@ let easyInit = new Bootstrap({
 
 di.setInstance('en-demo', easyInit);
 
+let router = easyInit.getComponent('en/router');
 
+router.add([
+    {
+        url: '/',
+        route: 'home/index'
+    },
+    {
+        url: '/favicon.ico',
+        route: 'home/myfaviconhandler'
+    }
+]);
 
 easyInit.listen();
 

@@ -4,6 +4,7 @@ let di = require('./di');
 let Type = di.load('typed-js');
 let EventEmitter = di.load('events');
 let URLParser = di.load('url');
+let error = di.load('@{en}/error');
 let logger;
 let router;
 /**
@@ -30,7 +31,9 @@ class Request extends Type {
             events: Type.OBJECT,
             params: Type.OBJECT,
             bootstrap: Type.OBJECT,
-            isCustomError: Type.BOOLEAN
+            isCustomError: Type.BOOLEAN,
+            statusCode: Type.NUMBER,
+            responseHeaders: Type.OBJECT
         });
         logger = bootstrap.getComponent('en/logger');
         router = bootstrap.getComponent('en/router');
@@ -39,11 +42,13 @@ class Request extends Type {
         this.request = config.request;
         this.params = config.params || {};
         this.isCustomError = config.isCustomError || false;
-        this.id = di.uuid();
+        this.id = config.id || di.uuid();
         this.url = url;
         this.parsedUrl = URLParser.parse(this.url, true);
         this.data = Type.isArray(config.data) ? config.data : [];
         this.events = new EventEmitter();
+        this.statusCode = 200;
+        this.responseHeaders = {};
     }
 
     /**
@@ -211,9 +216,30 @@ class Request extends Type {
      * @description
      * Render data
      */
-    render(data) {
-        this.response.write(data);
-        this.response.end();
+    render(response) {
+        let rKey = 'content-type';
+        if (!this.responseHeaders.hasOwnProperty(rKey)) {
+            this.responseHeaders[rKey] = 'text/html';
+        }
+        logger.info('Request.render', {
+            id: this.id,
+            statusCode: this.statusCode,
+            headers: this.responseHeaders
+        });
+        if (Type.isString(response) || (response instanceof Buffer)) {
+            this.response.writeHead(this.statusCode, this.responseHeaders);
+            this.response.write(response);
+            this.response.end();
+            return true;
+        }
+        logger.error('Invalid response type', {
+            id: this.id,
+            response: response,
+            type: typeof response
+        });
+        throw new error.HttpException(500, 'ResponseType must be string or buffer', {
+            response
+        });
     }
 
     /**
@@ -234,7 +260,8 @@ class Request extends Type {
         }
         let nRequest = new Request(this.bootstrap, Object.assign({
             request: this.request,
-            response: this.response
+            response: this.response,
+            data: this.data
         }, config), url);
         nRequest.onEnd(nRequest.destroy.bind(nRequest));
         let process = nRequest.process();
@@ -262,18 +289,27 @@ class Request extends Type {
         return new Promise(resolve => this.request.on('end', resolve))
             .then(() => {
                 logger.info('Route.parseRequest', {
+                    id: this.id,
                     path: this.getPathname(),
                     method: this.getMethod()
                 });
-                return router.parseRequest(this.getPathname(), this.getMethod());
+                return router.parseRequest(this.getPathname(), this.getMethod(), this.getRequestHeaders());
             })
             .then(route => {
+                logger.info('Route.result', {
+                    id: this.id,
+                    route
+                });
                 this.render(route.pathname);
             })
             .catch(error => {
-                logger.error(error.message, error);
+                logger.error(error.message, {
+                    id: this.id,
+                    error
+                });
                 if (router.useCustomErrorHandler && !this.isCustomError) {
                     return this.forward(router.error.url, {
+                        id: this.id,
                         params: {
                             error: error
                         },

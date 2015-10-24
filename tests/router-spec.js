@@ -94,11 +94,11 @@ describe('router', () => {
         routerInstance.add(route);
 
         return routerInstance
-            .parseRequest('/home', 'GET')
+            .parseRequest('/home', 'GET', {})
             .catch((error) => {
                 expect(error.message).toBe('Router.parseRequest: /home no route found, method: GET');
                 expect(error.code).toBe(404);
-                expect(RouteRule.prototype.parseRequest).toHaveBeenCalledWith('/home', 'GET');
+                expect(RouteRule.prototype.parseRequest).toHaveBeenCalledWith('/home', 'GET', {});
             })
             .catch(fail)
             .then(done);
