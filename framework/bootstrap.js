@@ -193,37 +193,25 @@ class Bootstrap extends Type {
             });
         }
 
-        try {
-
-
-            if (Type.isString(config.filePath)) {
-                Component = di.load(config.filePath);
-            } else if (COMPONENTS.indexOf(key) > -1) {
-                Component = di.load('@{en}/components/' + key.slice(3));
-            } else if (!Type.isFunction(config)) {
-                Component = di.load(key);
-            }
-
-            if (!Type.isFunction(Component)) {
-                new error.Exception('Component must be function type');
-            }
-
-            let initialized = new Component(config, this);
-
-            if (!(initialized instanceof Type)) {
-                new error.Exception('Component must be inherited from typed-js');
-            }
-
-            this.components.set(key, initialized);
-
-        } catch (e) {
-            throw new error.Exception('Component is not initialized', {
-                name: key,
-                config,
-                error: e
-            });
+        if (Type.isString(config.filePath)) {
+            Component = di.load(config.filePath);
+        } else if (COMPONENTS.indexOf(key) > -1) {
+            Component = di.load('@{en}/components/' + key.slice(3));
+        } else if (!Type.isFunction(config)) {
+            Component = di.load(key);
         }
 
+        if (!Type.isFunction(Component)) {
+            throw new error.Exception('Component must be function type');
+        }
+
+        let initialized = new Component(config, this);
+
+        if (!(initialized instanceof Type)) {
+            throw new error.Exception('Component must be inherited from typed-js');
+        }
+
+        this.components.set(key, initialized);
     }
 
     /**

@@ -66,11 +66,25 @@ describe('bootstrap\n', () => {
         bootstrap.setComponent('key', A);
         let m;
         try {
-            bootstrap.setComponent( 'key', A);
+            bootstrap.setComponent('key', A);
         } catch (e) {
             m = e.message;
         }
-        expect(m).toBe('Component is already initialized');
+        expect(m).toBe(`Component is already initialized`);
+        try {
+            bootstrap.setComponent('en/loggeras', {});
+        } catch (e) {
+            m = e.message;
+        }
+        expect(m).toBe(`DI.load en/loggeras => Error: Cannot find module 'en/loggeras'`);
+
+        try {
+            bootstrap.setComponent('en/loggeras', function() {});
+        } catch (e) {
+            m = e.message;
+        }
+        expect(m).toBe('Component must be inherited from typed-js');
+
     });
 
     it('getComponent', () => {
