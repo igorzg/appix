@@ -43,7 +43,8 @@ describe('router rule', () => {
         expect(parsed).toEqual({
             pathname: '/canbeone/igor/should#+do-it/whata-smile-now-2306-not/user/1412',
             method: 'GET',
-            query: paramsMap
+            query: paramsMap,
+            route: 'user/view'
         });
 
         let urlResult = rule.createUrl('user/view', paramsMap);

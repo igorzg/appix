@@ -49,6 +49,11 @@ class Request extends Type {
         this.events = new EventEmitter();
         this.statusCode = 200;
         this.responseHeaders = {};
+        this.response.on('destory', () => {
+            this.events.emit('destory');
+            this.events.removeAllListeners();
+            this.destroy();
+        });
     }
 
     /**
@@ -280,9 +285,9 @@ class Request extends Type {
      */
     process() {
         // destroy on end
-        this.response.once('finish', () => this.events.emit('destory'));
+        this.response.once('finish', () => this.response.emit('destory'));
         // destroy if connection was terminated before end
-        this.response.once('close', () => this.events.emit('destory'));
+        this.response.once('close', () => this.response.emit('destory'));
         // push data
         this.request.on('data', item => this.data.push(item));
         // on data end process request
@@ -295,10 +300,10 @@ class Request extends Type {
                 });
                 return router.parseRequest(this.getPathname(), this.getMethod(), this.getRequestHeaders());
             })
-            .then(route => {
+            .then(result => {
                 logger.info('Route.result', {
                     id: this.id,
-                    route
+                    result
                 });
                 this.render(route.pathname);
             })
