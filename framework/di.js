@@ -49,7 +49,7 @@ class DI extends DiNode {
      * Write nice async functions
      */
     async(createGenerator) {
-        var generator = createGenerator.apply(this, arguments);
+        var generator = createGenerator();
 
         try {
             return handle(generator.next());
