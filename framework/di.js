@@ -53,20 +53,16 @@ class DI extends DiNode {
 
         try {
             return handle(generator.next());
-        } catch (error) {
-            return Promise.reject(error);
+        } catch (e) {
+            return Promise.reject(e);
         }
 
-        function handle(result) {
-            if (result.done) {
-                return Promise.resolve(result.value);
+        function handle(item) {
+            if (item.done) {
+                return Promise.resolve(item.value);
             }
 
-            return Promise.resolve(result.value).then(function (result) {
-                return handle(generator.next(result));
-            }, function (error) {
-                return handle(generator.throw(error));
-            });
+            return Promise.resolve(item.value).then(val => handle(generator.next(val)), e => handle(generator.throw(e)));
         }
     }
 
