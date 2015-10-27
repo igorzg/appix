@@ -46,12 +46,12 @@ class Request extends Type {
         this.request = config.request;
         this.params = config.params || {};
         this.isCustomError = config.isCustomError || false;
-        this.isForwarded =  config.isForwarded || false;
+        this.isForwarded = config.isForwarded || false;
         this.id = config.id || di.uuid();
         this.url = url;
         this.parsedUrl = URLParser.parse(this.url, true);
         this.data = Type.isArray(config.data) ? config.data : [];
-        this.events = config.events ||  new EventEmitter();
+        this.events = config.events || new EventEmitter();
         this.statusCode = 200;
         this.responseHeaders = {};
         this.response.on('destory', () => {
@@ -60,6 +60,7 @@ class Request extends Type {
             this.destroy();
         });
     }
+
     /**
      * @since 1.0.0
      * @author Igor Ivanovic
@@ -76,6 +77,7 @@ class Request extends Type {
         }
         return core.clean(core.inspect(this));
     }
+
     /**
      * @since 1.0.0
      * @author Igor Ivanovic
@@ -158,7 +160,7 @@ class Request extends Type {
      * @since 1.0.0
      * @author Igor Ivanovic
      * @function
-     * @name Request#getRequestIpAddres
+     * @name Request#getRequestRemoteAddress
      *
      * @description
      * Request remote ip address
@@ -296,6 +298,7 @@ class Request extends Type {
         nRequest.request.emit('end');
         return process;
     }
+
     /**
      * @since 1.0.0
      * @author Igor Ivanovic
@@ -314,6 +317,7 @@ class Request extends Type {
             return that.forward(item);
         });
     }
+
     /**
      * @since 1.0.0
      * @author Igor Ivanovic
@@ -327,32 +331,34 @@ class Request extends Type {
     forwardUrl(url) {
         return this.forward(url);
     }
+
     /**
      * @since 1.0.0
      * @author Igor Ivanovic
      * @function
      * @name Request#handleModule
-     * @param module
-     * @param controller
-     * @param action
+     * @param {String} moduleName
+     * @param {String} controllerName
+     * @param {String} actionName
      *
      * @description
      * Handle module
      */
-    handleModule(module, controller, action) {
+    handleModule(moduleName, controllerName, actionName) {
         throw new error.HttpException(500, `Modules are not implemented in current version :)`, {
-            module,
-            controller,
-            action
+            moduleName,
+            controllerName,
+            actionName
         });
     }
+
     /**
      * @since 1.0.0
      * @author Igor Ivanovic
      * @function
      * @name Request#handleController
-     * @param controllerName
-     * @param actionName
+     * @param {String} controllerName
+     * @param {String} actionName
      *
      * @description
      * Handle controller
@@ -361,19 +367,20 @@ class Request extends Type {
 
         let ControllerToInitialize = di.load('@{controllersPath}/' + controllerName);
         let controller = new ControllerToInitialize({
-            getMethod,
-            getParams,
-            getParsedUrl,
-            getRequestBody,
-            getPathname,
-            getRequestDomain,
-            getRequestHeaders,
-            getRequestIpAddres,
-            getRequestLocalAddress,
-            getRequestLocalPort,
-            getRequestRemoteAddress,
-            getRequestRemotePort,
-            onEnd
+            getMethod: this.getMethod.bind(this),
+            getParams: this.getParams.bind(this),
+            getParsedUrl: this.getParsedUrl.bind(this),
+            getRequestBody: this.getRequestBody.bind(this),
+            getPathname: this.getPathname.bind(this),
+            getRequestDomain: this.getRequestDomain.bind(this),
+            getRequestHeaders: this.getRequestHeaders.bind(this),
+            getRequestLocalAddress: this.getRequestLocalAddress.bind(this),
+            getRequestLocalPort: this.getRequestLocalPort.bind(this),
+            getRequestRemoteAddress: this.getRequestRemoteAddress.bind(this),
+            getRequestRemotePort: this.getRequestRemotePort.bind(this),
+            onEnd: this.onEnd.bind(this),
+            forwardRoute: this.forwardRoute.bind(this),
+            forwardUrl: this.forwardUrl.bind(this)
         });
 
         if (!(controller instanceof Controller)) {
@@ -383,7 +390,32 @@ class Request extends Type {
             });
         }
 
+        return di.async(function* resolve() {
+            let beforeKey = 'before' + actionName;
+            let afterKey = 'after' + actionName;
+            let actionKey = 'action' + actionName;
+            let action = yield controller.beforeEach();
+            if (Type.isFunction(controller[beforeKey])) {
+                action = yield controller[beforeKey](action);
+            }
+            if (Type.isFunction(controller[actionKey])) {
+                action = yield controller[actionKey](action);
+            } else {
+                throw new error.HttpException(500,
+                    `Action ${actionName} is not defined in controller ${controllerName}`,
+                    {
+                        controllerName,
+                        actionName
+                    }
+                );
+            }
+            if (Type.isFunction(controller[afterKey])) {
+                action = yield controller[afterKey](action);
+            }
+            return yield controller.afterEach(action);
+        }).then(item => this.render(item));
     }
+
     /**
      * @since 1.0.0
      * @author Igor Ivanovic
@@ -436,6 +468,9 @@ class Request extends Type {
             .catch(error => {
                 logger.error(error.message, {
                     id: this.id,
+                    url: this.url,
+                    request: this.getParsedUrl(),
+                    method: this.getMethod(),
                     error
                 });
                 if (router.useCustomErrorHandler && !this.isCustomError) {

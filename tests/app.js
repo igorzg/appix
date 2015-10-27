@@ -16,7 +16,7 @@ let router = easyInit.getComponent('en/router');
 router.add([
     {
         url: '/',
-        route: 'home/index'
+        route: 'app/Index'
     },
     {
         url: '/favicon.ico',

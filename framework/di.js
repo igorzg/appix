@@ -49,26 +49,24 @@ class DI extends DiNode {
      * Write nice async functions
      */
     async(createGenerator) {
-        return function asyncHandler() {
-            var generator = createGenerator.apply(this, arguments);
+        var generator = createGenerator.apply(this, arguments);
 
-            function handle(result) {
-                if (result.done) {
-                    return Promise.resolve(result.value);
-                }
+        try {
+            return handle(generator.next());
+        } catch (error) {
+            return Promise.reject(error);
+        }
 
-                return Promise.resolve(result.value).then(function (result) {
-                    return handle(generator.next(result));
-                }, function (error) {
-                    return handle(generator.throw(error));
-                });
+        function handle(result) {
+            if (result.done) {
+                return Promise.resolve(result.value);
             }
 
-            try {
-                return handle(generator.next());
-            } catch (error) {
-                return Promise.reject(error);
-            }
+            return Promise.resolve(result.value).then(function (result) {
+                return handle(generator.next(result));
+            }, function (error) {
+                return handle(generator.throw(error));
+            });
         }
     }
 
