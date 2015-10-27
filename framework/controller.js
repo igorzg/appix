@@ -8,9 +8,19 @@ let logger;
 class Controller extends Type {
     constructor(api, types) {
         super(Object.assign({
-            request: Type.OBJECT
+            __request__: Type.OBJECT,
+            __chaining__: Type.BOOLEAN
         }, types));
-        this.request = api;
+        this.__chaining__ = true;
+        this.__request__ = api;
+    }
+
+    isChaining() {
+        return this.__chaining__;
+    }
+
+    stopChain() {
+        this.__chaining__ = false;
     }
 
     beforeEach() {

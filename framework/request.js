@@ -394,25 +394,33 @@ class Request extends Type {
             let beforeKey = 'before' + actionName;
             let afterKey = 'after' + actionName;
             let actionKey = 'action' + actionName;
-            let action = yield controller.beforeEach();
-            if (Type.isFunction(controller[beforeKey])) {
+            let action;
+            if (controller.isChaining()) {
+                action = yield controller.beforeEach();
+            }
+            if (Type.isFunction(controller[beforeKey]) && controller.isChaining()) {
                 action = yield controller[beforeKey](action);
             }
-            if (Type.isFunction(controller[actionKey])) {
-                action = yield controller[actionKey](action);
-            } else {
-                throw new error.HttpException(500,
-                    `Action ${actionName} is not defined in controller ${controllerName}`,
-                    {
-                        controllerName,
-                        actionName
-                    }
-                );
+            if (controller.isChaining()) {
+                if (Type.isFunction(controller[actionKey])) {
+                    action = yield controller[actionKey](action);
+                } else {
+                    throw new error.HttpException(500,
+                        `Action ${actionName} is not defined in controller ${controllerName}`,
+                        {
+                            controllerName,
+                            actionName
+                        }
+                    );
+                }
             }
-            if (Type.isFunction(controller[afterKey])) {
+            if (Type.isFunction(controller[afterKey]) && controller.isChaining()) {
                 action = yield controller[afterKey](action);
             }
-            return yield controller.afterEach(action);
+            if (controller.isChaining()) {
+                action = yield controller.afterEach(action);
+            }
+            return action;
         }).then(item => this.render(item));
     }
 
