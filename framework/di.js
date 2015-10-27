@@ -19,6 +19,7 @@ class DI extends DiNode {
         });
         this.instances = new Map();
     }
+
     /**
      * @since 1.0.0
      * @author Igor Ivanovic
@@ -37,6 +38,40 @@ class DI extends DiNode {
             return (r & 0x3 | 0x8).toString(16);
         });
     }
+
+    /**
+     * @since 1.0.0
+     * @author Igor Ivanovic
+     * @function
+     * @name async
+     *
+     * @description
+     * Write nice async functions
+     */
+    async(createGenerator) {
+        return function asyncHandler() {
+            var generator = createGenerator.apply(this, arguments);
+
+            function handle(result) {
+                if (result.done) {
+                    return Promise.resolve(result.value);
+                }
+
+                return Promise.resolve(result.value).then(function (result) {
+                    return handle(generator.next(result));
+                }, function (error) {
+                    return handle(generator.throw(error));
+                });
+            }
+
+            try {
+                return handle(generator.next());
+            } catch (error) {
+                return Promise.reject(error);
+            }
+        }
+    }
+
     /**
      * @since 1.0.0
      * @author Igor Ivanovic
@@ -54,6 +89,7 @@ class DI extends DiNode {
         }
         this.instances.set(key, value);
     }
+
     /**
      * @since 1.0.0
      * @author Igor Ivanovic
@@ -67,6 +103,7 @@ class DI extends DiNode {
     getInstance(key) {
         return this.instances.get(key);
     }
+
     /**
      * @since 1.0.0
      * @author Igor Ivanovic

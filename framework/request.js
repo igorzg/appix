@@ -5,8 +5,11 @@ let Type = di.load('typed-js');
 let EventEmitter = di.load('events');
 let URLParser = di.load('url');
 let error = di.load('@{en}/error');
+let core = di.load('@{en}/core');
+let Controller = di.load('@{en}/controller');
 let logger;
 let router;
+
 /**
  * @license Mit Licence 2015
  * @since 1.0.0
@@ -32,6 +35,7 @@ class Request extends Type {
             params: Type.OBJECT,
             bootstrap: Type.OBJECT,
             isCustomError: Type.BOOLEAN,
+            isForwarded: Type.BOOLEAN,
             statusCode: Type.NUMBER,
             responseHeaders: Type.OBJECT
         });
@@ -42,11 +46,12 @@ class Request extends Type {
         this.request = config.request;
         this.params = config.params || {};
         this.isCustomError = config.isCustomError || false;
+        this.isForwarded =  config.isForwarded || false;
         this.id = config.id || di.uuid();
         this.url = url;
         this.parsedUrl = URLParser.parse(this.url, true);
         this.data = Type.isArray(config.data) ? config.data : [];
-        this.events = new EventEmitter();
+        this.events = config.events ||  new EventEmitter();
         this.statusCode = 200;
         this.responseHeaders = {};
         this.response.on('destory', () => {
@@ -55,7 +60,22 @@ class Request extends Type {
             this.destroy();
         });
     }
-
+    /**
+     * @since 1.0.0
+     * @author Igor Ivanovic
+     * @function
+     * @name Request#toString
+     * @param {Boolean} noClean
+     *
+     * @description
+     * To string representation
+     */
+    toString(noClean) {
+        if (!!noClean) {
+            return core.inspect(this);
+        }
+        return core.clean(core.inspect(this));
+    }
     /**
      * @since 1.0.0
      * @author Igor Ivanovic
@@ -247,6 +267,7 @@ class Request extends Type {
         });
     }
 
+
     /**
      * @since 1.0.0
      * @author Igor Ivanovic
@@ -265,15 +286,104 @@ class Request extends Type {
         }
         let nRequest = new Request(this.bootstrap, Object.assign({
             request: this.request,
+            id: this.id,
             response: this.response,
+            isForwarded: true,
+            events: this.events,
             data: this.data
         }, config), url);
-        nRequest.onEnd(nRequest.destroy.bind(nRequest));
         let process = nRequest.process();
         nRequest.request.emit('end');
         return process;
     }
+    /**
+     * @since 1.0.0
+     * @author Igor Ivanovic
+     * @function
+     * @name Request#forwardRoute
+     * @param {String} route
+     * @param {Object} params
+     *
+     * @description
+     * Forward route
+     */
+    forwardRoute(route, params) {
+        let that = this;
+        return di.async(function* forwardRouteGen() {
+            var item = yield router.createUrl(route, params);
+            return that.forward(item);
+        });
+    }
+    /**
+     * @since 1.0.0
+     * @author Igor Ivanovic
+     * @function
+     * @name Request#forwardUrl
+     * @param {String} url
+     *
+     * @description
+     * Forward url
+     */
+    forwardUrl(url) {
+        return this.forward(url);
+    }
+    /**
+     * @since 1.0.0
+     * @author Igor Ivanovic
+     * @function
+     * @name Request#handleModule
+     * @param module
+     * @param controller
+     * @param action
+     *
+     * @description
+     * Handle module
+     */
+    handleModule(module, controller, action) {
+        throw new error.HttpException(500, `Modules are not implemented in current version :)`, {
+            module,
+            controller,
+            action
+        });
+    }
+    /**
+     * @since 1.0.0
+     * @author Igor Ivanovic
+     * @function
+     * @name Request#handleController
+     * @param controllerName
+     * @param actionName
+     *
+     * @description
+     * Handle controller
+     */
+    handleController(controllerName, actionName) {
 
+        let ControllerToInitialize = di.load('@{controllersPath}/' + controllerName);
+        let controller = new ControllerToInitialize({
+            getMethod,
+            getParams,
+            getParsedUrl,
+            getRequestBody,
+            getPathname,
+            getRequestDomain,
+            getRequestHeaders,
+            getRequestIpAddres,
+            getRequestLocalAddress,
+            getRequestLocalPort,
+            getRequestRemoteAddress,
+            getRequestRemotePort,
+            onEnd
+        });
+
+        if (!(controller instanceof Controller)) {
+            throw new error.HttpException(500, `${controllerName} must be inherited from @{en}/controller`, {
+                controllerName,
+                actionName
+            });
+        }
+
+    }
     /**
      * @since 1.0.0
      * @author Igor Ivanovic
@@ -285,11 +395,13 @@ class Request extends Type {
      */
     process() {
         // destroy on end
-        this.response.once('finish', () => this.response.emit('destory'));
-        // destroy if connection was terminated before end
-        this.response.once('close', () => this.response.emit('destory'));
-        // push data
-        this.request.on('data', item => this.data.push(item));
+        if (!this.isForwarded) {
+            this.response.once('finish', () => this.response.emit('destory'));
+            // destroy if connection was terminated before end
+            this.response.once('close', () => this.response.emit('destory'));
+            // push data
+            this.request.on('data', item => this.data.push(item));
+        }
         // on data end process request
         return new Promise(resolve => this.request.on('end', resolve))
             .then(() => {
@@ -301,11 +413,25 @@ class Request extends Type {
                 return router.parseRequest(this.getPathname(), this.getMethod(), this.getRequestHeaders());
             })
             .then(result => {
+
                 logger.info('Route.result', {
                     id: this.id,
                     result
                 });
-                this.render(route.pathname);
+
+                let route = result.route.split('/');
+
+                if (route.length === 2) {
+                    return this.handleController.apply(this, route);
+                } else if (route.length === 3) {
+                    return this.handleModule.apply(this, route);
+                }
+
+                throw new error.HttpException(500, `Route definition is invalid, route must contain controller/action
+                    or module/controller/action pattern
+                `, {
+                    result
+                });
             })
             .catch(error => {
                 logger.error(error.message, {
@@ -314,7 +440,6 @@ class Request extends Type {
                 });
                 if (router.useCustomErrorHandler && !this.isCustomError) {
                     return this.forward(router.error.url, {
-                        id: this.id,
                         params: {
                             error: error
                         },

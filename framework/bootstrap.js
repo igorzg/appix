@@ -154,7 +154,6 @@ class Bootstrap extends Type {
                 request,
                 response
             }, request.url);
-            nRequest.onEnd(nRequest.destroy.bind(nRequest));
             nRequest.process();
         });
 
