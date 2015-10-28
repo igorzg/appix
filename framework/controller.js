@@ -79,7 +79,7 @@ class Controller extends Type {
         let filters = this.getFiltersToApply();
         return di.async(function* afterFilter() {
             for (let filter of filters) {
-                action = yield filter.beforeEach(action);
+                action = yield filter.afterEach(action);
             }
             return action;
         });
