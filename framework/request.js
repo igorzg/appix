@@ -382,6 +382,7 @@ class Request extends Type {
             forwardRoute: this.forwardRoute.bind(this),
             forwardUrl: this.forwardUrl.bind(this),
             requestId: this.id,
+            bootstrap: this.bootstrap,
             id: controllerName,
             action: actionName,
             route: controllerName + '/' + actionName
@@ -497,9 +498,9 @@ class Request extends Type {
                         isCustomError: true
                     });
                 }
-                return this.render(error.toString());
+                return this.render(error.stack);
             })
-            .catch(error => this.render(error.toString()));
+            .catch(error => this.render(error.stack));
     }
 }
 

@@ -97,10 +97,10 @@ class Controller extends Type {
         if (!Type.isNumber(priority)) {
             throw new error.HttpException(500, `Filter priority must be number type or defined ${priority}`);
         }
-        let filter = new FilterToInitialize({
-            controller: this,
+        let filter = new FilterToInitialize(this.__request__.bootstrap, {
+            controller: {},
             priority: priority,
-            route: route | '*'
+            route: route || '*'
         });
         if (!(filter instanceof Filter)) {
             throw new error.HttpException(500, `Filter must be inherited from @{en}/filter`);

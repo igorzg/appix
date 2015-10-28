@@ -17,6 +17,10 @@ class Exception extends Error {
         super(message);
         this.stack += '\n\nDATA: ' + core.inspect(data, 5, true);
     }
+
+    toString() {
+        return this.stack;
+    }
 }
 /**
  * @license Mit Licence 2015

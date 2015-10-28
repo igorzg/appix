@@ -14,16 +14,22 @@ let Type = di.load('typed-js');
  */
 class Filter extends Type {
 
-    constructor(config, types) {
+    constructor(bootstrap, config, types) {
         super(Object.assign({
             controller: Type.OBJECT,
             priority: Type.NUMBER,
             route: Type.STRING
         }, types));
+        let logger = bootstrap.getComponent('en/logger');
+        logger.info('Add filter', {
+            priority: config.priority,
+            route: config.route
+        });
         this.controller = config.controller;
         this.priority = config.priority;
         this.route = config.route;
     }
+
     /**
      * @since 1.0.0
      * @author Igor Ivanovic
@@ -36,6 +42,7 @@ class Filter extends Type {
     beforeEach() {
         return Promise.resolve(true);
     }
+
     /**
      * @since 1.0.0
      * @author Igor Ivanovic
