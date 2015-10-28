@@ -380,7 +380,11 @@ class Request extends Type {
             getRequestRemotePort: this.getRequestRemotePort.bind(this),
             onEnd: this.onEnd.bind(this),
             forwardRoute: this.forwardRoute.bind(this),
-            forwardUrl: this.forwardUrl.bind(this)
+            forwardUrl: this.forwardUrl.bind(this),
+            requestId: this.id,
+            id: controllerName,
+            action: actionName,
+            route: controllerName + '/' + actionName
         });
 
         if (!(controller instanceof Controller)) {
@@ -395,8 +399,11 @@ class Request extends Type {
             let afterKey = 'after' + actionName;
             let actionKey = 'action' + actionName;
             let action;
+
+            action = yield controller.applyBeforeEachFilters();
+
             if (controller.isChaining()) {
-                action = yield controller.beforeEach();
+                action = yield controller.beforeEach(action);
             }
             if (Type.isFunction(controller[beforeKey]) && controller.isChaining()) {
                 action = yield controller[beforeKey](action);
@@ -420,7 +427,8 @@ class Request extends Type {
             if (controller.isChaining()) {
                 action = yield controller.afterEach(action);
             }
-            return action;
+
+            return yield controller.applyAfterEachFilters(action);
         }).then(item => this.render(item));
     }
 
