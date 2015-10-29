@@ -37,7 +37,7 @@ class Controller extends Type {
      */
     getFiltersToApply() {
         return this.__filters__.filter(item => {
-            return item.route === '*' || item.route === that.__request__.route;
+            return item.route === '*' || item.route === this.__request__.route;
         }).sort((a, b) => {
             if (a.priority > b.priority) {
                 return -1;
@@ -98,7 +98,7 @@ class Controller extends Type {
             throw new error.HttpException(500, `Filter priority must be number type or defined ${priority}`);
         }
         let filter = new FilterToInitialize(this.__request__.bootstrap, {
-            controller: {},
+            controller: this,
             priority: priority,
             route: route || '*'
         });
