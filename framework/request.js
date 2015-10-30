@@ -381,9 +381,9 @@ class Request extends Type {
             onEnd: this.onEnd.bind(this),
             forwardRoute: this.forwardRoute.bind(this),
             forwardUrl: this.forwardUrl.bind(this),
-            requestId: this.id,
+            id: this.id,
             bootstrap: this.bootstrap,
-            id: controllerName,
+            controller: controllerName,
             action: actionName,
             route: controllerName + '/' + actionName
         });

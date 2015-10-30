@@ -26,6 +26,18 @@ class Controller extends Type {
         this.__request__ = api;
         this.__filters__ = [];
     }
+    getRequestRoute() {
+        return this.__request__.route;
+    }
+    getRequestController() {
+        return this.__request__.controller;
+    }
+    getRequestAction() {
+        return this.__request__.action;
+    }
+    getRequestId() {
+        return this.__request__.id;
+    }
     /**
      * @since 1.0.0
      * @author Igor Ivanovic
