@@ -113,12 +113,12 @@ init.listen();</pre></div>
 <div class="highlight highlight-source-js"><pre><span class="pl-s"><span class="pl-pds">'</span>use strict<span class="pl-pds">'</span></span>;
 <span class="pl-k">let</span> di <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>appix<span class="pl-pds">'</span></span>);
 <span class="pl-k">let</span> Controller <span class="pl-k">=</span> di.<span class="pl-c1">load</span>(<span class="pl-s"><span class="pl-pds">'</span>@{appix}/controller<span class="pl-pds">'</span></span>);
-<span class="pl-k">class</span> <span class="pl-en">App</span> <span class="pl-k">extends</span> <span class="pl-en">Controller</span> {
+<span class="pl-k">class</span> <span class="pl-en">Home</span> <span class="pl-k">extends</span> <span class="pl-en">Controller</span> {
     <span class="pl-en">actionIndex</span>() {
         <span class="pl-k">return</span> <span class="pl-s"><span class="pl-pds">'</span>Hello world<span class="pl-pds">'</span></span>;
     }
 }
-<span class="pl-c1">module</span>.exports <span class="pl-k">=</span> App;</pre></div>
+<span class="pl-c1">module</span>.exports <span class="pl-k">=</span> Home;</pre></div>
 
 <ul>
 <li>run node app/index.js</li>
