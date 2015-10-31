@@ -9,7 +9,9 @@
 3. Has a dependency injection
 4. Built on top of ES6
 
+ 
 **Hello world example in appix**  
+**npm install appix**
 
 - app/env.json 
 ```json
