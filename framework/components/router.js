@@ -8,6 +8,7 @@ let logger;
 /**
  * @license Mit Licence 2015
  * @since 1.0.0
+ * @class
  * @name Router
  * @param {Object} config
  * @param {Bootstrap} app
