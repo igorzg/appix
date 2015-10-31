@@ -11,16 +11,17 @@ let logger;
  * @class
  * @name Router
  * @param {Object} config
- * @param {Bootstrap} app
+ * @param {Bootstrap} bootstrap instance
  * @constructor
  * @description
- * Router handler for easy node
+ * Router is a component in easy node application.
+ * Router handles routing for application.
  */
 class Router extends Type {
-    constructor(config, app) {
+    constructor(config, bootstrap) {
         super({
             routes: Type.OBJECT,
-            app: Type.OBJECT,
+            bootstrap: Type.OBJECT,
             methods: Type.ARRAY,
             error: Type.OBJECT,
             useCustomErrorHandler: Type.BOOLEAN
@@ -29,13 +30,13 @@ class Router extends Type {
             config = {};
         }
 
-        this.app = app;
+        this.bootstrap = bootstrap;
         this.routes = new Set();
         this.error = {};
         this.methods = ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'TRACE', 'OPTIONS', 'CONNECT', 'PATCH'];
         this.useCustomErrorHandler = config.useCustomErrorHandler;
 
-        logger = app.getComponent('en/logger');
+        logger = bootstrap.getComponent('en/logger');
         logger.info('Router.constructor', {
             config: config,
             instance: this
@@ -69,7 +70,7 @@ class Router extends Type {
         if (Type.isArray(Rule)) {
             return Rule.forEach(item => this.add(item));
         } else if (Type.isObject(Rule) && !(Rule instanceof RouteRule)) {
-            return this.add(new RouteRule(this.app, Rule));
+            return this.add(new RouteRule(this.bootstrap, Rule));
         } else if (Type.isFunction(Rule)) {
             return this.add(new Rule());
         }

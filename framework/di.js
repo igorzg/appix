@@ -7,7 +7,6 @@ let Type = require('typed-js');
  * @license Mit Licence 2015
  * @since 1.0.0
  * @module easy-node
- * @exports easy-node
  *
  * @class
  * @name DI

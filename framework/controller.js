@@ -8,7 +8,7 @@ let Filter = di.load('@{en}/filter');
  * @license Mit Licence 2015
  * @since 1.0.0
  * @name Controller
- * @param {Object} api
+ * @param {Object} api limited request api
  * @param {Object} types
  * @constructor
  * @description

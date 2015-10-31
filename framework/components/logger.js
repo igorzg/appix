@@ -11,18 +11,19 @@ let error = di.load('@{en}/error');
  *
  * @constructor
  * @description
+ * Logger is a component in easy node application.
  * Logger handler for easy node, there a various type of logs
  * [INFO, TRACE, DEBUG, WARN, ERROR, FATAL]
  * By default only ERROR and FATAL are enabled in production mode.
  * Logger in system is delivered as component
  * @example
- *   let logger = new Logger();
- *   logger.info('My message', dataObject);
- *   logger.error('My message', dataObject);
- *   logger.warn('My message', dataObject);
- *   logger.trace('My message', dataObject);
- *   logger.fatal('My message', dataObject);
- *   logger.debug('My message', dataObject);
+ * let logger = new Logger();
+ * logger.info('My message', dataObject);
+ * logger.error('My message', dataObject);
+ * logger.warn('My message', dataObject);
+ * logger.trace('My message', dataObject);
+ * logger.fatal('My message', dataObject);
+ * logger.debug('My message', dataObject);
  */
 class Logger extends Type {
     constructor(config) {

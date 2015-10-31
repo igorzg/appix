@@ -12,7 +12,7 @@ const HAS_GROUP = /^\(([^\)]+)\)$/;
  * @since 1.0.0
  * @class
  * @name RouteRule
- * @param {Bootstrap} app
+ * @param {Bootstrap} bootstrap instance
  * @param {Object} config
  * @param {Object} types to extend route rule on inherit while implementing custom parseRequest and createUrl
  * @constructor
@@ -20,18 +20,20 @@ const HAS_GROUP = /^\(([^\)]+)\)$/;
  * Route rule is used to add route definitions to router
  */
 class RouteRule extends Type {
-    constructor(app, config, types) {
+    constructor(bootstrap, config, types) {
 
         super(Object.assign({
             pattern: Type.ARRAY,
             url: Type.STRING,
             route: Type.STRING,
             validMethods: Type.ARRAY,
-            methods: Type.ARRAY
+            methods: Type.ARRAY,
+            bootstrap: Type.OBJECT
         }, types));
 
-        logger = app.getComponent('en/logger');
+        logger = bootstrap.getComponent('en/logger');
 
+        this.bootstrap = bootstrap;
         this.validMethods = ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'TRACE', 'OPTIONS', 'CONNECT', 'PATCH'];
         this.methods = ['GET'];
         if (Type.isArray(config.methods) && !config.methods.every(item => this.validMethods.indexOf(item) > -1)) {
