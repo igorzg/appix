@@ -417,7 +417,9 @@ class Controller extends Type {
      *  class MyAppController extends Controller {
      *
      *    beforeEach() {
-     *      if (/* expression *\/) {
+     *      if (
+     *          // expression
+     *      ) {
      *          this.stopChain();
      *      }
      *    }

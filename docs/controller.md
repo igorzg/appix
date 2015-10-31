@@ -228,7 +228,9 @@ Stop chain of actions, use this when needed. You can use it as well in filters t
  class MyAppController extends Controller {
 
    beforeEach() {
-     if (/* expression *\/) {
+     if (
+         // expression
+     ) {
          this.stopChain();
      }
    }
