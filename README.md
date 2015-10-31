@@ -68,12 +68,12 @@ init.listen();
 'use strict';
 let di = require('appix');
 let Controller = di.load('@{appix}/controller');
-class App extends Controller {
+class Home extends Controller {
     actionIndex() {
         return 'Hello world';
     }
 }
-module.exports = App;
+module.exports = Home;
 ```
 
 - run node app/index.js
