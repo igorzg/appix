@@ -11,7 +11,8 @@
 
 **Hello world example in appix**  
 
-1. app/env.json ```json
+- app/env.json 
+```json
 {
   "aliases": {
     "models": "@{appPath}/models",
@@ -31,7 +32,8 @@
 }
 ```
 
-2. app/index.js ```js
+- app/index.js 
+```js
 'use strict';
 let di = require('appix');
 let Bootstrap = di.load('@{appix}/bootstrap');
@@ -59,7 +61,8 @@ router.add([
 init.listen();
 ```
 
-3. app/controllers/home.js ```js
+- app/controllers/home.js 
+```js
 let di = require('appix');
 let Controller = di.load('@{appix}/controller');
 class App extends Controller {
