@@ -4,7 +4,7 @@
 * This application framework is improved version of mvcjs nodejs framework
 
 ## Features
-1. Appix follow [reactive](http://www.reactivemanifesto.org/) pattern. 
+1. Appix follow [reactive](http://www.reactivemanifesto.org/) design pattern. 
 2. Catch all runtime/syntax errors
 3. Has a dependency injection
 4. Built on top of ES6
