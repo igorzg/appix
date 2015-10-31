@@ -1,10 +1,10 @@
 'use strict';
-let di = require('../');
+let di = require('../../');
 let Bootstrap = di.load('@{appix}/bootstrap');
 // bootstrap application
 let easyInit = new Bootstrap({
     listenPort: 9500,
-    appPath:  __dirname + '/app'
+    appPath:  __dirname + '/'
 }, function dynamicComponentConfig(components) {
     //components.set('key', {});
 });
