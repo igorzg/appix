@@ -1,46 +1,54 @@
-## Classes
-<dl>
-<dt><a href="#DI">DI</a></dt>
-<dd></dd>
-</dl>
-## Functions
-<dl>
-<dt><a href="#async">async()</a></dt>
-<dd><p>Write nice async functions</p>
-</dd>
-</dl>
 <a name="DI"></a>
 ## DI
 **Kind**: global class  
 **Since**: 1.0.0  
-**Author:** Igor Ivanovic  
 **License**: Mit Licence 2015  
 
 * [DI](#DI)
-  * [new DI()](#new_DI_new)
-  * [.uuid()](#DI+uuid)
+  * [.uuid()](#DI+uuid) ⇒ <code>String</code>
+  * [.async(genFunc)](#DI+async) ⇒ <code>Promise</code>
   * [.setInstance(key, value)](#DI+setInstance)
   * [.getInstance(key)](#DI+getInstance)
   * [.mock(file, mocks)](#DI+mock)
 
-<a name="new_DI_new"></a>
-### new DI()
-Extend di implementation
-
 <a name="DI+uuid"></a>
-### dI.uuid()
+### dI.uuid() ⇒ <code>String</code>
 Generate universally unique identifier
 
 **Kind**: instance method of <code>[DI](#DI)</code>  
 **Since**: 1.0.0  
-**Author:** Igor Ivanovic  
+**Example**  
+```js
+let di = require('easy-node');
+di.uuid();
+```
+<a name="DI+async"></a>
+### dI.async(genFunc) ⇒ <code>Promise</code>
+Use di.async to write easier async functions
+
+**Kind**: instance method of <code>[DI](#DI)</code>  
+**Since**: 1.0.0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| genFunc | <code>function</code> | generator |
+
+**Example**  
+```js
+let di = require('easy-node');
+di.async(function* gen() {
+     let one = yield asyncFunc();
+     let two = yield asyncFunc2(one);
+     let three = yield asyncFunc3(two);
+     return three;
+});
+```
 <a name="DI+setInstance"></a>
 ### dI.setInstance(key, value)
 Add instance of bootstraped version
 
 **Kind**: instance method of <code>[DI](#DI)</code>  
 **Since**: 1.0.0  
-**Author:** Igor Ivanovic  
 
 | Param | Type |
 | --- | --- |
@@ -53,7 +61,6 @@ Return bootstraped instance
 
 **Kind**: instance method of <code>[DI](#DI)</code>  
 **Since**: 1.0.0  
-**Author:** Igor Ivanovic  
 
 | Param | Type |
 | --- | --- |
@@ -65,17 +72,9 @@ Return module with mocked objects
 
 **Kind**: instance method of <code>[DI](#DI)</code>  
 **Since**: 1.0.0  
-**Author:** Igor Ivanovic  
 
 | Param | Type |
 | --- | --- |
 | file | <code>String</code> | 
 | mocks | <code>Object</code> | 
 
-<a name="async"></a>
-## async()
-Write nice async functions
-
-**Kind**: global function  
-**Since**: 1.0.0  
-**Author:** Igor Ivanovic  

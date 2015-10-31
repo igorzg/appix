@@ -14,7 +14,9 @@ class F1 extends Filter {
 
 class F2 extends Filter {
     afterEach(data) {
-        return data + ' prio';
+        return di.async(function* gen() {
+            return yield data + ' prio';
+        });
     }
 }
 

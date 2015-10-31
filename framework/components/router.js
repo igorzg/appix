@@ -8,9 +8,9 @@ let logger;
 /**
  * @license Mit Licence 2015
  * @since 1.0.0
- * @author Igor Ivanovic
  * @name Router
- *
+ * @param {Object} config
+ * @param {Bootstrap} app
  * @constructor
  * @description
  * Router handler for easy node
@@ -53,13 +53,16 @@ class Router extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Router#add
-     * @param {Object|Array|Function} Rule
+     * @param {RouteRule|Object|Array|Function} Rule
      *
      * @description
-     * Add route to resolve list
+     * Add route to resolve list.
+     * To add custom rule you must inherit from RouteRule class.
+     * All rules must be instanceof RouteRule.
+     * If you add array or object it will be converted to RouteRule.
+     *
      */
     add(Rule) {
         if (Type.isArray(Rule)) {
@@ -82,7 +85,7 @@ class Router extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
+
      * @function
      * @name Router#parseRequest
      * @param {String} pathName
@@ -118,7 +121,7 @@ class Router extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
+
      * @function
      * @name Router#createUrl
      * @param {String} routeName

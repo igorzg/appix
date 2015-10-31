@@ -5,10 +5,13 @@ let core = di.load('@{en}/core');
 /**
  * @license Mit Licence 2015
  * @since 1.0.0
- * @author Igor Ivanovic
+ * @class
  * @name Exception
  *
  * @constructor
+ * @param {String} message
+ * @param {Object} data
+ *
  * @description
  * Exception
  */
@@ -25,12 +28,14 @@ class Exception extends Error {
 /**
  * @license Mit Licence 2015
  * @since 1.0.0
- * @author Igor Ivanovic
+ * @class
  * @name HttpException
- *
+ * @param {Number} code status code
+ * @param {String} message
+ * @param {Object} data
  * @constructor
  * @description
- * HttpException
+ * HttpException use it in controller actions
  */
 class HttpException extends Exception {
     constructor(code, message, data) {

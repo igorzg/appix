@@ -13,9 +13,11 @@ let router;
 /**
  * @license Mit Licence 2015
  * @since 1.0.0
- * @author Igor Ivanovic
+ * @class
  * @name Request
- *
+ * @param {Bootstrap} bootstrap instance
+ * @param {Object} request config
+ * @param {String} url
  * @constructor
  * @description
  * This class is responsible for processing request
@@ -63,13 +65,13 @@ class Request extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Request#toString
      * @param {Boolean} noClean
-     *
+     * @private
      * @description
      * To string representation
+     * @return {String}
      */
     toString(noClean) {
         if (!!noClean) {
@@ -80,12 +82,12 @@ class Request extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Request#getParsedUrl
      *
      * @description
      * Return parsed url
+     * @return {Object}
      */
     getParsedUrl() {
         return Object.assign({}, this.parsedUrl);
@@ -93,12 +95,12 @@ class Request extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Request#getMethod
      *
      * @description
-     * Return method
+     * Get request method
+     * @return {String}
      */
     getMethod() {
         return this.request.method;
@@ -106,12 +108,12 @@ class Request extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Request#getPathname
      *
      * @description
      * Return request pathname
+     * @return {String}
      */
     getPathname() {
         return this.parsedUrl.pathname;
@@ -119,12 +121,12 @@ class Request extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Request#getParams
      *
      * @description
      * Return request url query
+     * @return {Map}
      */
     getParams() {
         return new Map(Object.assign({}, this.parsedUrl.query, this.params));
@@ -132,12 +134,12 @@ class Request extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Request#getRequestHeaders
      *
      * @description
      * Return request headers
+     * @return {Object}
      */
     getRequestHeaders() {
         return Object.assign({}, this.request.headers);
@@ -145,12 +147,12 @@ class Request extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Request#getRequestDomain
      *
      * @description
      * Return request domain
+     * @return {String}
      */
     getRequestDomain() {
         return this.request.connection.domain;
@@ -158,12 +160,12 @@ class Request extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Request#getRequestRemoteAddress
      *
      * @description
      * Request remote ip address
+     * @return {String}
      */
     getRequestRemoteAddress() {
         return this.request.connection.remoteAddress;
@@ -171,12 +173,12 @@ class Request extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Request#getRequestRemotePort
      *
      * @description
      * Request remote port
+     * @return {Number}
      */
     getRequestRemotePort() {
         return this.request.connection.remotePort;
@@ -184,12 +186,12 @@ class Request extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Request#getRequestLocalAddress
      *
      * @description
      * Request locals address
+     * @return {String}
      */
     getRequestLocalAddress() {
         return this.request.connection.localAddress;
@@ -197,12 +199,12 @@ class Request extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Request#getRequestLocalPort
      *
      * @description
      * Request local port
+     * @return {Number}
      */
     getRequestLocalPort() {
         return this.request.connection.localPort;
@@ -210,12 +212,11 @@ class Request extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Request#onEnd
      *
      * @description
-     * On end process destroy event
+     * Add custom events on destroy event
      */
     onEnd(callback) {
         this.events.once('destory', callback);
@@ -223,12 +224,12 @@ class Request extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Request#getRequestBody
      *
      * @description
      * Return request body
+     * @return {Buffer}
      */
     getRequestBody() {
         return Buffer.concat(this.data);
@@ -236,12 +237,12 @@ class Request extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Request#render
-     *
+     * @param {Buffer|String} response
+     * @private
      * @description
-     * Render data
+     * This method sends data to client
      */
     render(response) {
         let rKey = 'content-type';
@@ -271,12 +272,13 @@ class Request extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Request#forward
-     *
+     * @param {String} url
+     * @param {Object} config
+     * @private
      * @description
-     * Forward to new request
+     * Forward to new request, this is doing server side forwarding
      */
     forward(url, config) {
         if (url === this.url) {
@@ -300,7 +302,6 @@ class Request extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Request#forwardRoute
      * @param {String} route
@@ -319,7 +320,6 @@ class Request extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Request#forwardUrl
      * @param {String} url
@@ -333,15 +333,14 @@ class Request extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Request#handleModule
      * @param {String} moduleName
      * @param {String} controllerName
      * @param {String} actionName
-     *
+     * @private
      * @description
-     * Handle module
+     * Handle module, currently not implemented, will be within next versions.
      */
     handleModule(moduleName, controllerName, actionName) {
         throw new error.HttpException(500, `Modules are not implemented in current version :)`, {
@@ -353,14 +352,14 @@ class Request extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Request#handleController
      * @param {String} controllerName
      * @param {String} actionName
-     *
+     * @private
      * @description
-     * Handle controller
+     * Load controller and create it's instance
+     * @return {Promise}
      */
     handleController(controllerName, actionName) {
 
@@ -434,12 +433,13 @@ class Request extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Request#process
-     *
+     * @private
      * @description
-     * Process request
+     * Process request, assign destroy event.
+     * Process data if there is an data.
+     * @return {Promise}
      */
     process() {
         // destroy on end

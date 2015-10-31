@@ -10,15 +10,17 @@ const HAS_GROUP = /^\(([^\)]+)\)$/;
 /**
  * @license Mit Licence 2015
  * @since 1.0.0
- * @author Igor Ivanovic
+ * @class
  * @name Router
- *
+ * @param {Bootstrap} app
+ * @param {Object} config
+ * @param {Object} types to extend route rule on inherit while implementing custom parseRequest and createUrl
  * @constructor
  * @description
- * Router handler for easy node
+ * Route rule is used to add route definitions to router
  */
 class RouteRule extends Type {
-    constructor(app, config, extend) {
+    constructor(app, config, types) {
 
         super(Object.assign({
             pattern: Type.ARRAY,
@@ -26,7 +28,7 @@ class RouteRule extends Type {
             route: Type.STRING,
             validMethods: Type.ARRAY,
             methods: Type.ARRAY
-        }, extend));
+        }, types));
 
         logger = app.getComponent('en/logger');
 
@@ -57,7 +59,6 @@ class RouteRule extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name RouteRule#getPattern
      * @param {String} url
@@ -194,7 +195,6 @@ class RouteRule extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name RouteRule#parseRequest
      * @param {String} pathname
@@ -231,7 +231,6 @@ class RouteRule extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name RouteRule#createUrl
      * @param {String} route

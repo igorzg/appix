@@ -6,12 +6,13 @@ let http = di.load('http');
 /**
  * @license Mit Licence 2015
  * @since 1.0.0
- * @author Igor Ivanovic
  * @name Server
  *
  * @constructor
  * @description
- * Server class is responsible for publishing server by default that is http server
+ * Server class is responsible for publishing server by default that is http server.
+ * This is an mock over http service so we can provide custom one.
+ * If we want to use https, socket or similar we provide custom Server service.
  */
 class Server extends Type {
     constructor() {
@@ -23,7 +24,6 @@ class Server extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Server#on
      *
@@ -36,7 +36,6 @@ class Server extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Server#listen
      *
@@ -49,7 +48,6 @@ class Server extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Server#close
      *
@@ -62,7 +60,6 @@ class Server extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Server#setTimeout
      *

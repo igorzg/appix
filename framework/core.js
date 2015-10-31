@@ -12,9 +12,11 @@ for (var i = 0; i < 100; ++i) {
 
 /**
  * @since 1.0.0
- * @author Igor Ivanovic
  * @function
  * @name inspect
+ * @param {Object} data
+ * @param {Number} level
+ * @param {Boolean} withoutColors
  *
  * @description
  * Inspect data output
@@ -30,13 +32,13 @@ function inspect(data, level, withoutColors) {
 }
 /**
  * @since 1.0.0
- * @author Igor Ivanovic
  * @function
  * @name clean
+ * @param {String} message
  *
  * @description
- * Clean message for write
- * @return {String} message
+ * Clean inspected message
+ * @return {String}
  */
 function clean(message) {
     if (Type.isString(message)) {

@@ -7,12 +7,22 @@ let error = di.load('@{en}/error');
 /**
  * @license Mit Licence 2015
  * @since 1.0.0
- * @author Igor Ivanovic
  * @name Logger
  *
  * @constructor
  * @description
- * Logger handler for easy node
+ * Logger handler for easy node, there a various type of logs
+ * [INFO, TRACE, DEBUG, WARN, ERROR, FATAL]
+ * By default only ERROR and FATAL are enabled in production mode.
+ * Logger in system is delivered as component
+ * @example
+ *   let logger = new Logger();
+ *   logger.info('My message', dataObject);
+ *   logger.error('My message', dataObject);
+ *   logger.warn('My message', dataObject);
+ *   logger.trace('My message', dataObject);
+ *   logger.fatal('My message', dataObject);
+ *   logger.debug('My message', dataObject);
  */
 class Logger extends Type {
     constructor(config) {
@@ -76,7 +86,6 @@ class Logger extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Logger#trace
      *
@@ -89,7 +98,6 @@ class Logger extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Logger#info
      *
@@ -102,7 +110,6 @@ class Logger extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Logger#debug
      *
@@ -115,7 +122,6 @@ class Logger extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Logger#warn
      *
@@ -128,7 +134,6 @@ class Logger extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Logger#error
      *
@@ -141,7 +146,6 @@ class Logger extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Logger#fatal
      *
@@ -154,12 +158,12 @@ class Logger extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Logger#getLevelName
-     *
+     * @private
      * @description
      * Get level name
+     * This is used internally by logger class
      */
     getLevelName(level) {
         let logLevel = this.levels.find(item => {
@@ -173,10 +177,9 @@ class Logger extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Logger#log
-     *
+     * @private
      * @description
      * Write to file and exec hooks
      */
@@ -219,7 +222,6 @@ class Logger extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Logger#addHook
      * @param {Function} callback
@@ -236,12 +238,11 @@ class Logger extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Logger#clean
-     *
+     * @param {String} message
      * @description
-     * Clean message for write
+     * Clean inspect message
      * @return {String} message
      */
     static clean(message) {
@@ -250,10 +251,10 @@ class Logger extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Logger#inspect
-     *
+     * @param {Object} data
+     * @param {Number} level
      * @description
      * Inspect log data output
      */

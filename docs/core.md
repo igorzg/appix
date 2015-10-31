@@ -1,24 +1,33 @@
 ## Functions
 <dl>
-<dt><a href="#inspect">inspect()</a></dt>
+<dt><a href="#inspect">inspect(data, level, withoutColors)</a></dt>
 <dd><p>Inspect data output</p>
 </dd>
-<dt><a href="#clean">clean()</a> ⇒ <code>String</code></dt>
-<dd><p>Clean message for write</p>
+<dt><a href="#clean">clean(message)</a> ⇒ <code>String</code></dt>
+<dd><p>Clean inspected message</p>
 </dd>
 </dl>
 <a name="inspect"></a>
-## inspect()
+## inspect(data, level, withoutColors)
 Inspect data output
 
 **Kind**: global function  
 **Since**: 1.0.0  
-**Author:** Igor Ivanovic  
+
+| Param | Type |
+| --- | --- |
+| data | <code>Object</code> | 
+| level | <code>Number</code> | 
+| withoutColors | <code>Boolean</code> | 
+
 <a name="clean"></a>
-## clean() ⇒ <code>String</code>
-Clean message for write
+## clean(message) ⇒ <code>String</code>
+Clean inspected message
 
 **Kind**: global function  
-**Returns**: <code>String</code> - message  
 **Since**: 1.0.0  
-**Author:** Igor Ivanovic  
+
+| Param | Type |
+| --- | --- |
+| message | <code>String</code> | 
+

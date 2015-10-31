@@ -2,19 +2,19 @@
 ## Bootstrap
 **Kind**: global class  
 **Since**: 1.0.0  
-**Author:** Igor Ivanovic  
 **License**: Mit Licence 2015  
 
 * [Bootstrap](#Bootstrap)
   * [new Bootstrap(appConfig, callback)](#new_Bootstrap_new)
   * [.listen()](#Bootstrap+listen)
-  * [.setComponent()](#Bootstrap+setComponent)
-  * [.hasComponent()](#Bootstrap+hasComponent)
-  * [.getComponent()](#Bootstrap+getComponent)
+  * [.setComponent(key, config)](#Bootstrap+setComponent)
+  * [.hasComponent(key)](#Bootstrap+hasComponent)
+  * [.getComponent(key)](#Bootstrap+getComponent)
 
 <a name="new_Bootstrap_new"></a>
 ### new Bootstrap(appConfig, callback)
-This class is used for component delivery service and bootstraping application
+Use Bootstrap class to bootstrap an application.
+It could be with server listen but it could be server side simulation to.
 
 
 | Param | Type |
@@ -22,31 +22,73 @@ This class is used for component delivery service and bootstraping application
 | appConfig | <code>Object</code> | 
 | callback | <code>function</code> | 
 
+**Example**  
+```js
+'use strict';
+   let di = require('easy-node');
+   let Bootstrap = di.load('@{en}/bootstrap');
+   // bootstrap application
+   let easyInit = new Bootstrap({
+      listenPort: 9500,
+      appPath:  __dirname + '/app'
+   }, function dynamicComponentConfig(components) {
+      components.set('my-component', {});
+   });
+
+   di.setInstance('en-demo', easyInit);
+
+   let router = easyInit.getComponent('en/router');
+
+   router.add([
+     {
+       url: '/',
+       route: 'app/Index'
+     },
+     {
+       url: '/favicon.ico',
+       route: 'home/Favicon'
+     }
+   ]);
+
+   easyInit.listen();
+```
 <a name="Bootstrap+listen"></a>
 ### bootstrap.listen()
 Listen server
 
 **Kind**: instance method of <code>[Bootstrap](#Bootstrap)</code>  
 **Since**: 1.0.0  
-**Author:** Igor Ivanovic  
 <a name="Bootstrap+setComponent"></a>
-### bootstrap.setComponent()
+### bootstrap.setComponent(key, config)
 Set component
 
 **Kind**: instance method of <code>[Bootstrap](#Bootstrap)</code>  
 **Since**: 1.0.0  
-**Author:** Igor Ivanovic  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| key | <code>String</code> |  |
+| config | <code>Object</code> | of component |
+
 <a name="Bootstrap+hasComponent"></a>
-### bootstrap.hasComponent()
+### bootstrap.hasComponent(key)
 Check if has component
 
 **Kind**: instance method of <code>[Bootstrap](#Bootstrap)</code>  
 **Since**: 1.0.0  
-**Author:** Igor Ivanovic  
+
+| Param | Type |
+| --- | --- |
+| key | <code>String</code> | 
+
 <a name="Bootstrap+getComponent"></a>
-### bootstrap.getComponent()
+### bootstrap.getComponent(key)
 Get component
 
 **Kind**: instance method of <code>[Bootstrap](#Bootstrap)</code>  
 **Since**: 1.0.0  
-**Author:** Igor Ivanovic  
+
+| Param | Type |
+| --- | --- |
+| key | <code>String</code> | 
+

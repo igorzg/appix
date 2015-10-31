@@ -2,153 +2,114 @@
 ## Request
 **Kind**: global class  
 **Since**: 1.0.0  
-**Author:** Igor Ivanovic  
 **License**: Mit Licence 2015  
 
 * [Request](#Request)
-  * [new Request()](#new_Request_new)
-  * [.toString(noClean)](#Request+toString)
-  * [.getParsedUrl()](#Request+getParsedUrl)
-  * [.getMethod()](#Request+getMethod)
-  * [.getPathname()](#Request+getPathname)
-  * [.getParams()](#Request+getParams)
-  * [.getRequestHeaders()](#Request+getRequestHeaders)
-  * [.getRequestDomain()](#Request+getRequestDomain)
-  * [.getRequestRemoteAddress()](#Request+getRequestRemoteAddress)
-  * [.getRequestRemotePort()](#Request+getRequestRemotePort)
-  * [.getRequestLocalAddress()](#Request+getRequestLocalAddress)
-  * [.getRequestLocalPort()](#Request+getRequestLocalPort)
+  * [new Request(bootstrap, request, url)](#new_Request_new)
+  * [.getParsedUrl()](#Request+getParsedUrl) ⇒ <code>Object</code>
+  * [.getMethod()](#Request+getMethod) ⇒ <code>String</code>
+  * [.getPathname()](#Request+getPathname) ⇒ <code>String</code>
+  * [.getParams()](#Request+getParams) ⇒ <code>Map</code>
+  * [.getRequestHeaders()](#Request+getRequestHeaders) ⇒ <code>Object</code>
+  * [.getRequestDomain()](#Request+getRequestDomain) ⇒ <code>String</code>
+  * [.getRequestRemoteAddress()](#Request+getRequestRemoteAddress) ⇒ <code>String</code>
+  * [.getRequestRemotePort()](#Request+getRequestRemotePort) ⇒ <code>Number</code>
+  * [.getRequestLocalAddress()](#Request+getRequestLocalAddress) ⇒ <code>String</code>
+  * [.getRequestLocalPort()](#Request+getRequestLocalPort) ⇒ <code>Number</code>
   * [.onEnd()](#Request+onEnd)
-  * [.getRequestBody()](#Request+getRequestBody)
-  * [.render()](#Request+render)
-  * [.forward()](#Request+forward)
+  * [.getRequestBody()](#Request+getRequestBody) ⇒ <code>Buffer</code>
   * [.forwardRoute(route, params)](#Request+forwardRoute)
   * [.forwardUrl(url)](#Request+forwardUrl)
-  * [.handleModule(moduleName, controllerName, actionName)](#Request+handleModule)
-  * [.handleController(controllerName, actionName)](#Request+handleController)
-  * [.process()](#Request+process)
 
 <a name="new_Request_new"></a>
-### new Request()
+### new Request(bootstrap, request, url)
 This class is responsible for processing request
 
-<a name="Request+toString"></a>
-### request.toString(noClean)
-To string representation
 
-**Kind**: instance method of <code>[Request](#Request)</code>  
-**Since**: 1.0.0  
-**Author:** Igor Ivanovic  
-
-| Param | Type |
-| --- | --- |
-| noClean | <code>Boolean</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| bootstrap | <code>Bootstrap</code> | instance |
+| request | <code>Object</code> | config |
+| url | <code>String</code> |  |
 
 <a name="Request+getParsedUrl"></a>
-### request.getParsedUrl()
+### request.getParsedUrl() ⇒ <code>Object</code>
 Return parsed url
 
 **Kind**: instance method of <code>[Request](#Request)</code>  
 **Since**: 1.0.0  
-**Author:** Igor Ivanovic  
 <a name="Request+getMethod"></a>
-### request.getMethod()
-Return method
+### request.getMethod() ⇒ <code>String</code>
+Get request method
 
 **Kind**: instance method of <code>[Request](#Request)</code>  
 **Since**: 1.0.0  
-**Author:** Igor Ivanovic  
 <a name="Request+getPathname"></a>
-### request.getPathname()
+### request.getPathname() ⇒ <code>String</code>
 Return request pathname
 
 **Kind**: instance method of <code>[Request](#Request)</code>  
 **Since**: 1.0.0  
-**Author:** Igor Ivanovic  
 <a name="Request+getParams"></a>
-### request.getParams()
+### request.getParams() ⇒ <code>Map</code>
 Return request url query
 
 **Kind**: instance method of <code>[Request](#Request)</code>  
 **Since**: 1.0.0  
-**Author:** Igor Ivanovic  
 <a name="Request+getRequestHeaders"></a>
-### request.getRequestHeaders()
+### request.getRequestHeaders() ⇒ <code>Object</code>
 Return request headers
 
 **Kind**: instance method of <code>[Request](#Request)</code>  
 **Since**: 1.0.0  
-**Author:** Igor Ivanovic  
 <a name="Request+getRequestDomain"></a>
-### request.getRequestDomain()
+### request.getRequestDomain() ⇒ <code>String</code>
 Return request domain
 
 **Kind**: instance method of <code>[Request](#Request)</code>  
 **Since**: 1.0.0  
-**Author:** Igor Ivanovic  
 <a name="Request+getRequestRemoteAddress"></a>
-### request.getRequestRemoteAddress()
+### request.getRequestRemoteAddress() ⇒ <code>String</code>
 Request remote ip address
 
 **Kind**: instance method of <code>[Request](#Request)</code>  
 **Since**: 1.0.0  
-**Author:** Igor Ivanovic  
 <a name="Request+getRequestRemotePort"></a>
-### request.getRequestRemotePort()
+### request.getRequestRemotePort() ⇒ <code>Number</code>
 Request remote port
 
 **Kind**: instance method of <code>[Request](#Request)</code>  
 **Since**: 1.0.0  
-**Author:** Igor Ivanovic  
 <a name="Request+getRequestLocalAddress"></a>
-### request.getRequestLocalAddress()
+### request.getRequestLocalAddress() ⇒ <code>String</code>
 Request locals address
 
 **Kind**: instance method of <code>[Request](#Request)</code>  
 **Since**: 1.0.0  
-**Author:** Igor Ivanovic  
 <a name="Request+getRequestLocalPort"></a>
-### request.getRequestLocalPort()
+### request.getRequestLocalPort() ⇒ <code>Number</code>
 Request local port
 
 **Kind**: instance method of <code>[Request](#Request)</code>  
 **Since**: 1.0.0  
-**Author:** Igor Ivanovic  
 <a name="Request+onEnd"></a>
 ### request.onEnd()
-On end process destroy event
+Add custom events on destroy event
 
 **Kind**: instance method of <code>[Request](#Request)</code>  
 **Since**: 1.0.0  
-**Author:** Igor Ivanovic  
 <a name="Request+getRequestBody"></a>
-### request.getRequestBody()
+### request.getRequestBody() ⇒ <code>Buffer</code>
 Return request body
 
 **Kind**: instance method of <code>[Request](#Request)</code>  
 **Since**: 1.0.0  
-**Author:** Igor Ivanovic  
-<a name="Request+render"></a>
-### request.render()
-Render data
-
-**Kind**: instance method of <code>[Request](#Request)</code>  
-**Since**: 1.0.0  
-**Author:** Igor Ivanovic  
-<a name="Request+forward"></a>
-### request.forward()
-Forward to new request
-
-**Kind**: instance method of <code>[Request](#Request)</code>  
-**Since**: 1.0.0  
-**Author:** Igor Ivanovic  
 <a name="Request+forwardRoute"></a>
 ### request.forwardRoute(route, params)
 Forward route
 
 **Kind**: instance method of <code>[Request](#Request)</code>  
 **Since**: 1.0.0  
-**Author:** Igor Ivanovic  
 
 | Param | Type |
 | --- | --- |
@@ -161,43 +122,8 @@ Forward url
 
 **Kind**: instance method of <code>[Request](#Request)</code>  
 **Since**: 1.0.0  
-**Author:** Igor Ivanovic  
 
 | Param | Type |
 | --- | --- |
 | url | <code>String</code> | 
 
-<a name="Request+handleModule"></a>
-### request.handleModule(moduleName, controllerName, actionName)
-Handle module
-
-**Kind**: instance method of <code>[Request](#Request)</code>  
-**Since**: 1.0.0  
-**Author:** Igor Ivanovic  
-
-| Param | Type |
-| --- | --- |
-| moduleName | <code>String</code> | 
-| controllerName | <code>String</code> | 
-| actionName | <code>String</code> | 
-
-<a name="Request+handleController"></a>
-### request.handleController(controllerName, actionName)
-Handle controller
-
-**Kind**: instance method of <code>[Request](#Request)</code>  
-**Since**: 1.0.0  
-**Author:** Igor Ivanovic  
-
-| Param | Type |
-| --- | --- |
-| controllerName | <code>String</code> | 
-| actionName | <code>String</code> | 
-
-<a name="Request+process"></a>
-### request.process()
-Process request
-
-**Kind**: instance method of <code>[Request](#Request)</code>  
-**Since**: 1.0.0  
-**Author:** Igor Ivanovic  

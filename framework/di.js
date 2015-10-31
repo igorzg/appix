@@ -2,15 +2,15 @@
 
 let DiNode = require('di-node');
 let Type = require('typed-js');
+
 /**
  * @license Mit Licence 2015
  * @since 1.0.0
- * @author Igor Ivanovic
- * @name DI
+ * @module easy-node
+ * @exports easy-node
  *
- * @constructor
- * @description
- * Extend di implementation
+ * @class
+ * @name DI
  */
 class DI extends DiNode {
     constructor(require) {
@@ -19,15 +19,16 @@ class DI extends DiNode {
         });
         this.instances = new Map();
     }
-
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name DI#uuid
-     *
      * @description
      * Generate universally unique identifier
+     * @return {String}
+     * @example
+     * let di = require('easy-node');
+     * di.uuid();
      */
     uuid() {
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
@@ -41,15 +42,24 @@ class DI extends DiNode {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
-     * @name async
-     *
+     * @name DI#async
+     * @param {Function} genFunc generator
      * @description
-     * Write nice async functions
+     * Use di.async to write easier async functions
+     *
+     * @return {Promise}
+     * @example
+     * let di = require('easy-node');
+     * di.async(function* gen() {
+     *      let one = yield asyncFunc();
+     *      let two = yield asyncFunc2(one);
+     *      let three = yield asyncFunc3(two);
+     *      return three;
+     * });
      */
-    async(createGenerator) {
-        var generator = createGenerator();
+    async(genFunc) {
+        var generator = genFunc();
 
         try {
             return handle(generator.next());
@@ -68,7 +78,6 @@ class DI extends DiNode {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name DI#setInstance
      * @param {String} key
@@ -86,7 +95,6 @@ class DI extends DiNode {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name DI#getInstance
      * @param {String} key
@@ -100,7 +108,6 @@ class DI extends DiNode {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name DI#mock
      * @param {String} file
@@ -139,5 +146,4 @@ let di = new DI(require);
 // set Alias of easy node
 di.setAlias('en', __dirname);
 
-// export new di
 module.exports = di;

@@ -5,12 +5,38 @@ let Type = di.load('typed-js');
 /**
  * @license Mit Licence 2015
  * @since 1.0.0
- * @author Igor Ivanovic
  * @name Filter
- *
+ * @param {Bootstrap} bootstrap instance
+ * @param {Object} config object
+ * @param {Object} types extend current types while inheriting from filter
  * @constructor
  * @description
- * This class is responsible for filters in application
+ * Controller filters. Filters are executed before and after controller process.
+ * If you want to do etc. Http caching, Zipping output and similar stuff it's better to use filters.
+ * Override beforeEach and afterEach function when needed
+ * @example
+ * let di = require('easy-node');
+ * let Filter = di.load('@{en}/Filter');
+ *
+ * class Http extends Filter{
+ *
+ *      beforeEach() {
+ *          let that = this;
+ *          return di.async(function* gen() {
+ *              let cache = yield cacheService.get('mykey');
+ *              if (!!cache) {
+ *                  that.stopChain();
+ *                  return cache;
+ *              }
+ *              return false;
+ *          });
+ *      }
+ *
+ *      afterEach(output) {
+ *          cacheService.set('key', output);
+ *          return output;
+ *      }
+ * }
  */
 class Filter extends Type {
 
@@ -32,7 +58,6 @@ class Filter extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Filter#beforeEach
      *
@@ -45,15 +70,14 @@ class Filter extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Filter#afterEach
      *
      * @description
      * Apply after each function
      */
-    afterEach(action) {
-        return Promise.resolve(action);
+    afterEach(output) {
+        return Promise.resolve(output);
     }
 }
 

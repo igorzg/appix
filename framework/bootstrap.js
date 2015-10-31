@@ -12,14 +12,42 @@ const COMPONENTS = [
 /**
  * @license Mit Licence 2015
  * @since 1.0.0
- * @author Igor Ivanovic
  * @name Bootstrap
  * @param {Object} appConfig
  * @param {Function} callback
  *
  * @constructor
  * @description
- * This class is used for component delivery service and bootstraping application
+ * Use Bootstrap class to bootstrap an application.
+ * It could be with server listen but it could be server side simulation to.
+ * @example
+ *    'use strict';
+ *    let di = require('easy-node');
+ *    let Bootstrap = di.load('@{en}/bootstrap');
+ *    // bootstrap application
+ *    let easyInit = new Bootstrap({
+ *       listenPort: 9500,
+ *       appPath:  __dirname + '/app'
+ *    }, function dynamicComponentConfig(components) {
+ *       components.set('my-component', {});
+ *    });
+ *
+ *    di.setInstance('en-demo', easyInit);
+ *
+ *    let router = easyInit.getComponent('en/router');
+ *
+ *    router.add([
+ *      {
+ *        url: '/',
+ *        route: 'app/Index'
+ *      },
+ *      {
+ *        url: '/favicon.ico',
+ *        route: 'home/Favicon'
+ *      }
+ *    ]);
+ *
+ *    easyInit.listen();
  */
 class Bootstrap extends Type {
 
@@ -134,7 +162,6 @@ class Bootstrap extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Bootstrap#listen
      *
@@ -176,9 +203,10 @@ class Bootstrap extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Bootstrap#setComponent
+     * @param {String} key
+     * @param {Object} config of component
      *
      * @description
      * Set component
@@ -215,9 +243,9 @@ class Bootstrap extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Bootstrap#hasComponent
+     * @param {String} key
      *
      * @description
      * Check if has component
@@ -228,9 +256,9 @@ class Bootstrap extends Type {
 
     /**
      * @since 1.0.0
-     * @author Igor Ivanovic
      * @function
      * @name Bootstrap#getComponent
+     * @param {String} key
      *
      * @description
      * Get component
