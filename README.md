@@ -3,10 +3,15 @@
 * Lightweight application framework with dyependency injection and dynamic type checking for node js
 * This application framework is improved version of mvcjs nodejs framework
 
-**Hello world in appix**  
+## Features
+1. Appix follow [reactive](http://www.reactivemanifesto.org/) pattern. 
+2. Catch all runtime/syntax errors
+3. Has a dependency injection
+4. Built on top of ES6
 
-1. app/env.json
-```json
+**Hello world example in appix**  
+
+1. app/env.json ```json
 {
   "aliases": {
     "models": "@{appPath}/models",
@@ -26,8 +31,7 @@
 }
 ```
 
-2. app/index.js
-```js
+2. app/index.js ```js
 'use strict';
 let di = require('appix');
 let Bootstrap = di.load('@{appix}/bootstrap');
@@ -36,8 +40,11 @@ let init = new Bootstrap({
   listenPort: 9000,
   appPath:  __dirname + '/'
 });
+// set bootstrapped instance under custom name
 di.setInstance('node', init);
+// get router component
 let router = init.getComponent('appix/router');
+// add some routes
 router.add([
  {
    url: '/',
@@ -48,11 +55,11 @@ router.add([
    route: 'home/Favicon'
  }
 ]);
+// run server
 init.listen();
 ```
 
-3. app/controllers/home.js
-```js
+3. app/controllers/home.js ```js
 let di = require('appix');
 let Controller = di.load('@{appix}/controller');
 class App extends Controller {
