@@ -12,12 +12,12 @@ describe('bootstrap\n', () => {
     "helpers": "@{appPath}/helpers"
   },
   "components": {
-    "en/logger": {
+    "appix/logger": {
       "enabled": false,
       "console": true,
       "level": 10
     },
-    "en/router": {
+    "appix/router": {
       "useCustomErrorHandler": true
     }
   }
@@ -26,11 +26,11 @@ describe('bootstrap\n', () => {
 
     };
     let path = {};
-    let Bootstrap = di.mock('@{en}/bootstrap', {
-        '@{en}/component': Map,
+    let Bootstrap = di.mock('@{appix}/bootstrap', {
+        '@{appix}/component': Map,
         'fs': fs,
         'path': path,
-        '@{en}/error': di.load('@{en}/error'),
+        '@{appix}/error': di.load('@{appix}/error'),
         'typed-js': di.load('typed-js')
     });
     let bootstrap;
@@ -72,14 +72,14 @@ describe('bootstrap\n', () => {
         }
         expect(m).toBe(`Component is already initialized`);
         try {
-            bootstrap.setComponent('en/loggeras', {});
+            bootstrap.setComponent('appix/loggeras', {});
         } catch (e) {
             m = e.message;
         }
-        expect(m).toBe(`DI.load en/loggeras => Error: Cannot find module 'en/loggeras'`);
+        expect(m).toBe(`DI.load appix/loggeras => Error: Cannot find module 'appix/loggeras'`);
 
         try {
-            bootstrap.setComponent('en/loggeras', function() {});
+            bootstrap.setComponent('appix/loggeras', function() {});
         } catch (e) {
             m = e.message;
         }

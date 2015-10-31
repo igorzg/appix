@@ -9,13 +9,13 @@ describe('router rule', () => {
     };
     let app = {
         getComponent: function (key) {
-            if (key === 'en/logger') {
+            if (key === 'appix/logger') {
                 return logger;
             }
         }
     };
-    let RouteRule = di.mock('@{en}/route-rule', {
-        '@{en}/error': di.load('@{en}/error'),
+    let RouteRule = di.mock('@{appix}/route-rule', {
+        '@{appix}/error': di.load('@{appix}/error'),
         'typed-js': di.load('typed-js')
     });
 

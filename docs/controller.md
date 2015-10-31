@@ -42,9 +42,9 @@ All application controllers should be inherited from controller class
 
 **Example**  
 ```js
-let di = require('easy-node');
- let Controller = di.load('@{en}/controller');
- let Filter = di.load('@{en}/filter');
+let di = require('appix');
+ let Controller = di.load('@{appix}/controller');
+ let Filter = di.load('@{appix}/filter');
  class F1 extends Filter {
    afterEach(data) {
       return di.async(function* gen() {

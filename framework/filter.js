@@ -15,8 +15,8 @@ let Type = di.load('typed-js');
  * If you want to do etc. Http caching, Zipping output and similar stuff it's better to use filters.
  * Override beforeEach and afterEach function when needed
  * @example
- * let di = require('easy-node');
- * let Filter = di.load('@{en}/Filter');
+ * let di = require('appix');
+ * let Filter = di.load('@{appix}/Filter');
  *
  * class Http extends Filter{
  *
@@ -46,7 +46,7 @@ class Filter extends Type {
             priority: Type.NUMBER,
             route: Type.STRING
         }, types));
-        let logger = bootstrap.getComponent('en/logger');
+        let logger = bootstrap.getComponent('appix/logger');
         logger.info('Add filter', {
             priority: config.priority,
             route: config.route

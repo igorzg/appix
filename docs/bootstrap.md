@@ -25,8 +25,8 @@ It could be with server listen but it could be server side simulation to.
 **Example**  
 ```js
 'use strict';
-   let di = require('easy-node');
-   let Bootstrap = di.load('@{en}/bootstrap');
+   let di = require('appix');
+   let Bootstrap = di.load('@{appix}/bootstrap');
    // bootstrap application
    let easyInit = new Bootstrap({
       listenPort: 9500,
@@ -37,7 +37,7 @@ It could be with server listen but it could be server side simulation to.
 
    di.setInstance('en-demo', easyInit);
 
-   let router = easyInit.getComponent('en/router');
+   let router = easyInit.getComponent('appix/router');
 
    router.add([
      {

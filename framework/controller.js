@@ -2,8 +2,8 @@
 
 let di = require('./di');
 let Type = di.load('typed-js');
-let error = di.load('@{en}/error');
-let Filter = di.load('@{en}/filter');
+let error = di.load('@{appix}/error');
+let Filter = di.load('@{appix}/filter');
 /**
  * @license Mit Licence 2015
  * @since 1.0.0
@@ -15,9 +15,9 @@ let Filter = di.load('@{en}/filter');
  * Controller is constructed on each request.
  * All application controllers should be inherited from controller class
  * @example
- *  let di = require('easy-node');
- *  let Controller = di.load('@{en}/controller');
- *  let Filter = di.load('@{en}/filter');
+ *  let di = require('appix');
+ *  let Controller = di.load('@{appix}/controller');
+ *  let Filter = di.load('@{appix}/filter');
  *  class F1 extends Filter {
  *    afterEach(data) {
  *       return di.async(function* gen() {
@@ -387,7 +387,7 @@ class Controller extends Type {
             route: route || '*'
         });
         if (!(filter instanceof Filter)) {
-            throw new error.HttpException(500, `Filter must be inherited from @{en}/filter`);
+            throw new error.HttpException(500, `Filter must be inherited from @{appix}/filter`);
         }
         this.__filters__.push(filter);
     }

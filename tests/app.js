@@ -1,6 +1,6 @@
 'use strict';
 let di = require('../');
-let Bootstrap = di.load('@{en}/bootstrap');
+let Bootstrap = di.load('@{appix}/bootstrap');
 // bootstrap application
 let easyInit = new Bootstrap({
     listenPort: 9500,
@@ -11,7 +11,7 @@ let easyInit = new Bootstrap({
 
 di.setInstance('en-demo', easyInit);
 
-let router = easyInit.getComponent('en/router');
+let router = easyInit.getComponent('appix/router');
 
 router.add([
     {

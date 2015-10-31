@@ -2,7 +2,7 @@
 
 let di = require('./di');
 let Type = di.load('typed-js');
-let error = di.load('@{en}/error');
+let error = di.load('@{appix}/error');
 let logger;
 const IS_ANY_PATTERN = /<([^>]+)>/;
 const PATTERN_MATCH = /<(\w+):([^>]+)>/g;
@@ -31,7 +31,7 @@ class RouteRule extends Type {
             bootstrap: Type.OBJECT
         }, types));
 
-        logger = bootstrap.getComponent('en/logger');
+        logger = bootstrap.getComponent('appix/logger');
 
         this.bootstrap = bootstrap;
         this.validMethods = ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'TRACE', 'OPTIONS', 'CONNECT', 'PATCH'];

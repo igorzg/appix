@@ -1,7 +1,7 @@
 'use strict';
 
 let di = require('./di');
-let core = di.load('@{en}/core');
+let core = di.load('@{appix}/core');
 /**
  * @license Mit Licence 2015
  * @since 1.0.0

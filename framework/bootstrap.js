@@ -2,12 +2,12 @@
 
 let di = require('./di');
 let Type = di.load('typed-js');
-let error = di.load('@{en}/error');
+let error = di.load('@{appix}/error');
 let fs = di.load('fs');
 const COMPONENTS = [
-    'en/logger',
-    'en/router',
-    'en/server'
+    'appix/logger',
+    'appix/router',
+    'appix/server'
 ];
 /**
  * @license Mit Licence 2015
@@ -22,8 +22,8 @@ const COMPONENTS = [
  * It could be with server listen but it could be server side simulation to.
  * @example
  *    'use strict';
- *    let di = require('easy-node');
- *    let Bootstrap = di.load('@{en}/bootstrap');
+ *    let di = require('appix');
+ *    let Bootstrap = di.load('@{appix}/bootstrap');
  *    // bootstrap application
  *    let easyInit = new Bootstrap({
  *       listenPort: 9500,
@@ -34,7 +34,7 @@ const COMPONENTS = [
  *
  *    di.setInstance('en-demo', easyInit);
  *
- *    let router = easyInit.getComponent('en/router');
+ *    let router = easyInit.getComponent('appix/router');
  *
  *    router.add([
  *      {
@@ -169,10 +169,10 @@ class Bootstrap extends Type {
      * Listen server
      */
     listen() {
-        let logger = this.getComponent('en/logger');
-        let server = this.getComponent('en/server');
+        let logger = this.getComponent('appix/logger');
+        let server = this.getComponent('appix/server');
 
-        let Request = di.load('@{en}/request');
+        let Request = di.load('@{appix}/request');
 
         server.on('request', (request, response) => {
             di.setAlias('controllersPath', this.defaults.controllersPath);
@@ -223,7 +223,7 @@ class Bootstrap extends Type {
         if (Type.isString(config.filePath)) {
             Component = di.load(config.filePath);
         } else if (COMPONENTS.indexOf(key) > -1) {
-            Component = di.load('@{en}/components/' + key.slice(3));
+            Component = di.load('@{appix}/components/' + key.slice(5));
         } else if (!Type.isFunction(config)) {
             Component = di.load(key);
         }

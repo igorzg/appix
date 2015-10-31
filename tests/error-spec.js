@@ -2,7 +2,7 @@
 
 describe('error', () => {
     let di = require('../');
-    let error = di.load('@{en}/error');
+    let error = di.load('@{appix}/error');
 
     it('should throw Exception', function throwException() {
         let m;

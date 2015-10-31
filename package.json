@@ -1,8 +1,8 @@
 {
-  "name": "easynode",
+  "name": "appix",
   "main": "./framework/di.js",
-  "description": "Easynode is lightweight node js framework",
-  "version": "1.0.0",
+  "description": "Lightweight application framework with dyependency injection and dynamic type checking for node js",
+  "version": "1.0.0-alpha-01",
   "dependencies": {
     "di-node": "0.2.x",
     "typed-js": "0.2.x"
@@ -19,20 +19,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/igorzg/easy-node.git"
+    "url": "git://github.com/igorzg/appix.git"
   },
   "bugs": {
-    "url": "https://github.com/igorzg/easy-node/issues",
+    "url": "https://github.com/igorzg/appix/issues",
     "email": "igor.zg1987@gmail.com"
   },
-  "homepage": "https://github.com/igorzg/easy-node",
+  "homepage": "https://github.com/igorzg/appix",
   "author": {
     "name": "Igor Ivanovic",
     "email": "igor.zg1987@gmail.com"
   },
   "keywords": [
-    "easy",
-    "easynode",
+    "appix",
     "node",
     "framework"
   ],

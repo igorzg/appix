@@ -2,8 +2,8 @@
 
 let di = require('../di');
 let Type = di.load('typed-js');
-let core = di.load('@{en}/core');
-let error = di.load('@{en}/error');
+let core = di.load('@{appix}/core');
+let error = di.load('@{appix}/error');
 /**
  * @license Mit Licence 2015
  * @since 1.0.0

@@ -4,9 +4,9 @@ let di = require('./di');
 let Type = di.load('typed-js');
 let EventEmitter = di.load('events');
 let URLParser = di.load('url');
-let error = di.load('@{en}/error');
-let core = di.load('@{en}/core');
-let Controller = di.load('@{en}/controller');
+let error = di.load('@{appix}/error');
+let core = di.load('@{appix}/core');
+let Controller = di.load('@{appix}/controller');
 let logger;
 let router;
 
@@ -41,8 +41,8 @@ class Request extends Type {
             statusCode: Type.NUMBER,
             responseHeaders: Type.OBJECT
         });
-        logger = bootstrap.getComponent('en/logger');
-        router = bootstrap.getComponent('en/router');
+        logger = bootstrap.getComponent('appix/logger');
+        router = bootstrap.getComponent('appix/router');
         this.bootstrap = bootstrap;
         this.response = config.response;
         this.request = config.request;
@@ -387,7 +387,7 @@ class Request extends Type {
         });
 
         if (!(controller instanceof Controller)) {
-            throw new error.HttpException(500, `${controllerName} must be inherited from @{en}/controller`, {
+            throw new error.HttpException(500, `${controllerName} must be inherited from @{appix}/controller`, {
                 controllerName,
                 actionName
             });

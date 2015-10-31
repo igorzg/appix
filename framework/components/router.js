@@ -2,8 +2,8 @@
 
 let di = require('../di');
 let Type = di.load('typed-js');
-let error = di.load('@{en}/error');
-let RouteRule = di.load('@{en}/route-rule');
+let error = di.load('@{appix}/error');
+let RouteRule = di.load('@{appix}/route-rule');
 let logger;
 /**
  * @license Mit Licence 2015
@@ -36,7 +36,7 @@ class Router extends Type {
         this.methods = ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'TRACE', 'OPTIONS', 'CONNECT', 'PATCH'];
         this.useCustomErrorHandler = config.useCustomErrorHandler;
 
-        logger = bootstrap.getComponent('en/logger');
+        logger = bootstrap.getComponent('appix/logger');
         logger.info('Router.constructor', {
             config: config,
             instance: this

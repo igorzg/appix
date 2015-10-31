@@ -6,7 +6,7 @@ let Type = require('typed-js');
 /**
  * @license Mit Licence 2015
  * @since 1.0.0
- * @module easy-node
+ * @module appix
  *
  * @class
  * @name DI
@@ -26,7 +26,7 @@ class DI extends DiNode {
      * Generate universally unique identifier
      * @return {String}
      * @example
-     * let di = require('easy-node');
+     * let di = require('appix');
      * di.uuid();
      */
     uuid() {
@@ -49,7 +49,7 @@ class DI extends DiNode {
      *
      * @return {Promise}
      * @example
-     * let di = require('easy-node');
+     * let di = require('appix');
      * di.async(function* gen() {
      *      let one = yield asyncFunc();
      *      let two = yield asyncFunc2(one);
@@ -143,6 +143,6 @@ class DI extends DiNode {
 // Instantiate new di
 let di = new DI(require);
 // set Alias of easy node
-di.setAlias('en', __dirname);
+di.setAlias('appix', __dirname);
 
 module.exports = di;

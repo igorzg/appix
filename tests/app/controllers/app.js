@@ -2,9 +2,9 @@
 
 let di = require('../../../');
 let key = 'en-demo';
-let logger = di.getInstance(key).getComponent('en/logger');
-let Controller = di.load('@{en}/controller');
-let Filter = di.load('@{en}/filter');
+let logger = di.getInstance(key).getComponent('appix/logger');
+let Controller = di.load('@{appix}/controller');
+let Filter = di.load('@{appix}/filter');
 class F1 extends Filter {
     afterEach(data) {
 

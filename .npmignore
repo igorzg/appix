@@ -9,3 +9,4 @@ gulpfile.js
 /.jscsrc
 /.jshintrc
 /.travis.yml
+/docs

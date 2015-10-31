@@ -19,7 +19,7 @@ Generate universally unique identifier
 **Since**: 1.0.0  
 **Example**  
 ```js
-let di = require('easy-node');
+let di = require('appix');
 di.uuid();
 ```
 <a name="DI+async"></a>
@@ -35,7 +35,7 @@ Use di.async to write easier async functions
 
 **Example**  
 ```js
-let di = require('easy-node');
+let di = require('appix');
 di.async(function* gen() {
      let one = yield asyncFunc();
      let two = yield asyncFunc2(one);

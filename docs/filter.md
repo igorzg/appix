@@ -24,8 +24,8 @@ Override beforeEach and afterEach function when needed
 
 **Example**  
 ```js
-let di = require('easy-node');
-let Filter = di.load('@{en}/Filter');
+let di = require('appix');
+let Filter = di.load('@{appix}/Filter');
 
 class Http extends Filter{
 

@@ -14,16 +14,16 @@ describe('router', () => {
     };
     let app = {
         getComponent: (key) => {
-            if (key === 'en/logger') {
+            if (key === 'appix/logger') {
                 return logger;
             }
         }
     };
 
-    let Router = di.mock('@{en}/components/router', {
+    let Router = di.mock('@{appix}/components/router', {
         'typed-js': di.load('typed-js'),
-        '@{en}/error': di.load('@{en}/error'),
-        '@{en}/route-rule': RouteRule
+        '@{appix}/error': di.load('@{appix}/error'),
+        '@{appix}/route-rule': RouteRule
     });
     let routerInstance;
 

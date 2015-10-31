@@ -2,7 +2,7 @@
 
 describe('logger', () => {
     let di = require('../');
-    let Logger = di.load('@{en}/components/logger');
+    let Logger = di.load('@{appix}/components/logger');
 
     function log() {
     }
