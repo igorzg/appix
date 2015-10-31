@@ -65,6 +65,7 @@ init.listen();
 
 - app/controllers/home.js 
 ```js
+'use strict';
 let di = require('appix');
 let Controller = di.load('@{appix}/controller');
 class App extends Controller {
