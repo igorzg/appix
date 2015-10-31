@@ -269,7 +269,6 @@ class Request extends Type {
         });
     }
 
-
     /**
      * @since 1.0.0
      * @author Igor Ivanovic
@@ -367,20 +366,20 @@ class Request extends Type {
 
         let ControllerToInitialize = di.load('@{controllersPath}/' + controllerName);
         let controller = new ControllerToInitialize({
-            getMethod: this.getMethod.bind(this),
-            getParams: this.getParams.bind(this),
-            getParsedUrl: this.getParsedUrl.bind(this),
-            getRequestBody: this.getRequestBody.bind(this),
-            getPathname: this.getPathname.bind(this),
-            getRequestDomain: this.getRequestDomain.bind(this),
-            getRequestHeaders: this.getRequestHeaders.bind(this),
-            getRequestLocalAddress: this.getRequestLocalAddress.bind(this),
-            getRequestLocalPort: this.getRequestLocalPort.bind(this),
-            getRequestRemoteAddress: this.getRequestRemoteAddress.bind(this),
-            getRequestRemotePort: this.getRequestRemotePort.bind(this),
-            onEnd: this.onEnd.bind(this),
-            forwardRoute: this.forwardRoute.bind(this),
-            forwardUrl: this.forwardUrl.bind(this),
+            getMethod: () => this.getMethod,
+            getParams: () => this.getParams,
+            getParsedUrl: () => this.getParsedUrl,
+            getRequestBody: () => this.getRequestBody,
+            getPathname: () => this.getPathname,
+            getRequestDomain: () => this.getRequestDomain,
+            getRequestHeaders: () => this.getRequestHeaders,
+            getRequestLocalAddress: () => this.getRequestLocalAddress,
+            getRequestLocalPort: () => this.getRequestLocalPort,
+            getRequestRemoteAddress: () => this.getRequestRemoteAddress,
+            getRequestRemotePort: () => this.getRequestRemotePort,
+            onEnd: () => this.onEnd,
+            forwardRoute: () => this.forwardRoute,
+            forwardUrl: () => this.forwardUrl,
             id: this.id,
             bootstrap: this.bootstrap,
             controller: controllerName,

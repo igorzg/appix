@@ -4,7 +4,6 @@ let di = require('./di');
 let Type = di.load('typed-js');
 let error = di.load('@{en}/error');
 let Filter = di.load('@{en}/filter');
-let logger;
 /**
  * @license Mit Licence 2015
  * @since 1.0.0
@@ -26,18 +25,226 @@ class Controller extends Type {
         this.__request__ = api;
         this.__filters__ = [];
     }
+    /**
+     * @since 1.0.0
+     * @author Igor Ivanovic
+     * @function
+     * @name Controller#getMethod
+     *
+     * @description
+     * Return method
+     */
+    getMethod() {
+        return this.__request__.getMethod();
+    }
+    /**
+     * @since 1.0.0
+     * @author Igor Ivanovic
+     * @function
+     * @name Controller#getParams
+     *
+     * @description
+     * Return params
+     */
+    getParams() {
+        return this.__request__.getParams();
+    }
+    /**
+     * @since 1.0.0
+     * @author Igor Ivanovic
+     * @function
+     * @name Controller#getParsedUrl
+     *
+     * @description
+     * Return parsed url
+     */
+    getParsedUrl() {
+        return this.__request__.getParsedUrl();
+    }
+    /**
+     * @since 1.0.0
+     * @author Igor Ivanovic
+     * @function
+     * @name Controller#getRequestBody
+     *
+     * @description
+     * Get request body, return data sent to server.
+     */
+    getRequestBody() {
+        return this.__request__.getRequestBody();
+    }
+    /**
+     * @since 1.0.0
+     * @author Igor Ivanovic
+     * @function
+     * @name Controller#getPathname
+     *
+     * @description
+     * Get request pathname
+     */
+    getPathname() {
+        return this.__request__.getPathname();
+    }
+    /**
+     * @since 1.0.0
+     * @author Igor Ivanovic
+     * @function
+     * @name Controller#getRequestDomain
+     *
+     * @description
+     * Get request domain
+     */
+    getRequestDomain() {
+        return this.__request__.getRequestDomain();
+    }
+    /**
+     * @since 1.0.0
+     * @author Igor Ivanovic
+     * @function
+     * @name Controller#getRequestHeaders
+     *
+     * @description
+     * Get request headers
+     */
+    getRequestHeaders() {
+        return this.__request__.getRequestHeaders();
+    }
+    /**
+     * @since 1.0.0
+     * @author Igor Ivanovic
+     * @function
+     * @name Controller#getRequestLocalAddress
+     *
+     * @description
+     * Get request local address
+     */
+    getRequestLocalAddress() {
+        return this.__request__.getRequestLocalAddress();
+    }
+    /**
+     * @since 1.0.0
+     * @author Igor Ivanovic
+     * @function
+     * @name Controller#getRequestLocalPort
+     *
+     * @description
+     * Get request local port
+     */
+    getRequestLocalPort() {
+        return this.__request__.getRequestLocalPort();
+    }
+    /**
+     * @since 1.0.0
+     * @author Igor Ivanovic
+     * @function
+     * @name Controller#getRequestRemoteAddress
+     *
+     * @description
+     * Get request remote address
+     */
+    getRequestRemoteAddress() {
+        return this.__request__.getRequestRemoteAddress();
+    }
+    /**
+     * @since 1.0.0
+     * @author Igor Ivanovic
+     * @function
+     * @name Controller#getRequestRemotePort
+     *
+     * @description
+     * Get request remote port
+     */
+    getRequestRemotePort() {
+        return this.__request__.getRequestRemotePort();
+    }
+    /**
+     * @since 1.0.0
+     * @author Igor Ivanovic
+     * @function
+     * @name Controller#onEnd
+     *
+     * @description
+     * On end is an happening on destroy event
+     */
+    onEnd(callback) {
+        return this.__request__.onEnd(callback);
+    }
+    /**
+     * @since 1.0.0
+     * @author Igor Ivanovic
+     * @function
+     * @name Controller#forwardUrl
+     * @param {String} route
+     * @param {Object} params
+     *
+     * @description
+     * forward url
+     */
+    forwardRoute(route, params) {
+        return this.__request__.forwardRoute(route, params);
+    }
+    /**
+     * @since 1.0.0
+     * @author Igor Ivanovic
+     * @function
+     * @name Controller#forwardUrl
+     * @param {String} url
+     *
+     * @description
+     * forward url
+     */
+    forwardUrl(url) {
+        return this.__request__.forwardUrl(url);
+    }
+    /**
+     * @since 1.0.0
+     * @author Igor Ivanovic
+     * @function
+     * @name Controller#getRequestRoute
+     *
+     * @description
+     * Get request route
+     */
     getRequestRoute() {
         return this.__request__.route;
     }
+    /**
+     * @since 1.0.0
+     * @author Igor Ivanovic
+     * @function
+     * @name Controller#getRequestController
+     *
+     * @description
+     * Get request controller
+     */
     getRequestController() {
         return this.__request__.controller;
     }
+    /**
+     * @since 1.0.0
+     * @author Igor Ivanovic
+     * @function
+     * @name Controller#getRequestAction
+     *
+     * @description
+     * Get request action
+     */
     getRequestAction() {
         return this.__request__.action;
     }
+    /**
+     * @since 1.0.0
+     * @author Igor Ivanovic
+     * @function
+     * @name Controller#getRequestId
+     *
+     * @description
+     * Returns request id
+     */
     getRequestId() {
         return this.__request__.id;
     }
+
     /**
      * @since 1.0.0
      * @author Igor Ivanovic
@@ -59,6 +266,7 @@ class Controller extends Type {
             return 0;
         });
     }
+
     /**
      * @since 1.0.0
      * @author Igor Ivanovic
@@ -78,6 +286,7 @@ class Controller extends Type {
             return action;
         });
     }
+
     /**
      * @since 1.0.0
      * @author Igor Ivanovic
@@ -96,6 +305,7 @@ class Controller extends Type {
             return action;
         });
     }
+
     /**
      * @since 1.0.0
      * @author Igor Ivanovic
@@ -119,6 +329,7 @@ class Controller extends Type {
         }
         this.__filters__.push(filter);
     }
+
     /**
      * @since 1.0.0
      * @author Igor Ivanovic
@@ -131,6 +342,7 @@ class Controller extends Type {
     isChaining() {
         return this.__chaining__;
     }
+
     /**
      * @since 1.0.0
      * @author Igor Ivanovic
@@ -143,6 +355,7 @@ class Controller extends Type {
     stopChain() {
         this.__chaining__ = false;
     }
+
     /**
      * @since 1.0.0
      * @author Igor Ivanovic
@@ -155,6 +368,7 @@ class Controller extends Type {
     beforeEach() {
         return Promise.resolve(true);
     }
+
     /**
      * @since 1.0.0
      * @author Igor Ivanovic
