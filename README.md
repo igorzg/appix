@@ -11,7 +11,7 @@
 
  
 **Hello world example in appix**  
-**npm install appix**
+- **npm install appix**
 
 - app/env.json 
 ```json
