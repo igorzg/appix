@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Appix : es6, nodejs, javascript, reactive">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Appix</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/igorzg/appix">View on GitHub</a>
+
+          <h1 id="project_title">Appix</h1>
+          <h2 id="project_tagline">es6, nodejs, javascript, reactive</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/igorzg/appix/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/igorzg/appix/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="appix-100-alpha-01-" class="anchor" href="#appix-100-alpha-01-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Appix 1.0.0-alpha-01 <a href="https://travis-ci.org/igorzg/easynode"><img src="https://travis-ci.org/igorzg/easynode.svg?branch=master" alt="Build Status"></a>
+</h1>
+
+<ul>
+<li>Es6 Node.js framework dev version</li>
+<li>Lightweight application framework with dyependency injection and dynamic type checking for node js</li>
+<li>This application framework is improved version of mvcjs nodejs framework</li>
+</ul>
+
+<h2>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h2>
+
+<ol>
+<li>Appix follow <a href="http://www.reactivemanifesto.org/">reactive</a> design pattern. </li>
+<li>Catch all runtime/syntax errors</li>
+<li>Has a dependency injection</li>
+<li>Built on top of ES6</li>
+</ol>
+
+<p><strong>Hello world example in appix</strong>  </p>
+
+<ul>
+<li>app/env.json </li>
+</ul>
+
+<div class="highlight highlight-source-json"><pre>{
+  <span class="pl-s"><span class="pl-pds">"</span>aliases<span class="pl-pds">"</span></span>: {
+    <span class="pl-s"><span class="pl-pds">"</span>models<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>@{appPath}/models<span class="pl-pds">"</span></span>,
+    <span class="pl-s"><span class="pl-pds">"</span>views<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>@{appPath}/views<span class="pl-pds">"</span></span>,
+    <span class="pl-s"><span class="pl-pds">"</span>helpers<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>@{appPath}/helpers<span class="pl-pds">"</span></span>
+  },
+  <span class="pl-s"><span class="pl-pds">"</span>components<span class="pl-pds">"</span></span>: {
+    <span class="pl-s"><span class="pl-pds">"</span>appix/logger<span class="pl-pds">"</span></span>: {
+      <span class="pl-s"><span class="pl-pds">"</span>enabled<span class="pl-pds">"</span></span>: <span class="pl-c1">true</span>,
+      <span class="pl-s"><span class="pl-pds">"</span>console<span class="pl-pds">"</span></span>: <span class="pl-c1">true</span>,
+      <span class="pl-s"><span class="pl-pds">"</span>level<span class="pl-pds">"</span></span>: <span class="pl-c1">30</span>
+    },
+    <span class="pl-s"><span class="pl-pds">"</span>appix/router<span class="pl-pds">"</span></span>: {
+      <span class="pl-s"><span class="pl-pds">"</span>useCustomErrorHandler<span class="pl-pds">"</span></span>: <span class="pl-c1">false</span>
+    }
+  }
+}</pre></div>
+
+<ul>
+<li>app/index.js </li>
+</ul>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-s"><span class="pl-pds">'</span>use strict<span class="pl-pds">'</span></span>;
+<span class="pl-k">let</span> di <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>appix<span class="pl-pds">'</span></span>);
+<span class="pl-k">let</span> Bootstrap <span class="pl-k">=</span> di.<span class="pl-c1">load</span>(<span class="pl-s"><span class="pl-pds">'</span>@{appix}/bootstrap<span class="pl-pds">'</span></span>);
+<span class="pl-c">// bootstrap application</span>
+<span class="pl-k">let</span> init <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">Bootstrap</span>({
+  listenPort<span class="pl-k">:</span> <span class="pl-c1">9000</span>,
+  appPath<span class="pl-k">:</span>  <span class="pl-c1">__dirname</span> <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">'</span>/<span class="pl-pds">'</span></span>
+});
+<span class="pl-c">// set bootstrapped instance under custom name</span>
+di.setInstance(<span class="pl-s"><span class="pl-pds">'</span>node<span class="pl-pds">'</span></span>, init);
+<span class="pl-c">// get router component</span>
+<span class="pl-k">let</span> router <span class="pl-k">=</span> init.getComponent(<span class="pl-s"><span class="pl-pds">'</span>appix/router<span class="pl-pds">'</span></span>);
+<span class="pl-c">// add some routes</span>
+router.<span class="pl-c1">add</span>([
+ {
+   url<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>/<span class="pl-pds">'</span></span>,
+   route<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>home/Index<span class="pl-pds">'</span></span>
+ },
+ {
+   url<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>/favicon.ico<span class="pl-pds">'</span></span>,
+   route<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>home/Favicon<span class="pl-pds">'</span></span>
+ }
+]);
+<span class="pl-c">// run server</span>
+init.listen();</pre></div>
+
+<ul>
+<li>app/controllers/home.js </li>
+</ul>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">let</span> di <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>appix<span class="pl-pds">'</span></span>);
+<span class="pl-k">let</span> Controller <span class="pl-k">=</span> di.<span class="pl-c1">load</span>(<span class="pl-s"><span class="pl-pds">'</span>@{appix}/controller<span class="pl-pds">'</span></span>);
+<span class="pl-k">class</span> <span class="pl-en">App</span> <span class="pl-k">extends</span> <span class="pl-en">Controller</span> {
+    <span class="pl-en">actionIndex</span>() {
+        <span class="pl-k">return</span> <span class="pl-s"><span class="pl-pds">'</span>Hello world<span class="pl-pds">'</span></span>;
+    }
+}
+<span class="pl-c1">module</span>.exports <span class="pl-k">=</span> App;</pre></div>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Appix maintained by <a href="https://github.com/igorzg">igorzg</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-38394375-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+
+  </body>
+</html>
