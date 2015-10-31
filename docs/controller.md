@@ -35,10 +35,10 @@ Controller is constructed on each request.
 All application controllers should be inherited from controller class
 
 
-| Param | Type |
-| --- | --- |
-| api | <code>Object</code> | 
-| types | <code>Object</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| api | <code>Object</code> | limited request api |
+| types | <code>Object</code> |  |
 
 **Example**  
 ```js

@@ -13,6 +13,7 @@
 
 <a name="new_Server_new"></a>
 ### new Server()
+Server is a component in easy node application.
 Server class is responsible for publishing server by default that is http server.
 This is an mock over http service so we can provide custom one.
 If we want to use https, socket or similar we provide custom Server service.

@@ -5,19 +5,19 @@
 **License**: Mit Licence 2015  
 
 * [RouteRule](#RouteRule)
-  * [new RouteRule(app, config, types)](#new_RouteRule_new)
+  * [new RouteRule(bootstrap, config, types)](#new_RouteRule_new)
   * [.getPattern(url)](#RouteRule+getPattern)
   * [.parseRequest(pathname, method)](#RouteRule+parseRequest)
   * [.createUrl(route, params)](#RouteRule+createUrl)
 
 <a name="new_RouteRule_new"></a>
-### new RouteRule(app, config, types)
+### new RouteRule(bootstrap, config, types)
 Route rule is used to add route definitions to router
 
 
 | Param | Type | Description |
 | --- | --- | --- |
-| app | <code>Bootstrap</code> |  |
+| bootstrap | <code>Bootstrap</code> | instance |
 | config | <code>Object</code> |  |
 | types | <code>Object</code> | to extend route rule on inherit while implementing custom parseRequest and createUrl |
 

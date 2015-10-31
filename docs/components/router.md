@@ -5,20 +5,21 @@
 **License**: Mit Licence 2015  
 
 * [Router](#Router)
-  * [new Router(config, app)](#new_Router_new)
+  * [new Router(config, bootstrap)](#new_Router_new)
   * [.add(Rule)](#Router+add)
   * [.parseRequest(pathName, method, headers)](#Router+parseRequest)
   * [.createUrl(routeName, params)](#Router+createUrl)
 
 <a name="new_Router_new"></a>
-### new Router(config, app)
-Router handler for easy node
+### new Router(config, bootstrap)
+Router is a component in easy node application.
+Router handles routing for application.
 
 
-| Param | Type |
-| --- | --- |
-| config | <code>Object</code> | 
-| app | <code>Bootstrap</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| config | <code>Object</code> |  |
+| bootstrap | <code>Bootstrap</code> | instance |
 
 <a name="Router+add"></a>
 ### router.add(Rule)
