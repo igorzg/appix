@@ -1,10 +1,17 @@
-<a name="Router"></a>
-## Router
+<a name="RouteRule"></a>
+## RouteRule
 **Kind**: global class  
 **Since**: 1.0.0  
 **License**: Mit Licence 2015  
-<a name="new_Router_new"></a>
-### new Router(app, config, types)
+
+* [RouteRule](#RouteRule)
+  * [new RouteRule(app, config, types)](#new_RouteRule_new)
+  * [.getPattern(url)](#RouteRule+getPattern)
+  * [.parseRequest(pathname, method)](#RouteRule+parseRequest)
+  * [.createUrl(route, params)](#RouteRule+createUrl)
+
+<a name="new_RouteRule_new"></a>
+### new RouteRule(app, config, types)
 Route rule is used to add route definitions to router
 
 
@@ -13,4 +20,39 @@ Route rule is used to add route definitions to router
 | app | <code>Bootstrap</code> |  |
 | config | <code>Object</code> |  |
 | types | <code>Object</code> | to extend route rule on inherit while implementing custom parseRequest and createUrl |
+
+<a name="RouteRule+getPattern"></a>
+### routeRule.getPattern(url)
+Creates pattern based on url provided
+
+**Kind**: instance method of <code>[RouteRule](#RouteRule)</code>  
+**Since**: 1.0.0  
+
+| Param | Type |
+| --- | --- |
+| url | <code>String</code> | 
+
+<a name="RouteRule+parseRequest"></a>
+### routeRule.parseRequest(pathname, method)
+Parse request and get result
+
+**Kind**: instance method of <code>[RouteRule](#RouteRule)</code>  
+**Since**: 1.0.0  
+
+| Param | Type |
+| --- | --- |
+| pathname | <code>String</code> | 
+| method | <code>String</code> | 
+
+<a name="RouteRule+createUrl"></a>
+### routeRule.createUrl(route, params)
+Create url based on parameters and route
+
+**Kind**: instance method of <code>[RouteRule](#RouteRule)</code>  
+**Since**: 1.0.0  
+
+| Param | Type |
+| --- | --- |
+| route | <code>String</code> | 
+| params | <code>Map</code> | 
 

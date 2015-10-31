@@ -11,7 +11,7 @@ const HAS_GROUP = /^\(([^\)]+)\)$/;
  * @license Mit Licence 2015
  * @since 1.0.0
  * @class
- * @name Router
+ * @name RouteRule
  * @param {Bootstrap} app
  * @param {Object} config
  * @param {Object} types to extend route rule on inherit while implementing custom parseRequest and createUrl
