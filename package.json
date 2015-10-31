@@ -10,7 +10,9 @@
   "devDependencies": {
     "gulp": "3.9.x",
     "gulp-jasmine": "2.0.x",
-    "gulp-exit": "0.0.2"
+    "gulp-exit": "0.0.2",
+    "gulp-jsdoc-to-markdown": "1.1.x",
+    "gulp-rename": "1.2.x"
   },
   "engines": {
     "node": ">=4.0.0"
