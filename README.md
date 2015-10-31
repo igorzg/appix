@@ -75,4 +75,4 @@ class App extends Controller {
 module.exports = App;
 ```
 
-
+- run node app/index.js
