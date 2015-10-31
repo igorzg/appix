@@ -54,7 +54,8 @@
 <p><strong>Hello world example in appix</strong>  </p>
 
 <ul>
-<li>app/env.json </li>
+<li><p><strong>npm install appix</strong></p></li>
+<li><p>app/env.json </p></li>
 </ul>
 
 <div class="highlight highlight-source-json"><pre>{
@@ -109,7 +110,8 @@ init.listen();</pre></div>
 <li>app/controllers/home.js </li>
 </ul>
 
-<div class="highlight highlight-source-js"><pre><span class="pl-k">let</span> di <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>appix<span class="pl-pds">'</span></span>);
+<div class="highlight highlight-source-js"><pre><span class="pl-s"><span class="pl-pds">'</span>use strict<span class="pl-pds">'</span></span>;
+<span class="pl-k">let</span> di <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>appix<span class="pl-pds">'</span></span>);
 <span class="pl-k">let</span> Controller <span class="pl-k">=</span> di.<span class="pl-c1">load</span>(<span class="pl-s"><span class="pl-pds">'</span>@{appix}/controller<span class="pl-pds">'</span></span>);
 <span class="pl-k">class</span> <span class="pl-en">App</span> <span class="pl-k">extends</span> <span class="pl-en">Controller</span> {
     <span class="pl-en">actionIndex</span>() {
@@ -117,6 +119,10 @@ init.listen();</pre></div>
     }
 }
 <span class="pl-c1">module</span>.exports <span class="pl-k">=</span> App;</pre></div>
+
+<ul>
+<li>run node app/index.js</li>
+</ul>
       </section>
     </div>
 
