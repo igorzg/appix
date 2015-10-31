@@ -77,3 +77,4 @@ module.exports = App;
 ```
 
 - run node app/index.js
+- open localhost:9000
