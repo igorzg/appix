@@ -171,25 +171,7 @@ class Bootstrap extends Type {
     listen() {
         let logger = this.getComponent('appix/logger');
         let server = this.getComponent('appix/server');
-
-        let Request = di.load('@{appix}/request');
-
-        server.on('request', (request, response) => {
-            di.setAlias('controllersPath', this.defaults.controllersPath);
-            di.setAlias('modulesPath', this.defaults.modulesPath);
-            let nRequest = new Request(this, {
-                request,
-                response
-            }, request.url);
-            nRequest.process();
-        });
-
-        if (Type.isString(this.defaults.listenHost)) {
-            server.listen(this.defaults.listenPort, this.defaults.listenHost);
-        } else {
-            server.listen(this.defaults.listenPort);
-        }
-
+        server.startUp(this);
         process.on('uncaughtException', error => {
             logger.fatal(error.message, {
                 stack: error.stack,
@@ -197,7 +179,6 @@ class Bootstrap extends Type {
             });
             setTimeout(() => process.exit(1), 100);
         });
-
         logger.info('Listen server', this.defaults);
     }
 

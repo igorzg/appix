@@ -71,6 +71,32 @@ class Server extends Type {
         this.server.setTimeout.apply(this.server, arguments);
     }
 
+    /**
+     * @since 1.0.0
+     * @function
+     * @name Server#startUp
+     *
+     * @description
+     * Startup server based on bootstrap process
+     */
+    startUp(bootstrap) {
+        let Request = di.load('@{appix}/request');
+        this.on('request', (request, response) => {
+            di.setAlias('controllersPath', bootstrap.defaults.controllersPath);
+            di.setAlias('modulesPath', bootstrap.defaults.modulesPath);
+            let nRequest = new Request(bootstrap, {
+                request,
+                response
+            }, request.url);
+            nRequest.process();
+        });
+        if (Type.isString(bootstrap.defaults.listenHost)) {
+            this.listen(bootstrap.defaults.listenPort, bootstrap.defaults.listenHost);
+        } else {
+            this.listen(bootstrap.defaults.listenPort);
+        }
+    }
+
 }
 
 module.exports = Server;

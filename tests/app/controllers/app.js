@@ -30,7 +30,7 @@ class App extends Controller {
     }
 
     actionIndex() {
-        return 'WORKS';
+        return 'Hello world';
     }
 }
 
