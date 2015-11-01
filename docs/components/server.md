@@ -10,6 +10,7 @@
   * [.listen()](#Server+listen)
   * [.close()](#Server+close)
   * [.setTimeout()](#Server+setTimeout)
+  * [.startUp()](#Server+startUp)
 
 <a name="new_Server_new"></a>
 ### new Server()
@@ -39,6 +40,12 @@ Close server connection
 <a name="Server+setTimeout"></a>
 ### server.setTimeout()
 http://nodejs.org/api/http.html#http_server_settimeout_msecs_callback
+
+**Kind**: instance method of <code>[Server](#Server)</code>  
+**Since**: 1.0.0  
+<a name="Server+startUp"></a>
+### server.startUp()
+Startup server based on bootstrap process
 
 **Kind**: instance method of <code>[Server](#Server)</code>  
 **Since**: 1.0.0  
