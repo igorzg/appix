@@ -41,6 +41,30 @@ describe('bootstrap\n', () => {
         expect(bootstrap.components).toEqual(new Map);
     });
 
+    it('listen', () => {
+        bootstrap = new Bootstrap({
+            appPath: __dirname + '/app'
+        });
+        let component = {
+            startUp: () => {},
+            fatal: () => {},
+            info: () => {}
+        };
+        spyOn(component, 'startUp').and.callThrough();
+        spyOn(component, 'fatal').and.callThrough();
+        spyOn(component, 'info').and.callThrough();
+        let ctx = {
+            defaults: {},
+            getComponent: ()  => {
+                return component;
+            }
+        };
+        bootstrap.listen.call(ctx);
+        expect(component.startUp).toHaveBeenCalled();
+        expect(component.info).toHaveBeenCalled();
+
+    });
+
     it('hasComponent', () => {
         var ctx = {
             components: {
