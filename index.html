@@ -32,7 +32,7 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
         <h1>
-<a id="appix-100-alpha-01-" class="anchor" href="#appix-100-alpha-01-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Appix 1.0.0-alpha-01 <a href="https://travis-ci.org/igorzg/easynode"><img src="https://travis-ci.org/igorzg/easynode.svg?branch=master" alt="Build Status"></a>
+<a id="appix-100-alpha-02-" class="anchor" href="#appix-100-alpha-02-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Appix 1.0.0-alpha-02 <a href="https://travis-ci.org/igorzg/appix"><img src="https://travis-ci.org/igorzg/appix.svg?branch=master" alt="Build Status"></a>
 </h1>
 
 <ul>
@@ -59,11 +59,6 @@
 </ul>
 
 <div class="highlight highlight-source-json"><pre>{
-  <span class="pl-s"><span class="pl-pds">"</span>aliases<span class="pl-pds">"</span></span>: {
-    <span class="pl-s"><span class="pl-pds">"</span>models<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>@{appPath}/models<span class="pl-pds">"</span></span>,
-    <span class="pl-s"><span class="pl-pds">"</span>views<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>@{appPath}/views<span class="pl-pds">"</span></span>,
-    <span class="pl-s"><span class="pl-pds">"</span>helpers<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>@{appPath}/helpers<span class="pl-pds">"</span></span>
-  },
   <span class="pl-s"><span class="pl-pds">"</span>components<span class="pl-pds">"</span></span>: {
     <span class="pl-s"><span class="pl-pds">"</span>appix/logger<span class="pl-pds">"</span></span>: {
       <span class="pl-s"><span class="pl-pds">"</span>enabled<span class="pl-pds">"</span></span>: <span class="pl-c1">true</span>,
@@ -93,15 +88,24 @@ di.setInstance(<span class="pl-s"><span class="pl-pds">'</span>node<span class="
 <span class="pl-c">// get router component</span>
 <span class="pl-k">let</span> router <span class="pl-k">=</span> init.getComponent(<span class="pl-s"><span class="pl-pds">'</span>appix/router<span class="pl-pds">'</span></span>);
 <span class="pl-c">// add some routes</span>
+<span class="pl-c">// Route actions are case sensitive!</span>
 router.<span class="pl-c1">add</span>([
- {
-   url<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>/<span class="pl-pds">'</span></span>,
-   route<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>home/Index<span class="pl-pds">'</span></span>
- },
- {
-   url<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>/favicon.ico<span class="pl-pds">'</span></span>,
-   route<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>home/Favicon<span class="pl-pds">'</span></span>
- }
+    {
+        url<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>/<span class="pl-pds">'</span></span>,
+        route<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>app/Index<span class="pl-pds">'</span></span>
+    },
+    {
+        url<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>/goto301<span class="pl-pds">'</span></span>,
+        route<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>app/Redirect301<span class="pl-pds">'</span></span>
+    },
+    {
+        url<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>/goto<span class="pl-pds">'</span></span>,
+        route<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>app/Redirect<span class="pl-pds">'</span></span>
+    },
+    {
+        url<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>/favicon.ico<span class="pl-pds">'</span></span>,
+        route<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>home/myfaviconhandler<span class="pl-pds">'</span></span>
+    }
 ]);
 <span class="pl-c">// run server</span>
 init.listen();</pre></div>
@@ -114,9 +118,18 @@ init.listen();</pre></div>
 <span class="pl-k">let</span> di <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>appix<span class="pl-pds">'</span></span>);
 <span class="pl-k">let</span> Controller <span class="pl-k">=</span> di.<span class="pl-c1">load</span>(<span class="pl-s"><span class="pl-pds">'</span>@{appix}/controller<span class="pl-pds">'</span></span>);
 <span class="pl-k">class</span> <span class="pl-en">Home</span> <span class="pl-k">extends</span> <span class="pl-en">Controller</span> {
-    <span class="pl-en">actionIndex</span>() {
-        <span class="pl-k">return</span> <span class="pl-s"><span class="pl-pds">'</span>Hello world<span class="pl-pds">'</span></span>;
-    }
+
+   <span class="pl-en">actionRedirect</span>() {
+       <span class="pl-k">return</span> <span class="pl-v">this</span>.redirect(<span class="pl-s"><span class="pl-pds">'</span>/<span class="pl-pds">'</span></span>, <span class="pl-c1">302</span>);
+   }
+
+   <span class="pl-en">actionRedirect301</span>() {
+       <span class="pl-k">return</span> <span class="pl-v">this</span>.redirect(<span class="pl-s"><span class="pl-pds">'</span>/<span class="pl-pds">'</span></span>, <span class="pl-c1">301</span>);
+   }
+
+   <span class="pl-en">actionIndex</span>() {
+       <span class="pl-k">return</span> <span class="pl-s"><span class="pl-pds">'</span>Hello world<span class="pl-pds">'</span></span>;
+   }
 }
 <span class="pl-c1">module</span>.exports <span class="pl-k">=</span> Home;</pre></div>
 
