@@ -44,15 +44,24 @@ di.setInstance('node', init);
 // get router component
 let router = init.getComponent('appix/router');
 // add some routes
+// Route actions are case sensitive!
 router.add([
- {
-   url: '/',
-   route: 'home/Index'
- },
- {
-   url: '/favicon.ico',
-   route: 'home/Favicon'
- }
+    {
+        url: '/',
+        route: 'app/Index'
+    },
+    {
+        url: '/goto301',
+        route: 'app/Redirect301'
+    },
+    {
+        url: '/goto',
+        route: 'app/Redirect'
+    },
+    {
+        url: '/favicon.ico',
+        route: 'home/myfaviconhandler'
+    }
 ]);
 // run server
 init.listen();
@@ -64,9 +73,18 @@ init.listen();
 let di = require('appix');
 let Controller = di.load('@{appix}/controller');
 class Home extends Controller {
-    actionIndex() {
-        return 'Hello world';
-    }
+
+   actionRedirect() {
+       return this.redirect('/', 302);
+   }
+
+   actionRedirect301() {
+       return this.redirect('/', 301);
+   }
+
+   actionIndex() {
+       return 'Hello world';
+   }
 }
 module.exports = Home;
 ```

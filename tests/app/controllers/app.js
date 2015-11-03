@@ -32,6 +32,11 @@ class App extends Controller {
     actionRedirect() {
         return this.redirect('/', 302);
     }
+
+    actionRedirect301() {
+        return this.redirect('/', 301);
+    }
+
     actionIndex() {
         return 'Hello world';
     }
