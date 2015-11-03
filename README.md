@@ -48,15 +48,15 @@ let router = init.getComponent('appix/router');
 router.add([
     {
         url: '/',
-        route: 'app/Index'
+        route: 'home/Index'
     },
     {
         url: '/goto301',
-        route: 'app/Redirect301'
+        route: 'home/Redirect301'
     },
     {
         url: '/goto',
-        route: 'app/Redirect'
+        route: 'home/Redirect'
     },
     {
         url: '/favicon.ico',
