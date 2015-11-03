@@ -1,4 +1,4 @@
-# Appix 1.0.0-alpha-01 [![Build Status](https://travis-ci.org/igorzg/appix.svg?branch=master)](https://travis-ci.org/igorzg/appix)
+# Appix 1.0.0-alpha-02 [![Build Status](https://travis-ci.org/igorzg/appix.svg?branch=master)](https://travis-ci.org/igorzg/appix)
 * Es6 Node.js framework dev version
 * Lightweight application framework with dyependency injection and dynamic type checking for node js
 * This application framework is improved version of mvcjs nodejs framework
@@ -16,11 +16,6 @@
 - app/env.json 
 ```json
 {
-  "aliases": {
-    "models": "@{appPath}/models",
-    "views": "@{appPath}/views",
-    "helpers": "@{appPath}/helpers"
-  },
   "components": {
     "appix/logger": {
       "enabled": true,

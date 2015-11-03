@@ -7,6 +7,7 @@ let URLParser = di.load('url');
 let error = di.load('@{appix}/error');
 let core = di.load('@{appix}/core');
 let Controller = di.load('@{appix}/controller');
+let COOKIE_PARSE_REGEX = /(\w+[^=]+)=([^;]+)/g;
 let logger;
 let router;
 
@@ -38,7 +39,9 @@ class Request extends Type {
             bootstrap: Type.OBJECT,
             isCustomError: Type.BOOLEAN,
             isForwarded: Type.BOOLEAN,
+            isRedirected: Type.BOOLEAN,
             statusCode: Type.NUMBER,
+            requestCookies: Type.OBJECT,
             responseHeaders: Type.OBJECT
         });
         logger = bootstrap.getComponent('appix/logger');
@@ -49,6 +52,7 @@ class Request extends Type {
         this.params = config.params || {};
         this.isCustomError = config.isCustomError || false;
         this.isForwarded = config.isForwarded || false;
+        this.isRedirected = false;
         this.id = config.id || di.uuid();
         this.url = url;
         this.parsedUrl = URLParser.parse(this.url, true);
@@ -56,6 +60,18 @@ class Request extends Type {
         this.events = config.events || new EventEmitter();
         this.statusCode = 200;
         this.responseHeaders = {};
+        this.requestCookies = config.requestCookies || {};
+
+        if (!this.isForwarded) {
+            let cookies = this.getRequestHeader('Cookie');
+            if (Type.isString(cookies)) {
+                cookies.replace(
+                    COOKIE_PARSE_REGEX,
+                    (cookie, key, value) => this.requestCookies[key] = value
+                );
+            }
+        }
+
         this.response.on('destory', () => {
             this.events.emit('destory');
             this.events.removeAllListeners();
@@ -130,6 +146,31 @@ class Request extends Type {
      */
     getParams() {
         return new Map(Object.assign({}, this.parsedUrl.query, this.params));
+    }
+
+    /**
+     * @since 1.0.0
+     * @function
+     * @name Request#getRequestHeader
+     * @param {String} name header name
+     *
+     * @description
+     * Get an request header by header name
+     */
+    getRequestHeader(name) {
+        if (!Type.isString(name)) {
+            throw new error.HttpException(500, `Request header name must be string type`);
+        }
+        let keys = Object.keys(this.request.headers);
+        let value = '';
+        while (keys.length) {
+            let key = keys.shift();
+            if (name.toLocaleLowerCase() === key.toLocaleLowerCase()) {
+                value = this.request.headers[key];
+                break;
+            }
+        }
+        return value;
     }
 
     /**
@@ -238,6 +279,151 @@ class Request extends Type {
     /**
      * @since 1.0.0
      * @function
+     * @name Request#hasResponseHeader
+     * @param {String} key header name
+     * @description
+     * Check if response header is present
+     * @return {Boolean}
+     */
+    hasResponseHeader(key) {
+        if (Type.isString(key)) {
+            key = key.toLocaleLowerCase();
+        } else {
+            throw new error.HttpException(500, `Response header key must be string type`);
+        }
+        return this.responseHeaders.hasOwnProperty(key);
+    }
+
+    /**
+     * @since 1.0.0
+     * @function
+     * @name Request#getRequestCookie
+     * @param {String} name cookie
+     * @description
+     * Return cookie value
+     */
+    getRequestCookie(name) {
+        return this.requestCookies[name];
+    }
+
+    /**
+     * @since 1.0.0
+     * @function
+     * @name Request#getRequestCookies
+     * @description
+     * Return all cookies
+     */
+    getRequestCookies() {
+        return this.requestCookies;
+    }
+
+    /**
+     * @since 0.0.1
+     * @author Igor Ivanovic
+     * @method Request#setResponseCookie
+     * @param key {String} cookie name
+     * @param value {String} cookie value
+     * @param expires {String|Object|Number} expire date
+     * @param path {String} cookie path
+     * @param domain {String} cookie domain
+     * @param isHttpOnly {Boolean} is http only
+     * @description
+     * Sets an cookie header
+     */
+    setResponseCookie(key, value, expires, path, domain, isHttpOnly) {
+        var cookie, date;
+
+        if (Type.isUndefined(key) || Type.isUndefined(value)) {
+            throw new error.HttpException(500, 'Request.setResponseCookie: key and value must be provided!', {
+                key,
+                value,
+                expires,
+                path,
+                domain,
+                isHttpOnly
+            });
+        }
+        cookie = key + "=" + value;
+        if (!!expires) {
+            if (Type.isNumber(expires)) {
+                date = new Date();
+                date.setTime(date.getTime() + expires);
+                cookie += "; Expires=" + date.toGMTString();
+            } else if (Type.isString(expires)) {
+                cookie += "; Expires=" + expires;
+            } else if (Type.isDate(expires)) {
+                cookie += "; Expires=" + expires.toGMTString();
+            }
+        }
+        if (!!path) {
+            cookie += "; Path=" + path;
+        }
+        if (!!domain) {
+            cookie += "; Domain=" + domain;
+        }
+        if (!!isHttpOnly) {
+            cookie += "; HttpOnly";
+        }
+        this.setResponseHeader('Set-cookie', cookie);
+    }
+
+    /**
+     * @since 1.0.0
+     * @function
+     * @name Request#setResponseHeader
+     * @param {String} key header name
+     * @param {String|Object} value header value
+     * @description
+     * Sets an response header
+     */
+    setResponseHeader(key, value) {
+        if (Type.isString(key)) {
+            key = key.toLocaleLowerCase();
+        } else {
+            throw new error.HttpException(500, `Response header key must be string type ${key}`);
+        }
+
+        if (!value) {
+            throw new error.HttpException(500, `Response header value must be defined ${value}`);
+        }
+
+        value = value.toString();
+
+        if (this.hasResponseHeader(key) && !Type.isArray(this.responseHeaders[key])) {
+            let header = this.responseHeaders[key];
+            this.responseHeaders[key] = [];
+            this.responseHeaders[key].push(header);
+            this.responseHeaders[key].push(value);
+        } else if (this.hasResponseHeader(key) && Type.isArray(this.responseHeaders[key])) {
+            this.responseHeaders[key].push(value);
+        } else {
+            this.responseHeaders[key] = value;
+        }
+    }
+
+    /**
+     * @since 1.0.0
+     * @function
+     * @name Request#setResponseStatusCode
+     * @param {Number} num status code number
+     * @description
+     * Set status code which will be sent to client
+     */
+    setResponseStatusCode(num) {
+        if (!Type.isNumber(num)) {
+            num = parseInt(num);
+        }
+        if (isNaN(num)) {
+            throw new error.HttpException(500, 'Status code must be number', {
+                num
+            });
+        }
+        this.statusCode = num;
+    }
+
+    /**
+     * @since 1.0.0
+     * @function
      * @name Request#render
      * @param {Buffer|String} response
      * @private
@@ -245,9 +431,9 @@ class Request extends Type {
      * This method sends data to client
      */
     render(response) {
-        let rKey = 'content-type';
-        if (!this.responseHeaders.hasOwnProperty(rKey)) {
-            this.responseHeaders[rKey] = 'text/html';
+        let rKey = 'Content-Type';
+        if (!this.hasResponseHeader(rKey)) {
+            this.setResponseHeader(rKey, 'text/html');
         }
         logger.info('Request.render', {
             id: this.id,
@@ -291,6 +477,7 @@ class Request extends Type {
             request: this.request,
             id: this.id,
             response: this.response,
+            requestCookies: this.requestCookies,
             isForwarded: true,
             events: this.events,
             data: this.data
@@ -334,6 +521,22 @@ class Request extends Type {
     /**
      * @since 1.0.0
      * @function
+     * @name Request#redirect
+     * @param {String} url string url
+     * @param {Number} code status code default is 302 temporary redirect!
+     * @description
+     * Redirect to page
+     */
+    redirect(url, code) {
+        this.isRedirected = true;
+        this.setResponseStatusCode(code || 302);
+        this.setResponseHeader('Location', url);
+        return Promise.resolve(`Redirect to: ${code} - ${url}`);
+    }
+
+    /**
+     * @since 1.0.0
+     * @function
      * @name Request#handleModule
      * @param {String} moduleName
      * @param {String} controllerName
@@ -362,23 +565,31 @@ class Request extends Type {
      * @return {Promise}
      */
     handleController(controllerName, actionName) {
-
+        var request = this;
         let ControllerToInitialize = di.load('@{controllersPath}/' + controllerName);
         let controller = new ControllerToInitialize({
-            getMethod: () => this.getMethod,
-            getParams: () => this.getParams,
-            getParsedUrl: () => this.getParsedUrl,
-            getRequestBody: () => this.getRequestBody,
-            getPathname: () => this.getPathname,
-            getRequestDomain: () => this.getRequestDomain,
-            getRequestHeaders: () => this.getRequestHeaders,
-            getRequestLocalAddress: () => this.getRequestLocalAddress,
-            getRequestLocalPort: () => this.getRequestLocalPort,
-            getRequestRemoteAddress: () => this.getRequestRemoteAddress,
-            getRequestRemotePort: () => this.getRequestRemotePort,
-            onEnd: () => this.onEnd,
-            forwardRoute: () => this.forwardRoute,
-            forwardUrl: () => this.forwardUrl,
+            getMethod: this.getMethod.bind(this),
+            getParams: this.getParams.bind(this),
+            getParsedUrl: this.getParsedUrl.bind(this),
+            getRequestBody: this.getRequestBody.bind(this),
+            getPathname: this.getPathname.bind(this),
+            getRequestDomain: this.getRequestDomain.bind(this),
+            getRequestHeaders: this.getRequestHeaders.bind(this),
+            getRequestLocalAddress: this.getRequestLocalAddress.bind(this),
+            getRequestLocalPort: this.getRequestLocalPort.bind(this),
+            getRequestRemoteAddress: this.getRequestRemoteAddress.bind(this),
+            getRequestRemotePort: this.getRequestRemotePort.bind(this),
+            getRequestHeader: this.getRequestHeader.bind(this),
+            getRequestCookie: this.getRequestCookie.bind(this),
+            getRequestCookies: this.getRequestCookies.bind(this),
+            setResponseStatusCode: this.getRequestHeader.bind(this),
+            setResponseCookie: this.setResponseCookie.bind(this),
+            setResponseHeader: this.setResponseHeader.bind(this),
+            hasResponseHeader: this.hasResponseHeader.bind(this),
+            redirect: this.redirect.bind(this),
+            onEnd: this.onEnd.bind(this),
+            forwardRoute: this.forwardRoute.bind(this),
+            forwardUrl: this.forwardUrl.bind(this),
             id: this.id,
             bootstrap: this.bootstrap,
             controller: controllerName,
@@ -426,8 +637,12 @@ class Request extends Type {
             if (controller.isChaining()) {
                 action = yield controller.afterEach(action);
             }
+            // on redirection don't apply filters
 
-            return yield controller.applyAfterEachFilters(action);
+            if (!request.isRedirected) {
+                return yield controller.applyAfterEachFilters(action);
+            }
+            return action;
         }).then(item => this.render(item));
     }
 

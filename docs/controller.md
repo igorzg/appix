@@ -12,11 +12,14 @@
   * [.getRequestBody()](#Controller+getRequestBody) ⇒ <code>Buffer</code>
   * [.getPathname()](#Controller+getPathname) ⇒ <code>String</code>
   * [.getRequestDomain()](#Controller+getRequestDomain) ⇒ <code>String</code>
+  * [.getRequestHeader(name)](#Controller+getRequestHeader) ⇒ <code>String</code>
   * [.getRequestHeaders()](#Controller+getRequestHeaders) ⇒ <code>Object</code>
   * [.getRequestLocalAddress()](#Controller+getRequestLocalAddress) ⇒ <code>String</code>
   * [.getRequestLocalPort()](#Controller+getRequestLocalPort) ⇒ <code>Number</code>
   * [.getRequestRemoteAddress()](#Controller+getRequestRemoteAddress) ⇒ <code>String</code>
   * [.getRequestRemotePort()](#Controller+getRequestRemotePort) ⇒ <code>Number</code>
+  * [.getRequestCookies()](#Controller+getRequestCookies)
+  * [.getRequestCookie(name)](#Controller+getRequestCookie)
   * [.onEnd()](#Controller+onEnd)
   * [.forwardUrl(route, params)](#Controller+forwardUrl) ⇒ <code>Promise</code>
   * [.forwardUrl(url)](#Controller+forwardUrl) ⇒ <code>Promise</code>
@@ -24,8 +27,13 @@
   * [.getRequestController()](#Controller+getRequestController) ⇒ <code>String</code>
   * [.getRequestAction()](#Controller+getRequestAction) ⇒ <code>String</code>
   * [.getRequestId()](#Controller+getRequestId) ⇒ <code>String</code>
+  * [.setResponseStatusCode(num)](#Controller+setResponseStatusCode)
+  * [.setResponseCookie(key, value, expires, path, domain, isHttpOnly)](#Controller+setResponseCookie)
+  * [.setResponseHeader(key, value)](#Controller+setResponseHeader)
+  * [.hasResponseHeader(key)](#Controller+hasResponseHeader) ⇒ <code>Boolean</code>
   * [.addFilter(FilterToInitialize, priority, route)](#Controller+addFilter)
   * [.stopChain()](#Controller+stopChain)
+  * [.redirect(url, code)](#Controller+redirect)
   * [.beforeEach()](#Controller+beforeEach)
   * [.afterEach()](#Controller+afterEach)
 
@@ -103,6 +111,17 @@ Get request domain
 
 **Kind**: instance method of <code>[Controller](#Controller)</code>  
 **Since**: 1.0.0  
+<a name="Controller+getRequestHeader"></a>
+### controller.getRequestHeader(name) ⇒ <code>String</code>
+Get request header, by header name
+
+**Kind**: instance method of <code>[Controller](#Controller)</code>  
+**Since**: 1.0.0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>String</code> | of header |
+
 <a name="Controller+getRequestHeaders"></a>
 ### controller.getRequestHeaders() ⇒ <code>Object</code>
 Get request headers, key value pairs
@@ -133,6 +152,23 @@ Get request remote port
 
 **Kind**: instance method of <code>[Controller](#Controller)</code>  
 **Since**: 1.0.0  
+<a name="Controller+getRequestCookies"></a>
+### controller.getRequestCookies()
+Return all cookies
+
+**Kind**: instance method of <code>[Controller](#Controller)</code>  
+**Since**: 1.0.0  
+<a name="Controller+getRequestCookie"></a>
+### controller.getRequestCookie(name)
+Return cookie value
+
+**Kind**: instance method of <code>[Controller](#Controller)</code>  
+**Since**: 1.0.0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>String</code> | cookie |
+
 <a name="Controller+onEnd"></a>
 ### controller.onEnd()
 On end is an happening on destroy event
@@ -186,6 +222,57 @@ Returns request id
 
 **Kind**: instance method of <code>[Controller](#Controller)</code>  
 **Since**: 1.0.0  
+<a name="Controller+setResponseStatusCode"></a>
+### controller.setResponseStatusCode(num)
+Set status code which will be sent to client
+
+**Kind**: instance method of <code>[Controller](#Controller)</code>  
+**Since**: 1.0.0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| num | <code>Number</code> | status code number |
+
+<a name="Controller+setResponseCookie"></a>
+### controller.setResponseCookie(key, value, expires, path, domain, isHttpOnly)
+Sets an cookie header
+
+**Kind**: instance method of <code>[Controller](#Controller)</code>  
+**Since**: 0.0.1  
+**Author:** Igor Ivanovic  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| key | <code>String</code> | cookie name |
+| value | <code>String</code> | cookie value |
+| expires | <code>String</code> &#124; <code>Object</code> &#124; <code>Number</code> | expire date |
+| path | <code>String</code> | cookie path |
+| domain | <code>String</code> | cookie domain |
+| isHttpOnly | <code>Boolean</code> | is http only |
+
+<a name="Controller+setResponseHeader"></a>
+### controller.setResponseHeader(key, value)
+Sets an response header
+
+**Kind**: instance method of <code>[Controller](#Controller)</code>  
+**Since**: 1.0.0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| key | <code>String</code> | header name |
+| value | <code>String</code> &#124; <code>Object</code> | header value |
+
+<a name="Controller+hasResponseHeader"></a>
+### controller.hasResponseHeader(key) ⇒ <code>Boolean</code>
+Check if response header is present
+
+**Kind**: instance method of <code>[Controller](#Controller)</code>  
+**Since**: 1.0.0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| key | <code>String</code> | header name |
+
 <a name="Controller+addFilter"></a>
 ### controller.addFilter(FilterToInitialize, priority, route)
 Add filter
@@ -243,6 +330,18 @@ Stop chain of actions, use this when needed. You can use it as well in filters t
 
  }
 ```
+<a name="Controller+redirect"></a>
+### controller.redirect(url, code)
+Redirect to page
+
+**Kind**: instance method of <code>[Controller](#Controller)</code>  
+**Since**: 1.0.0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| url | <code>String</code> | string url |
+| code | <code>Number</code> | status code |
+
 <a name="Controller+beforeEach"></a>
 ### controller.beforeEach()
 before each request do some logic if needed

@@ -19,6 +19,10 @@ router.add([
         route: 'app/Index'
     },
     {
+        url: '/goto',
+        route: 'app/Redirect'
+    },
+    {
         url: '/favicon.ico',
         route: 'home/myfaviconhandler'
     }

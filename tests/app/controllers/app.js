@@ -29,6 +29,9 @@ class App extends Controller {
         this.addFilter(F2, -100);
     }
 
+    actionRedirect() {
+        return this.redirect('/', 302);
+    }
     actionIndex() {
         return 'Hello world';
     }

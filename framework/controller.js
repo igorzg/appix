@@ -133,6 +133,19 @@ class Controller extends Type {
     /**
      * @since 1.0.0
      * @function
+     * @name Controller#getRequestHeader
+     * @param {String} name of header
+     * @description
+     * Get request header, by header name
+     * @return {String}
+     */
+    getRequestHeader(name) {
+        return this.__request__.getRequestHeader(name);
+    }
+
+    /**
+     * @since 1.0.0
+     * @function
      * @name Controller#getRequestHeaders
      *
      * @description
@@ -193,6 +206,29 @@ class Controller extends Type {
      */
     getRequestRemotePort() {
         return this.__request__.getRequestRemotePort();
+    }
+
+    /**
+     * @since 1.0.0
+     * @function
+     * @name Controller#getRequestCookies
+     * @description
+     * Return all cookies
+     */
+    getRequestCookies() {
+        return this.__request__.getRequestCookies();
+    }
+
+    /**
+     * @since 1.0.0
+     * @function
+     * @name Controller#getRequestCookie
+     * @param {String} name cookie
+     * @description
+     * Return cookie value
+     */
+    getRequestCookie(name) {
+        return this.__request__.getRequestCookie(name);
     }
 
     /**
@@ -286,6 +322,59 @@ class Controller extends Type {
      */
     getRequestId() {
         return this.__request__.id;
+    }
+
+    /**
+     * @since 1.0.0
+     * @function
+     * @name Controller#setResponseStatusCode
+     * @param {Number} num status code number
+     * @description
+     * Set status code which will be sent to client
+     */
+    setResponseStatusCode(num) {
+        this.__request__.setResponseStatusCode(num);
+    }
+
+    /**
+     * @since 0.0.1
+     * @author Igor Ivanovic
+     * @method Controller#setResponseCookie
+     * @param key {String} cookie name
+     * @param value {String} cookie value
+     * @param expires {String|Object|Number} expire date
+     * @param path {String} cookie path
+     * @param domain {String} cookie domain
+     * @param isHttpOnly {Boolean} is http only
+     * @description
+     * Sets an cookie header
+     */
+    setResponseCookie(key, value, expires, path, domain, isHttpOnly) {
+        this.__request__.setResponseCookie(key, value, expires, path, domain, isHttpOnly);
+    }
+    /**
+     * @since 1.0.0
+     * @function
+     * @name Controller#setResponseHeader
+     * @param {String} key header name
+     * @param {String|Object} value header value
+     * @description
+     * Sets an response header
+     */
+    setResponseHeader(key, value) {
+        this.__request__.setResponseHeader(key, value);
+    }
+    /**
+     * @since 1.0.0
+     * @function
+     * @name Controller#hasResponseHeader
+     * @param {String} key header name
+     * @description
+     * Check if response header is present
+     * @return {Boolean}
+     */
+    hasResponseHeader(key) {
+        return this.__request__.hasResponseHeader(key);
     }
 
     /**
@@ -435,7 +524,19 @@ class Controller extends Type {
     stopChain() {
         this.__chaining__ = false;
     }
-
+    /**
+     * @since 1.0.0
+     * @function
+     * @name Controller#redirect
+     * @param {String} url string url
+     * @param {Number} code status code
+     * @description
+     * Redirect to page
+     */
+    redirect(url, code) {
+        this.stopChain();
+        return this.__request__.redirect(url, code);
+    }
     /**
      * @since 1.0.0
      * @function
