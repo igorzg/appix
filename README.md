@@ -74,6 +74,7 @@ init.listen();
 'use strict';
 let di = require('appix');
 let Controller = di.load('@{appix}/controller');
+// Controllers can be inherited as many levels as you need
 class Home extends Controller {
 
    actionRedirect() {
