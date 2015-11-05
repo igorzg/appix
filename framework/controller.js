@@ -340,7 +340,7 @@ class Controller extends Type {
      * @since 0.0.1
      * @author Igor Ivanovic
      * @function
-     * @name Request#setResponseCookie
+     * @name Controller#setResponseCookie
      * @param {String} key cookie name
      * @param {String} value cookie value
      * @param {String|Object|Number} expires expire date
