@@ -339,13 +339,14 @@ class Controller extends Type {
     /**
      * @since 0.0.1
      * @author Igor Ivanovic
-     * @method Controller#setResponseCookie
-     * @param key {String} cookie name
-     * @param value {String} cookie value
-     * @param expires {String|Object|Number} expire date
-     * @param path {String} cookie path
-     * @param domain {String} cookie domain
-     * @param isHttpOnly {Boolean} is http only
+     * @function
+     * @name Request#setResponseCookie
+     * @param {String} key cookie name
+     * @param {String} value cookie value
+     * @param {String|Object|Number} expires expire date
+     * @param {String} path cookie path
+     * @param {String} domain cookie domain
+     * @param {Boolean} isHttpOnly is http only
      * @description
      * Sets an cookie header
      */
