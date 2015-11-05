@@ -28,6 +28,7 @@
   * [.getRequestAction()](#Controller+getRequestAction) ⇒ <code>String</code>
   * [.getRequestId()](#Controller+getRequestId) ⇒ <code>String</code>
   * [.setResponseStatusCode(num)](#Controller+setResponseStatusCode)
+  * [.setResponseCookie(key, value, expires, path, domain, isHttpOnly)](#Controller+setResponseCookie)
   * [.setResponseHeader(key, value)](#Controller+setResponseHeader)
   * [.hasResponseHeader(key)](#Controller+hasResponseHeader) ⇒ <code>Boolean</code>
   * [.addFilter(FilterToInitialize, priority, route)](#Controller+addFilter)
@@ -231,6 +232,23 @@ Set status code which will be sent to client
 | Param | Type | Description |
 | --- | --- | --- |
 | num | <code>Number</code> | status code number |
+
+<a name="Controller+setResponseCookie"></a>
+### controller.setResponseCookie(key, value, expires, path, domain, isHttpOnly)
+Sets an cookie header
+
+**Kind**: instance method of <code>[Controller](#Controller)</code>  
+**Since**: 0.0.1  
+**Author:** Igor Ivanovic  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| key | <code>String</code> | cookie name |
+| value | <code>String</code> | cookie value |
+| expires | <code>String</code> &#124; <code>Object</code> &#124; <code>Number</code> | expire date |
+| path | <code>String</code> | cookie path |
+| domain | <code>String</code> | cookie domain |
+| isHttpOnly | <code>Boolean</code> | is http only |
 
 <a name="Controller+setResponseHeader"></a>
 ### controller.setResponseHeader(key, value)
