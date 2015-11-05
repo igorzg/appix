@@ -320,13 +320,14 @@ class Request extends Type {
     /**
      * @since 0.0.1
      * @author Igor Ivanovic
-     * @method Request#setResponseCookie
-     * @param key {String} cookie name
-     * @param value {String} cookie value
-     * @param expires {String|Object|Number} expire date
-     * @param path {String} cookie path
-     * @param domain {String} cookie domain
-     * @param isHttpOnly {Boolean} is http only
+     * @function
+     * @name Request#setResponseCookie
+     * @param {String} key cookie name
+     * @param {String} value cookie value
+     * @param {String|Object|Number} expires expire date
+     * @param {String} path cookie path
+     * @param {String} domain cookie domain
+     * @param {Boolean} isHttpOnly is http only
      * @description
      * Sets an cookie header
      */
@@ -343,26 +344,26 @@ class Request extends Type {
                 isHttpOnly
             });
         }
-        cookie = key + "=" + value;
+        cookie = key + '=' + value;
         if (!!expires) {
             if (Type.isNumber(expires)) {
                 date = new Date();
                 date.setTime(date.getTime() + expires);
-                cookie += "; Expires=" + date.toGMTString();
+                cookie += '; Expires=' + date.toGMTString();
             } else if (Type.isString(expires)) {
-                cookie += "; Expires=" + expires;
+                cookie += '; Expires=' + expires;
             } else if (Type.isDate(expires)) {
-                cookie += "; Expires=" + expires.toGMTString();
+                cookie += '; Expires=' + expires.toGMTString();
             }
         }
         if (!!path) {
-            cookie += "; Path=" + path;
+            cookie += '; Path=' + path;
         }
         if (!!domain) {
-            cookie += "; Domain=" + domain;
+            cookie += '; Domain=' + domain;
         }
         if (!!isHttpOnly) {
-            cookie += "; HttpOnly";
+            cookie += '; HttpOnly';
         }
         this.setResponseHeader('Set-cookie', cookie);
     }
