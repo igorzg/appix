@@ -1,6 +1,6 @@
 'use strict';
 
-describe('bootstrap\n', () => {
+describe('bootstrap', () => {
     let di = require('../');
     let Type = di.load('typed-js');
     let fs = {
