@@ -27,6 +27,7 @@
   * [.getRequestController()](#Controller+getRequestController) ⇒ <code>String</code>
   * [.getRequestAction()](#Controller+getRequestAction) ⇒ <code>String</code>
   * [.getRequestId()](#Controller+getRequestId) ⇒ <code>String</code>
+  * [.getUserAgent()](#Controller+getUserAgent) ⇒ <code>String</code>
   * [.setResponseStatusCode(num)](#Controller+setResponseStatusCode)
   * [.setResponseCookie(key, value, expires, path, domain, isHttpOnly)](#Controller+setResponseCookie)
   * [.setResponseHeader(key, value)](#Controller+setResponseHeader)
@@ -219,6 +220,12 @@ Get request action
 <a name="Controller+getRequestId"></a>
 ### controller.getRequestId() ⇒ <code>String</code>
 Returns request id
+
+**Kind**: instance method of <code>[Controller](#Controller)</code>  
+**Since**: 1.0.0  
+<a name="Controller+getUserAgent"></a>
+### controller.getUserAgent() ⇒ <code>String</code>
+Get user agent
 
 **Kind**: instance method of <code>[Controller](#Controller)</code>  
 **Since**: 1.0.0  

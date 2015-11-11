@@ -327,6 +327,18 @@ class Controller extends Type {
     /**
      * @since 1.0.0
      * @function
+     * @name Controller#getUserAgent
+     *
+     * @description
+     * Get user agent
+     * @return {String}
+     */
+    getUserAgent() {
+        return this.getRequestHeader('User-Agent');
+    }
+    /**
+     * @since 1.0.0
+     * @function
      * @name Controller#setResponseStatusCode
      * @param {Number} num status code number
      * @description
