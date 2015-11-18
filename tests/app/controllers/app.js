@@ -37,8 +37,15 @@ class App extends Controller {
         return this.redirect('/', 301);
     }
 
-    actionForward() {
+    beforeForward() {
         return this.forwardRoute('app/Index');
+    }
+    actionForward() {
+        return 'ACTION FORWARD CHAIN MUST BE STOPPED';
+    }
+
+    afterForward() {
+        return 'AFTER ACTION FORWARD CHAIN MUST BE STOPPED';
     }
 
     beforeIndex() {

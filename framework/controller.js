@@ -287,6 +287,8 @@ class Controller extends Type {
      * @return {Promise}
      */
     forwardRoute(route, params) {
+        this.stopChain();
+        this.__request__.flagAsForwarder();
         return this.__request__.forwardRoute(route, params);
     }
 
@@ -301,6 +303,8 @@ class Controller extends Type {
      * @return {Promise}
      */
     forwardUrl(url) {
+        this.stopChain();
+        this.__request__.flagAsForwarder();
         return this.__request__.forwardUrl(url);
     }
 

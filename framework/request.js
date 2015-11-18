@@ -39,6 +39,7 @@ class Request extends Type {
             bootstrap: Type.OBJECT,
             isCustomError: Type.BOOLEAN,
             isForwarded: Type.BOOLEAN,
+            isForwarder: Type.BOOLEAN,
             isRedirected: Type.BOOLEAN,
             statusCode: Type.NUMBER,
             requestCookies: Type.OBJECT,
@@ -52,6 +53,7 @@ class Request extends Type {
         this.params = config.params || {};
         this.isCustomError = config.isCustomError || false;
         this.isForwarded = config.isForwarded || false;
+        this.isForwarder = false;
         this.isRedirected = false;
         this.id = di.uuid();
         this.url = url;
@@ -72,6 +74,7 @@ class Request extends Type {
             }
         }
     }
+
     /**
      * @since 1.0.0
      * @function
@@ -86,6 +89,7 @@ class Request extends Type {
         this.events.removeAllListeners();
         super.destroy()
     }
+
     /**
      * @since 1.0.0
      * @function
@@ -475,6 +479,7 @@ class Request extends Type {
      * Forward to new request, this is doing server side forwarding
      */
     forward(url, config) {
+
         if (url === this.url) {
             throw new error.HttpException(500, 'Cannot be forwarded to same url', {
                 url,
@@ -488,9 +493,8 @@ class Request extends Type {
             isForwarded: true,
             data: this.data
         }, config), url);
-        let process = nRequest.process();
-        nRequest.request.emit('end');
-        return process;
+
+        return nRequest.process();
     }
 
     /**
@@ -596,12 +600,14 @@ class Request extends Type {
             onEnd: this.onEnd.bind(this),
             forwardRoute: this.forwardRoute.bind(this),
             forwardUrl: this.forwardUrl.bind(this),
+            flagAsForwarder: () => this.isForwarder = true,
             id: this.id,
             bootstrap: this.bootstrap,
             controller: controllerName,
             action: actionName,
             route: controllerName + '/' + actionName
         });
+
 
         if (!(controller instanceof Controller)) {
             throw new error.HttpException(500, `${controllerName} must be inherited from @{appix}/controller`, {
@@ -616,7 +622,9 @@ class Request extends Type {
             let actionKey = 'action' + actionName;
             let action;
 
-            action = yield controller.applyBeforeEachFilters();
+            if (!request.isForwarded) {
+                action = yield controller.applyBeforeEachFilters();
+            }
 
             if (controller.isChaining()) {
                 if (Type.isArray(action)) {
@@ -670,7 +678,7 @@ class Request extends Type {
             }
             // on redirection don't apply filters
 
-            if (!request.isRedirected) {
+            if (!request.isRedirected && !request.isForwarder) {
                 if (Type.isArray(action)) {
                     action = yield Promise.all(action);
                     return yield controller.applyAfterEachFilters.apply(controller, action);
@@ -679,7 +687,12 @@ class Request extends Type {
                 }
             }
             return action;
-        }).then(item => this.render(item));
+        }).then(data => {
+            if (this.isForwarded) {
+                return data;
+            }
+            return this.render(data);
+        });
     }
 
     /**
@@ -695,7 +708,6 @@ class Request extends Type {
     process() {
         // destroy on end
         if (!this.isForwarded) {
-
             this.response.once('finish', () => this.destroy());
             // destroy if connection was terminated before end
             this.response.once('close', () => this.destroy());
@@ -703,7 +715,9 @@ class Request extends Type {
             this.request.on('data', item => this.data.push(item));
         }
         // on data end process request
-        return new Promise(resolve => this.request.on('end', resolve))
+        let request = this.isForwarded ? Promise.resolve(true) : new Promise(resolve => this.request.on('end', resolve));
+
+        return request
             .then(() => {
                 logger.info('Route.parseRequest', {
                     id: this.id,
