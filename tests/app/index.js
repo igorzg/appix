@@ -19,6 +19,10 @@ router.add([
         route: 'app/Index'
     },
     {
+        url: '/forward',
+        route: 'app/Forward'
+    },
+    {
         url: '/test',
         route: 'app/Test'
     },

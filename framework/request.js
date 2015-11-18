@@ -53,11 +53,11 @@ class Request extends Type {
         this.isCustomError = config.isCustomError || false;
         this.isForwarded = config.isForwarded || false;
         this.isRedirected = false;
-        this.id = config.id || di.uuid();
+        this.id = di.uuid();
         this.url = url;
         this.parsedUrl = URLParser.parse(this.url, true);
         this.data = Type.isArray(config.data) ? config.data : [];
-        this.events = config.events || new EventEmitter();
+        this.events = new EventEmitter();
         this.statusCode = 200;
         this.responseHeaders = {};
         this.requestCookies = config.requestCookies || {};
@@ -71,14 +71,21 @@ class Request extends Type {
                 );
             }
         }
-
-        this.response.on('destory', () => {
-            this.events.emit('destory');
-            this.events.removeAllListeners();
-            this.destroy();
-        });
     }
-
+    /**
+     * @since 1.0.0
+     * @function
+     * @name Request#destroy
+     * @private
+     * @description
+     * Destroy all references to free memory
+     * @return {String}
+     */
+    destroy() {
+        this.events.emit('destroy');
+        this.events.removeAllListeners();
+        super.destroy()
+    }
     /**
      * @since 1.0.0
      * @function
@@ -260,7 +267,7 @@ class Request extends Type {
      * Add custom events on destroy event
      */
     onEnd(callback) {
-        this.events.once('destory', callback);
+        this.events.once('destroy', callback);
     }
 
     /**
@@ -476,11 +483,9 @@ class Request extends Type {
         }
         let nRequest = new Request(this.bootstrap, Object.assign({
             request: this.request,
-            id: this.id,
             response: this.response,
             requestCookies: this.requestCookies,
             isForwarded: true,
-            events: this.events,
             data: this.data
         }, config), url);
         let process = nRequest.process();
@@ -690,9 +695,10 @@ class Request extends Type {
     process() {
         // destroy on end
         if (!this.isForwarded) {
-            this.response.once('finish', () => this.response.emit('destory'));
+
+            this.response.once('finish', () => this.destroy());
             // destroy if connection was terminated before end
-            this.response.once('close', () => this.response.emit('destory'));
+            this.response.once('close', () => this.destroy());
             // push data
             this.request.on('data', item => this.data.push(item));
         }
@@ -745,7 +751,14 @@ class Request extends Type {
                 }
                 return this.render(error.stack);
             })
-            .catch(error => this.render(error.stack));
+            .catch(error => this.render(error.stack))
+            .catch(error => logger.error('Error in parsing error response', {
+                id: this.id,
+                url: this.url,
+                request: this.getParsedUrl(),
+                method: this.getMethod(),
+                error
+            }))
     }
 }
 

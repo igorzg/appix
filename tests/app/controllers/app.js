@@ -37,6 +37,10 @@ class App extends Controller {
         return this.redirect('/', 301);
     }
 
+    actionForward() {
+        return this.forwardRoute('app/Index');
+    }
+
     beforeIndex() {
         return Promise.resolve(1);
     }
