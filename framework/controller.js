@@ -55,6 +55,38 @@ class Controller extends Type {
     /**
      * @since 1.0.0
      * @function
+     * @name Controller#getComponent
+     * @param {String} key name of component
+     * @description
+     * Return component instance which is singleton
+     * @return {String}
+     *
+     * @example
+     *  class MyAppController extends Controller {
+     *
+     *    beforeIndex() {
+     *      return [
+     *          this.getComponent('appix/logger'),
+     *          Promise.resolve('some async operation'),
+     *          Promise.resolve('some other async operations')
+     *      ];
+     *    }
+     *
+     *    actionIndex(logger, p1DataResolved, p2DataResolved) {
+     *      logger.log('Logger works', {
+     *          p1DataResolved: p1DataResolved,
+     *          p2DataResolved: p2DataResolved
+     *      })
+     *      return 'WORKS '+ p1DataResolved + p2DataResolved; // result => WORKS some async operation some other async operations
+     *    }
+     *  }
+     */
+    getComponent(key) {
+        return this.__request__.bootstrap.getComponent(key);
+    }
+    /**
+     * @since 1.0.0
+     * @function
      * @name Controller#getMethod
      *
      * @description

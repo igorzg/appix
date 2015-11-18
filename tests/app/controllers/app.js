@@ -37,8 +37,44 @@ class App extends Controller {
         return this.redirect('/', 301);
     }
 
-    actionIndex() {
-        return 'Hello world';
+    beforeIndex() {
+        return Promise.resolve(1);
+    }
+
+    actionIndex(data) {
+        return 'Hello world ' + data;
+    }
+
+    beforeTestPall() {
+        return Promise.all([
+            this.getComponent('appix/logger'),
+            Promise.resolve('some async operation '),
+            Promise.resolve('some other async operations ')
+        ]);
+    }
+
+    actionTestPall(logger, p1Data, p2Data) {
+        logger.fatal('Logger works', {
+            p1Data: p1Data,
+            p2Data: p2Data
+        })
+        return 'WORKS '+ p1Data + p2Data;
+    }
+
+    beforeTest() {
+        return [
+            this.getComponent('appix/logger'),
+            Promise.resolve('some async operation '),
+            Promise.resolve('some other async operations ')
+        ];
+    }
+
+    actionTest(logger, p1Data, p2Data) {
+        logger.fatal('Logger works', {
+            p1Data: p1Data,
+            p2Data: p2Data
+        })
+        return 'WORKS '+ p1Data + p2Data;
     }
 }
 

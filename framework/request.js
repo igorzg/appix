@@ -614,14 +614,29 @@ class Request extends Type {
             action = yield controller.applyBeforeEachFilters();
 
             if (controller.isChaining()) {
-                action = yield controller.beforeEach(action);
+                if (Type.isArray(action)) {
+                    action = yield Promise.all(action);
+                    action = yield controller.beforeEach.apply(controller, action);
+                } else {
+                    action = yield controller.beforeEach(action);
+                }
             }
             if (Type.isFunction(controller[beforeKey]) && controller.isChaining()) {
-                action = yield controller[beforeKey](action);
+                if (Type.isArray(action)) {
+                    action = yield Promise.all(action);
+                    action = yield controller[beforeKey].apply(controller, action);
+                } else {
+                    action = yield controller[beforeKey](action);
+                }
             }
             if (controller.isChaining()) {
                 if (Type.isFunction(controller[actionKey])) {
-                    action = yield controller[actionKey](action);
+                    if (Type.isArray(action)) {
+                        action = yield Promise.all(action);
+                        action = yield controller[actionKey].apply(controller, action);
+                    } else {
+                        action = yield controller[actionKey](action);
+                    }
                 } else {
                     throw new error.HttpException(500,
                         `Action ${actionName} is not defined in controller ${controllerName}`,
@@ -633,15 +648,30 @@ class Request extends Type {
                 }
             }
             if (Type.isFunction(controller[afterKey]) && controller.isChaining()) {
-                action = yield controller[afterKey](action);
+                if (Type.isArray(action)) {
+                    action = yield Promise.all(action);
+                    action = yield controller[afterKey].apply(controller, action);
+                } else {
+                    action = yield controller[afterKey](action);
+                }
             }
             if (controller.isChaining()) {
-                action = yield controller.afterEach(action);
+                if (Type.isArray(action)) {
+                    action = yield Promise.all(action);
+                    action = yield controller.afterEach.apply(controller, action);
+                } else {
+                    action = yield controller.afterEach(action);
+                }
             }
             // on redirection don't apply filters
 
             if (!request.isRedirected) {
-                return yield controller.applyAfterEachFilters(action);
+                if (Type.isArray(action)) {
+                    action = yield Promise.all(action);
+                    return yield controller.applyAfterEachFilters.apply(controller, action);
+                } else {
+                    return yield controller.applyAfterEachFilters(action);
+                }
             }
             return action;
         }).then(item => this.render(item));

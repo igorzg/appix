@@ -19,6 +19,14 @@ router.add([
         route: 'app/Index'
     },
     {
+        url: '/test',
+        route: 'app/Test'
+    },
+    {
+        url: '/test-pall',
+        route: 'app/TestPall'
+    },
+    {
         url: '/goto301',
         route: 'app/Redirect301'
     },

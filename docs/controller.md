@@ -6,6 +6,7 @@
 
 * [Controller](#Controller)
   * [new Controller(api, types)](#new_Controller_new)
+  * [.getComponent(key)](#Controller+getComponent) ⇒ <code>String</code>
   * [.getMethod()](#Controller+getMethod) ⇒ <code>String</code>
   * [.getParams()](#Controller+getParams) ⇒ <code>Object</code>
   * [.getParsedUrl()](#Controller+getParsedUrl) ⇒ <code>Object</code>
@@ -73,6 +74,38 @@ let di = require('appix');
 
    actionIndex() {
      return 'WORKS';
+   }
+ }
+```
+<a name="Controller+getComponent"></a>
+### controller.getComponent(key) ⇒ <code>String</code>
+Return component instance which is singleton
+
+**Kind**: instance method of <code>[Controller](#Controller)</code>  
+**Since**: 1.0.0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| key | <code>String</code> | name of component |
+
+**Example**  
+```js
+class MyAppController extends Controller {
+
+   beforeIndex() {
+     return [
+         this.getComponent('appix/logger'),
+         Promise.resolve('some async operation'),
+         Promise.resolve('some other async operations')
+     ];
+   }
+
+   actionIndex(logger, p1DataResolved, p2DataResolved) {
+     logger.log('Logger works', {
+         p1DataResolved: p1DataResolved,
+         p2DataResolved: p2DataResolved
+     })
+     return 'WORKS '+ p1DataResolved + p2DataResolved; // result => WORKS some async operation some other async operations
    }
  }
 ```
