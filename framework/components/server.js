@@ -3,6 +3,7 @@
 let di = require('../di');
 let Type = di.load('typed-js');
 let http = di.load('http');
+let logger;
 /**
  * @license Mit Licence 2015
  * @since 1.0.0
@@ -16,10 +17,11 @@ let http = di.load('http');
  * If we want to use https, socket or similar we provide custom Server service.
  */
 class Server extends Type {
-    constructor() {
+    constructor(config, bootstrap) {
         super({
             server: Type.OBJECT
         });
+        logger = bootstrap.getComponent('appix/logger');
         this.server = http.createServer();
     }
 
@@ -82,13 +84,21 @@ class Server extends Type {
     startUp(bootstrap) {
         let Request = di.load('@{appix}/request');
         this.on('request', (request, response) => {
-            di.setAlias('controllersPath', bootstrap.defaults.controllersPath);
-            di.setAlias('modulesPath', bootstrap.defaults.modulesPath);
-            let nRequest = new Request(bootstrap, {
-                request,
-                response
-            }, request.url);
-            nRequest.process();
+            di.async(function* () {
+                di.setAlias('controllersPath', bootstrap.defaults.controllersPath);
+                di.setAlias('modulesPath', bootstrap.defaults.modulesPath);
+                let nRequest = new Request(bootstrap, {
+                    request,
+                    response
+                }, request.url);
+                yield nRequest.process();
+            }).catch(error => {
+                logger.error('Request.error', {
+                    url: request.url,
+                    stack: error.stack,
+                    error
+                });
+            });
         });
         if (Type.isString(bootstrap.defaults.listenHost)) {
             this.listen(bootstrap.defaults.listenPort, bootstrap.defaults.listenHost);

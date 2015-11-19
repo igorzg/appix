@@ -87,7 +87,7 @@ class Request extends Type {
     destroy() {
         this.events.emit('destroy');
         this.events.removeAllListeners();
-        super.destroy()
+        super.destroy();
     }
 
     /**

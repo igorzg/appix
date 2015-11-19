@@ -28,7 +28,10 @@ class App extends Controller {
         this.addFilter(F1, 10);
         this.addFilter(F2, -100);
     }
-
+    actionFavicon() {
+        this.setResponseHeader('Content-Type', 'image/png');
+        return new Buffer('This is my favicon');
+    }
     actionRedirect() {
         return this.redirect('/', 302);
     }
@@ -81,10 +84,10 @@ class App extends Controller {
     }
 
     actionTest(logger, p1Data, p2Data) {
-        logger.fatal('Logger works', {
+        logger.info('Logger works', {
             p1Data: p1Data,
             p2Data: p2Data
-        })
+        });
         return 'WORKS '+ p1Data + p2Data;
     }
 }
