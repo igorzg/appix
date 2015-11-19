@@ -23,7 +23,8 @@ let router;
  * @protected
  * @description
  * This class is responsible for processing request.
- * You don't have access to request class itself instead of it api is provided to you in order to manipulate with request.
+ * Developer don't have access to request class itself, instead of it,
+ * API is provided to developer in order to manipulate with request
  */
 class Request extends Type {
     constructor(bootstrap, config, url) {
