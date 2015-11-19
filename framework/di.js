@@ -10,6 +10,15 @@ let Type = require('typed-js');
  *
  * @class
  * @name DI
+ * @example
+ * 'use strict';
+ * let Controller = di.load('@{appix}/controller');
+ * let Filter = di.load('@{appix}/filter');
+ * class Demo extends Controller {
+ *      actionIndex() {
+ *
+ *      }
+ * }
  */
 class DI extends DiNode {
     constructor(require) {

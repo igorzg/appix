@@ -26,13 +26,27 @@ Logger in system is delivered as component
 
 **Example**  
 ```js
-let logger = new Logger();
-logger.info('My message', dataObject);
-logger.error('My message', dataObject);
-logger.warn('My message', dataObject);
-logger.trace('My message', dataObject);
-logger.fatal('My message', dataObject);
-logger.debug('My message', dataObject);
+// env.json
+{
+ "components": {
+    "appix/logger": {
+      "enabled": true,
+      "console": true,
+      "level": 30
+    }
+ }
+}
+class User extends Controller {
+   beforeEach() {
+     let logger = this.getComponent('appix/logger');
+     logger.info('My message', dataObject);
+     logger.error('My message', dataObject);
+     logger.warn('My message', dataObject);
+     logger.trace('My message', dataObject);
+     logger.fatal('My message', dataObject);
+     logger.debug('My message', dataObject);
+   }
+}
 ```
 <a name="Logger+trace"></a>
 ### logger.trace()

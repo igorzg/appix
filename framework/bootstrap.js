@@ -21,22 +21,20 @@ const COMPONENTS = [
  * Use Bootstrap class to bootstrap an application.
  * It could be with server listen but it could be server side simulation to.
  * @example
- *    'use strict';
- *    let di = require('appix');
- *    let Bootstrap = di.load('@{appix}/bootstrap');
- *    // bootstrap application
- *    let easyInit = new Bootstrap({
+ * 'use strict';
+ * let di = require('appix');
+ * let Bootstrap = di.load('@{appix}/bootstrap');
+ * // bootstrap application
+ * let easyInit = new Bootstrap({
  *       listenPort: 9500,
  *       appPath:  __dirname + '/app'
- *    }, function dynamicComponentConfig(components) {
+ * }, function dynamicComponentConfig(components) {
  *       components.set('my-component', {});
- *    });
+ * });
  *
- *    di.setInstance('en-demo', easyInit);
- *
- *    let router = easyInit.getComponent('appix/router');
- *
- *    router.add([
+ * di.setInstance('en-demo', easyInit);
+ * let router = easyInit.getComponent('appix/router');
+ * router.add([
  *      {
  *        url: '/',
  *        route: 'app/Index'
@@ -45,9 +43,9 @@ const COMPONENTS = [
  *        url: '/favicon.ico',
  *        route: 'home/Favicon'
  *      }
- *    ]);
+ * ]);
  *
- *    easyInit.listen();
+ * easyInit.listen();
  */
 class Bootstrap extends Type {
 

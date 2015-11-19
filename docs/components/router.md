@@ -14,6 +14,7 @@
 ### new Router(config, bootstrap)
 Router is a component in easy node application.
 Router handles routing for application.
+All routes should be added during bootstrap process
 
 
 | Param | Type | Description |
@@ -21,6 +22,52 @@ Router handles routing for application.
 | config | <code>Object</code> |  |
 | bootstrap | <code>Bootstrap</code> | instance |
 
+**Example**  
+```js
+'use strict';
+let di = require('appix');
+let Bootstrap = di.load('@{appix}/bootstrap');
+// bootstrap application
+let easyInit = new Bootstrap({
+  listenPort: 9500,
+  appPath:  __dirname + '/'
+});
+
+di.setInstance('en-demo', easyInit);
+let router = easyInit.getComponent('appix/router');
+router.add([
+   {
+       url: '/',
+       route: 'app/Index'
+   },
+   {
+       url: '/forward',
+       route: 'app/Forward'
+   },
+   {
+       url: '/test',
+       route: 'app/Test'
+   },
+   {
+       url: '/test-pall',
+       route: 'app/TestPall'
+   },
+   {
+       url: '/goto301',
+       route: 'app/Redirect301'
+   },
+   {
+       url: '/goto',
+       route: 'app/Redirect'
+   },
+   {
+       url: '/favicon.ico',
+       route: 'app/Favicon'
+   }
+]);
+
+easyInit.listen();
+```
 <a name="Router+add"></a>
 ### router.add(Rule)
 Add route to resolve list.

@@ -1,6 +1,7 @@
 <a name="Request"></a>
 ## Request
 **Kind**: global class  
+**Access:** protected  
 **Since**: 1.0.0  
 **License**: Mit Licence 2015  
 
@@ -31,7 +32,8 @@
 
 <a name="new_Request_new"></a>
 ### new Request(bootstrap, request, url)
-This class is responsible for processing request
+This class is responsible for processing request.
+You don't have access to request class itself instead of it api is provided to you in order to manipulate with request.
 
 
 | Param | Type | Description |

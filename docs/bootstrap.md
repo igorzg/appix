@@ -25,21 +25,19 @@ It could be with server listen but it could be server side simulation to.
 **Example**  
 ```js
 'use strict';
-   let di = require('appix');
-   let Bootstrap = di.load('@{appix}/bootstrap');
-   // bootstrap application
-   let easyInit = new Bootstrap({
+let di = require('appix');
+let Bootstrap = di.load('@{appix}/bootstrap');
+// bootstrap application
+let easyInit = new Bootstrap({
       listenPort: 9500,
       appPath:  __dirname + '/app'
-   }, function dynamicComponentConfig(components) {
+}, function dynamicComponentConfig(components) {
       components.set('my-component', {});
-   });
+});
 
-   di.setInstance('en-demo', easyInit);
-
-   let router = easyInit.getComponent('appix/router');
-
-   router.add([
+di.setInstance('en-demo', easyInit);
+let router = easyInit.getComponent('appix/router');
+router.add([
      {
        url: '/',
        route: 'app/Index'
@@ -48,9 +46,9 @@ It could be with server listen but it could be server side simulation to.
        url: '/favicon.ico',
        route: 'home/Favicon'
      }
-   ]);
+]);
 
-   easyInit.listen();
+easyInit.listen();
 ```
 <a name="Bootstrap+listen"></a>
 ### bootstrap.listen()

@@ -21,6 +21,21 @@ Route rule is used to add route definitions to router
 | config | <code>Object</code> |  |
 | types | <code>Object</code> | to extend route rule on inherit while implementing custom parseRequest and createUrl |
 
+**Example**  
+```js
+class DynamicRule extends RouteRule {
+  parseRequest() {
+
+  }
+  createUrl() {
+
+  }
+}
+
+// during bootstrap process add dynamic route rule
+let router = bootstrap.getComponent('appix/router');
+router.add(DynamicRule)
+```
 <a name="RouteRule+getPattern"></a>
 ### routeRule.getPattern(url)
 Creates pattern based on url provided

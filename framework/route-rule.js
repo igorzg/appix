@@ -18,6 +18,19 @@ const HAS_GROUP = /^\(([^\)]+)\)$/;
  * @constructor
  * @description
  * Route rule is used to add route definitions to router
+ * @example
+ * class DynamicRule extends RouteRule {
+ *   parseRequest() {
+ *
+ *   }
+ *   createUrl() {
+ *
+ *   }
+ * }
+ *
+ * // during bootstrap process add dynamic route rule
+ * let router = bootstrap.getComponent('appix/router');
+ * router.add(DynamicRule)
  */
 class RouteRule extends Type {
     constructor(bootstrap, config, types) {

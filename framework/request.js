@@ -20,8 +20,10 @@ let router;
  * @param {Object} request config
  * @param {String} url
  * @constructor
+ * @protected
  * @description
- * This class is responsible for processing request
+ * This class is responsible for processing request.
+ * You don't have access to request class itself instead of it api is provided to you in order to manipulate with request.
  */
 class Request extends Type {
     constructor(bootstrap, config, url) {
@@ -82,7 +84,6 @@ class Request extends Type {
      * @private
      * @description
      * Destroy all references to free memory
-     * @return {String}
      */
     destroy() {
         this.events.emit('destroy');
