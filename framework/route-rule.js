@@ -30,7 +30,18 @@ const HAS_GROUP = /^\(([^\)]+)\)$/;
  *
  * // during bootstrap process add dynamic route rule
  * let router = bootstrap.getComponent('appix/router');
- * router.add(DynamicRule)
+ * router.add(DynamicRule);
+ * // add static routes
+ * router.add([
+ *    {
+ *        url: '/',
+ *        route: 'app/Index'
+ *    },
+ *    {
+ *        url: '/favicon.ico',
+ *        route: 'app/Favicon'
+ *    }
+ * ]);
  */
 class RouteRule extends Type {
     constructor(bootstrap, config, types) {

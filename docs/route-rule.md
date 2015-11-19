@@ -34,7 +34,18 @@ class DynamicRule extends RouteRule {
 
 // during bootstrap process add dynamic route rule
 let router = bootstrap.getComponent('appix/router');
-router.add(DynamicRule)
+router.add(DynamicRule);
+// add static routes
+router.add([
+   {
+       url: '/',
+       route: 'app/Index'
+   },
+   {
+       url: '/favicon.ico',
+       route: 'app/Favicon'
+   }
+]);
 ```
 <a name="RouteRule+getPattern"></a>
 ### routeRule.getPattern(url)
