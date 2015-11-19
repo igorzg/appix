@@ -92,6 +92,12 @@ class Controller extends Type {
      * @description
      * Return method
      * @return {String}
+     * @example
+     * class Platform extends Controller {
+     *    beforeEach() {
+     *        let method = this.getMethod();
+     *    }
+     * }
      */
     getMethod() {
         return this.__request__.getMethod();
@@ -105,6 +111,12 @@ class Controller extends Type {
      * @description
      * Return params
      * @return {Object}
+     * @example
+     * class Platform extends Controller {
+     *    beforeEach() {
+     *        let params = this.getParams();
+     *    }
+     * }
      */
     getParams() {
         return this.__request__.getParams();
@@ -118,6 +130,14 @@ class Controller extends Type {
      * @description
      * Return parsed url
      * @return {Object}
+     * @example
+     * class Platform extends Controller {
+     *    beforeEach() {
+     *        let url = this.getParsedUrl();
+     *        let pathname = url.pathname;
+     *        let protocol = url.protocol;
+     *    }
+     * }
      */
     getParsedUrl() {
         return this.__request__.getParsedUrl();
@@ -130,7 +150,13 @@ class Controller extends Type {
      *
      * @description
      * Get request body, return data sent to server.
-     * @return {Buffer}
+     * @return {Buffer|Object}
+     * @example
+     * class Platform extends Controller {
+     *    beforeEach() {
+     *        let body = this.getRequestBody();
+     *    }
+     * }
      */
     getRequestBody() {
         return this.__request__.getRequestBody();
@@ -144,6 +170,12 @@ class Controller extends Type {
      * @description
      * Get request pathname
      * @return {String}
+     * @example
+     * class Platform extends Controller {
+     *    beforeEach() {
+     *        let pathname = this.getPathname();
+     *    }
+     * }
      */
     getPathname() {
         return this.__request__.getPathname();
@@ -157,6 +189,12 @@ class Controller extends Type {
      * @description
      * Get request domain
      * @return {String}
+     * @example
+     * class Platform extends Controller {
+     *    beforeEach() {
+     *        let domain = this.getRequestDomain();
+     *    }
+     * }
      */
     getRequestDomain() {
         return this.__request__.getRequestDomain();
@@ -170,6 +208,12 @@ class Controller extends Type {
      * @description
      * Get request header, by header name
      * @return {String}
+     * @example
+     * class Platform extends Controller {
+     *    beforeEach() {
+     *        let cookies = this.getRequestHeader('Cookies');
+     *    }
+     * }
      */
     getRequestHeader(name) {
         return this.__request__.getRequestHeader(name);
@@ -183,6 +227,12 @@ class Controller extends Type {
      * @description
      * Get request headers, key value pairs
      * @return {Object}
+     * @example
+     * class Platform extends Controller {
+     *    beforeEach() {
+     *        let headers = this.getRequestHeaders();
+     *    }
+     * }
      */
     getRequestHeaders() {
         return this.__request__.getRequestHeaders();
@@ -196,6 +246,12 @@ class Controller extends Type {
      * @description
      * Get request local address
      * @return {String}
+     * @example
+     * class Platform extends Controller {
+     *    beforeEach() {
+     *        let local_address = this.getRequestLocalAddress();
+     *    }
+     * }
      */
     getRequestLocalAddress() {
         return this.__request__.getRequestLocalAddress();
@@ -209,6 +265,12 @@ class Controller extends Type {
      * @description
      * Get request local port
      * @return {Number}
+     * @example
+     * class Platform extends Controller {
+     *    beforeEach() {
+     *        let local_port = this.getRequestLocalPort();
+     *    }
+     * }
      */
     getRequestLocalPort() {
         return this.__request__.getRequestLocalPort();
@@ -222,6 +284,12 @@ class Controller extends Type {
      * @description
      * Get request remote address
      * @return {String}
+     * @example
+     * class Platform extends Controller {
+     *    beforeEach() {
+     *        let remote_port = this.getRequestRemotePort();
+     *    }
+     * }
      */
     getRequestRemoteAddress() {
         return this.__request__.getRequestRemoteAddress();
@@ -235,6 +303,12 @@ class Controller extends Type {
      * @description
      * Get request remote port
      * @return {Number}
+     * @example
+     * class Platform extends Controller {
+     *    beforeEach() {
+     *        let remote_port = this.getRequestRemotePort();
+     *    }
+     * }
      */
     getRequestRemotePort() {
         return this.__request__.getRequestRemotePort();
@@ -245,7 +319,14 @@ class Controller extends Type {
      * @function
      * @name Controller#getRequestCookies
      * @description
-     * Return all cookies
+     * get all cookies
+     * @return {Object}
+     * @example
+     * class Platform extends Controller {
+     *    beforeEach() {
+     *        let cookies = this.getRequestCookies();
+     *    }
+     * }
      */
     getRequestCookies() {
         return this.__request__.getRequestCookies();
@@ -257,7 +338,14 @@ class Controller extends Type {
      * @name Controller#getRequestCookie
      * @param {String} name cookie
      * @description
-     * Return cookie value
+     * get cookie value
+     * @return {String}
+     * @example
+     * class Platform extends Controller {
+     *    beforeEach() {
+     *        let user = this.getRequestCookie('user');
+     *    }
+     * }
      */
     getRequestCookie(name) {
         return this.__request__.getRequestCookie(name);
@@ -270,6 +358,15 @@ class Controller extends Type {
      *
      * @description
      * On end is an happening on destroy event
+     * @example
+     * class Platform extends Controller {
+     *    beforeEach() {
+     *        let mySharedService = this.getComponent('shared-service');
+     *        this.onEnd(() => {
+     *          mySharedService.delete(this.getRequestId());
+     *        });
+     *    }
+     * }
      */
     onEnd(callback) {
         return this.__request__.onEnd(callback);
@@ -278,13 +375,21 @@ class Controller extends Type {
     /**
      * @since 1.0.0
      * @function
-     * @name Controller#forwardUrl
+     * @name Controller#forwardRoute
      * @param {String} route
      * @param {Object} params
      *
      * @description
      * forward url
      * @return {Promise}
+     * @example
+     * class Platform extends Controller {
+     *    beforeEach() {
+     *        if (/* expression *\/) {
+     *          return this.forwardRoute('search/index', {query: 'term'});
+     *        }
+     *    }
+     * }
      */
     forwardRoute(route, params) {
         this.stopChain();
@@ -301,6 +406,14 @@ class Controller extends Type {
      * @description
      * forward url
      * @return {Promise}
+     * @example
+     * class Platform extends Controller {
+     *    beforeEach() {
+     *        if (/* expression *\/) {
+     *          return this.forwardUrl('/search?query=term');
+     *        }
+     *    }
+     * }
      */
     forwardUrl(url) {
         this.stopChain();
@@ -316,6 +429,12 @@ class Controller extends Type {
      * @description
      * Get request route
      * @return {String}
+     * @example
+     * class Platform extends Controller {
+     *    beforeEach() {
+     *        let route = this.getRequestRoute();
+     *    }
+     * }
      */
     getRequestRoute() {
         return this.__request__.route;
@@ -329,6 +448,12 @@ class Controller extends Type {
      * @description
      * Get request controller
      * @return {String}
+     * @example
+     * class Platform extends Controller {
+     *    beforeEach() {
+     *        let controller = this.getRequestController();
+     *    }
+     * }
      */
     getRequestController() {
         return this.__request__.controller;
@@ -342,6 +467,12 @@ class Controller extends Type {
      * @description
      * Get request action
      * @return {String}
+     * @example
+     * class Platform extends Controller {
+     *    beforeEach() {
+     *        let action = this.getRequestAction();
+     *    }
+     * }
      */
     getRequestAction() {
         return this.__request__.action;
@@ -353,8 +484,14 @@ class Controller extends Type {
      * @name Controller#getRequestId
      *
      * @description
-     * Returns request id
+     * Returns uuid request id
      * @return {String}
+     * @example
+     * class Platform extends Controller {
+     *    actionIndex() {
+     *        let uuid = this.getRequestId();
+     *    }
+     * }
      */
     getRequestId() {
         return this.__request__.id;
@@ -368,6 +505,26 @@ class Controller extends Type {
      * @description
      * Get user agent
      * @return {String}
+     * @example
+     * class Platform extends Controller {
+     *    beforeEach() {
+     *        let ua = this.getUserAgent();
+     *        if (/android/i.test(ua)) {
+     *          return this.forwardRoute('platform/mobile', this.getParams());
+     *        }
+     *        return this.forwardRoute('platform/desktop', this.getParams());
+     *    }
+     * }
+     * class Desktop extends Platform {
+     *    actionIndex() {
+     *
+     *    }
+     * }
+     * class Mobile extends Platform {
+     *    actionIndex() {
+     *
+     *    }
+     * }
      */
     getUserAgent() {
         return this.getRequestHeader('User-Agent');
@@ -379,6 +536,14 @@ class Controller extends Type {
      * @param {Number} num status code number
      * @description
      * Set status code which will be sent to client
+     * @example
+     * class Error extends Controller {
+     *    actionHandler() {
+     *        if (/* expression *\/) {
+     *          this.setResponseStatusCode(504)
+     *        }
+     *    }
+     * }
      */
     setResponseStatusCode(num) {
         this.__request__.setResponseStatusCode(num);
@@ -397,6 +562,12 @@ class Controller extends Type {
      * @param {Boolean} isHttpOnly is http only
      * @description
      * Sets an cookie header
+     * @example
+     * class User extends Controller {
+     *    actionLogin() {
+     *        this.setResponseCookie('user', 'id-1', 30)
+     *    }
+     * }
      */
     setResponseCookie(key, value, expires, path, domain, isHttpOnly) {
         this.__request__.setResponseCookie(key, value, expires, path, domain, isHttpOnly);
@@ -409,6 +580,14 @@ class Controller extends Type {
      * @param {String|Object} value header value
      * @description
      * Sets an response header
+     * @example
+     * class JSON extends Controller {
+     *    afterEach(html) {
+     *        if (!this.hasResponseHeader('Content-Type')) {
+     *           this.setResponseHeader('Content-Type', 'application/json');
+     *        }
+     *    }
+     * }
      */
     setResponseHeader(key, value) {
         this.__request__.setResponseHeader(key, value);
@@ -421,6 +600,14 @@ class Controller extends Type {
      * @description
      * Check if response header is present
      * @return {Boolean}
+     * @example
+     * class JSON extends Controller {
+     *    afterEach(html) {
+     *        if (!this.hasResponseHeader('Content-Type')) {
+     *           this.setResponseHeader('Content-Type', 'application/json');
+     *        }
+     *    }
+     * }
      */
     hasResponseHeader(key) {
         return this.__request__.hasResponseHeader(key);
@@ -551,8 +738,7 @@ class Controller extends Type {
      * @description
      * Stop chain of actions, use this when needed. You can use it as well in filters to
      * @example
-     *  // route home/index
-     *  class MyAppController extends Controller {
+     * class MyAppController extends Controller {
      *
      *    beforeEach() {
      *      if (
@@ -568,7 +754,7 @@ class Controller extends Type {
      *       // this will never be executed since chain is stopped
      *    }
      *
-     *  }
+     * }
      */
     stopChain() {
         this.__chaining__ = false;
@@ -581,6 +767,17 @@ class Controller extends Type {
      * @param {Number} code status code
      * @description
      * Redirect to page
+     * @example
+     * class User extends Controller {
+     *    beforeEach() {
+     *        if (!this.isLoggedIn) {
+     *           return this.redirect(this.createUrl('user/login'))
+     *        }
+     *    }
+     *    actionIndex() {
+     *
+     *    }
+     * }
      */
     redirect(url, code) {
         this.stopChain();
@@ -593,6 +790,14 @@ class Controller extends Type {
      *
      * @description
      * before each request do some logic if needed
+     * @example
+     * class User extends Controller {
+     *    beforeEach() {
+     *        if (!this.isLoggedIn) {
+     *           return this.redirect(this.createUrl('user/login'))
+     *        }
+     *    }
+     * }
      */
     beforeEach() {
         return Promise.resolve(true);
@@ -605,6 +810,16 @@ class Controller extends Type {
      *
      * @description
      * after each request do some logic if needed
+     * @example
+     * class User extends Controller {
+     *    afterEach(html) {
+     *        if (this.getMethod() === 'GET') {
+     *          let cache = this.getComponent('mycache');
+     *          cache.set(this.getPathname(), html);
+     *        }
+     *        return html;
+     *    }
+     * }
      */
     afterEach(action) {
         return Promise.resolve(action);

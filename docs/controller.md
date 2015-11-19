@@ -10,7 +10,7 @@
   * [.getMethod()](#Controller+getMethod) ⇒ <code>String</code>
   * [.getParams()](#Controller+getParams) ⇒ <code>Object</code>
   * [.getParsedUrl()](#Controller+getParsedUrl) ⇒ <code>Object</code>
-  * [.getRequestBody()](#Controller+getRequestBody) ⇒ <code>Buffer</code>
+  * [.getRequestBody()](#Controller+getRequestBody) ⇒ <code>Buffer</code> &#124; <code>Object</code>
   * [.getPathname()](#Controller+getPathname) ⇒ <code>String</code>
   * [.getRequestDomain()](#Controller+getRequestDomain) ⇒ <code>String</code>
   * [.getRequestHeader(name)](#Controller+getRequestHeader) ⇒ <code>String</code>
@@ -19,10 +19,10 @@
   * [.getRequestLocalPort()](#Controller+getRequestLocalPort) ⇒ <code>Number</code>
   * [.getRequestRemoteAddress()](#Controller+getRequestRemoteAddress) ⇒ <code>String</code>
   * [.getRequestRemotePort()](#Controller+getRequestRemotePort) ⇒ <code>Number</code>
-  * [.getRequestCookies()](#Controller+getRequestCookies)
-  * [.getRequestCookie(name)](#Controller+getRequestCookie)
+  * [.getRequestCookies()](#Controller+getRequestCookies) ⇒ <code>Object</code>
+  * [.getRequestCookie(name)](#Controller+getRequestCookie) ⇒ <code>String</code>
   * [.onEnd()](#Controller+onEnd)
-  * [.forwardUrl(route, params)](#Controller+forwardUrl) ⇒ <code>Promise</code>
+  * [.forwardRoute(route, params)](#Controller+forwardRoute) ⇒ <code>Promise</code>
   * [.forwardUrl(url)](#Controller+forwardUrl) ⇒ <code>Promise</code>
   * [.getRequestRoute()](#Controller+getRequestRoute) ⇒ <code>String</code>
   * [.getRequestController()](#Controller+getRequestController) ⇒ <code>String</code>
@@ -115,36 +115,86 @@ Return method
 
 **Kind**: instance method of <code>[Controller](#Controller)</code>  
 **Since**: 1.0.0  
+**Example**  
+```js
+class Platform extends Controller {
+   beforeEach() {
+       let method = this.getMethod();
+   }
+}
+```
 <a name="Controller+getParams"></a>
 ### controller.getParams() ⇒ <code>Object</code>
 Return params
 
 **Kind**: instance method of <code>[Controller](#Controller)</code>  
 **Since**: 1.0.0  
+**Example**  
+```js
+class Platform extends Controller {
+   beforeEach() {
+       let params = this.getParams();
+   }
+}
+```
 <a name="Controller+getParsedUrl"></a>
 ### controller.getParsedUrl() ⇒ <code>Object</code>
 Return parsed url
 
 **Kind**: instance method of <code>[Controller](#Controller)</code>  
 **Since**: 1.0.0  
+**Example**  
+```js
+class Platform extends Controller {
+   beforeEach() {
+       let url = this.getParsedUrl();
+       let pathname = url.pathname;
+       let protocol = url.protocol;
+   }
+}
+```
 <a name="Controller+getRequestBody"></a>
-### controller.getRequestBody() ⇒ <code>Buffer</code>
+### controller.getRequestBody() ⇒ <code>Buffer</code> &#124; <code>Object</code>
 Get request body, return data sent to server.
 
 **Kind**: instance method of <code>[Controller](#Controller)</code>  
 **Since**: 1.0.0  
+**Example**  
+```js
+class Platform extends Controller {
+   beforeEach() {
+       let body = this.getRequestBody();
+   }
+}
+```
 <a name="Controller+getPathname"></a>
 ### controller.getPathname() ⇒ <code>String</code>
 Get request pathname
 
 **Kind**: instance method of <code>[Controller](#Controller)</code>  
 **Since**: 1.0.0  
+**Example**  
+```js
+class Platform extends Controller {
+   beforeEach() {
+       let pathname = this.getPathname();
+   }
+}
+```
 <a name="Controller+getRequestDomain"></a>
 ### controller.getRequestDomain() ⇒ <code>String</code>
 Get request domain
 
 **Kind**: instance method of <code>[Controller](#Controller)</code>  
 **Since**: 1.0.0  
+**Example**  
+```js
+class Platform extends Controller {
+   beforeEach() {
+       let domain = this.getRequestDomain();
+   }
+}
+```
 <a name="Controller+getRequestHeader"></a>
 ### controller.getRequestHeader(name) ⇒ <code>String</code>
 Get request header, by header name
@@ -156,45 +206,101 @@ Get request header, by header name
 | --- | --- | --- |
 | name | <code>String</code> | of header |
 
+**Example**  
+```js
+class Platform extends Controller {
+   beforeEach() {
+       let cookies = this.getRequestHeader('Cookies');
+   }
+}
+```
 <a name="Controller+getRequestHeaders"></a>
 ### controller.getRequestHeaders() ⇒ <code>Object</code>
 Get request headers, key value pairs
 
 **Kind**: instance method of <code>[Controller](#Controller)</code>  
 **Since**: 1.0.0  
+**Example**  
+```js
+class Platform extends Controller {
+   beforeEach() {
+       let headers = this.getRequestHeaders();
+   }
+}
+```
 <a name="Controller+getRequestLocalAddress"></a>
 ### controller.getRequestLocalAddress() ⇒ <code>String</code>
 Get request local address
 
 **Kind**: instance method of <code>[Controller](#Controller)</code>  
 **Since**: 1.0.0  
+**Example**  
+```js
+class Platform extends Controller {
+   beforeEach() {
+       let local_address = this.getRequestLocalAddress();
+   }
+}
+```
 <a name="Controller+getRequestLocalPort"></a>
 ### controller.getRequestLocalPort() ⇒ <code>Number</code>
 Get request local port
 
 **Kind**: instance method of <code>[Controller](#Controller)</code>  
 **Since**: 1.0.0  
+**Example**  
+```js
+class Platform extends Controller {
+   beforeEach() {
+       let local_port = this.getRequestLocalPort();
+   }
+}
+```
 <a name="Controller+getRequestRemoteAddress"></a>
 ### controller.getRequestRemoteAddress() ⇒ <code>String</code>
 Get request remote address
 
 **Kind**: instance method of <code>[Controller](#Controller)</code>  
 **Since**: 1.0.0  
+**Example**  
+```js
+class Platform extends Controller {
+   beforeEach() {
+       let remote_port = this.getRequestRemotePort();
+   }
+}
+```
 <a name="Controller+getRequestRemotePort"></a>
 ### controller.getRequestRemotePort() ⇒ <code>Number</code>
 Get request remote port
 
 **Kind**: instance method of <code>[Controller](#Controller)</code>  
 **Since**: 1.0.0  
+**Example**  
+```js
+class Platform extends Controller {
+   beforeEach() {
+       let remote_port = this.getRequestRemotePort();
+   }
+}
+```
 <a name="Controller+getRequestCookies"></a>
-### controller.getRequestCookies()
-Return all cookies
+### controller.getRequestCookies() ⇒ <code>Object</code>
+get all cookies
 
 **Kind**: instance method of <code>[Controller](#Controller)</code>  
 **Since**: 1.0.0  
+**Example**  
+```js
+class Platform extends Controller {
+   beforeEach() {
+       let cookies = this.getRequestCookies();
+   }
+}
+```
 <a name="Controller+getRequestCookie"></a>
-### controller.getRequestCookie(name)
-Return cookie value
+### controller.getRequestCookie(name) ⇒ <code>String</code>
+get cookie value
 
 **Kind**: instance method of <code>[Controller](#Controller)</code>  
 **Since**: 1.0.0  
@@ -203,14 +309,33 @@ Return cookie value
 | --- | --- | --- |
 | name | <code>String</code> | cookie |
 
+**Example**  
+```js
+class Platform extends Controller {
+   beforeEach() {
+       let user = this.getRequestCookie('user');
+   }
+}
+```
 <a name="Controller+onEnd"></a>
 ### controller.onEnd()
 On end is an happening on destroy event
 
 **Kind**: instance method of <code>[Controller](#Controller)</code>  
 **Since**: 1.0.0  
-<a name="Controller+forwardUrl"></a>
-### controller.forwardUrl(route, params) ⇒ <code>Promise</code>
+**Example**  
+```js
+class Platform extends Controller {
+   beforeEach() {
+       let mySharedService = this.getComponent('shared-service');
+       this.onEnd(() => {
+         mySharedService.delete(this.getRequestId());
+       });
+   }
+}
+```
+<a name="Controller+forwardRoute"></a>
+### controller.forwardRoute(route, params) ⇒ <code>Promise</code>
 forward url
 
 **Kind**: instance method of <code>[Controller](#Controller)</code>  
@@ -221,6 +346,16 @@ forward url
 | route | <code>String</code> | 
 | params | <code>Object</code> | 
 
+**Example**  
+```js
+class Platform extends Controller {
+   beforeEach() {
+       if (/* expression *\/) {
+         return this.forwardRoute('search/index', {query: 'term'});
+       }
+   }
+}
+```
 <a name="Controller+forwardUrl"></a>
 ### controller.forwardUrl(url) ⇒ <code>Promise</code>
 forward url
@@ -232,36 +367,100 @@ forward url
 | --- | --- |
 | url | <code>String</code> | 
 
+**Example**  
+```js
+class Platform extends Controller {
+   beforeEach() {
+       if (/* expression *\/) {
+         return this.forwardUrl('/search?query=term');
+       }
+   }
+}
+```
 <a name="Controller+getRequestRoute"></a>
 ### controller.getRequestRoute() ⇒ <code>String</code>
 Get request route
 
 **Kind**: instance method of <code>[Controller](#Controller)</code>  
 **Since**: 1.0.0  
+**Example**  
+```js
+class Platform extends Controller {
+   beforeEach() {
+       let route = this.getRequestRoute();
+   }
+}
+```
 <a name="Controller+getRequestController"></a>
 ### controller.getRequestController() ⇒ <code>String</code>
 Get request controller
 
 **Kind**: instance method of <code>[Controller](#Controller)</code>  
 **Since**: 1.0.0  
+**Example**  
+```js
+class Platform extends Controller {
+   beforeEach() {
+       let controller = this.getRequestController();
+   }
+}
+```
 <a name="Controller+getRequestAction"></a>
 ### controller.getRequestAction() ⇒ <code>String</code>
 Get request action
 
 **Kind**: instance method of <code>[Controller](#Controller)</code>  
 **Since**: 1.0.0  
+**Example**  
+```js
+class Platform extends Controller {
+   beforeEach() {
+       let action = this.getRequestAction();
+   }
+}
+```
 <a name="Controller+getRequestId"></a>
 ### controller.getRequestId() ⇒ <code>String</code>
-Returns request id
+Returns uuid request id
 
 **Kind**: instance method of <code>[Controller](#Controller)</code>  
 **Since**: 1.0.0  
+**Example**  
+```js
+class Platform extends Controller {
+   actionIndex() {
+       let uuid = this.getRequestId();
+   }
+}
+```
 <a name="Controller+getUserAgent"></a>
 ### controller.getUserAgent() ⇒ <code>String</code>
 Get user agent
 
 **Kind**: instance method of <code>[Controller](#Controller)</code>  
 **Since**: 1.0.0  
+**Example**  
+```js
+class Platform extends Controller {
+   beforeEach() {
+       let ua = this.getUserAgent();
+       if (/android/i.test(ua)) {
+         return this.forwardRoute('platform/mobile', this.getParams());
+       }
+       return this.forwardRoute('platform/desktop', this.getParams());
+   }
+}
+class Desktop extends Platform {
+   actionIndex() {
+
+   }
+}
+class Mobile extends Platform {
+   actionIndex() {
+
+   }
+}
+```
 <a name="Controller+setResponseStatusCode"></a>
 ### controller.setResponseStatusCode(num)
 Set status code which will be sent to client
@@ -273,6 +472,16 @@ Set status code which will be sent to client
 | --- | --- | --- |
 | num | <code>Number</code> | status code number |
 
+**Example**  
+```js
+class Error extends Controller {
+   actionHandler() {
+       if (/* expression *\/) {
+         this.setResponseStatusCode(504)
+       }
+   }
+}
+```
 <a name="Controller+setResponseCookie"></a>
 ### controller.setResponseCookie(key, value, expires, path, domain, isHttpOnly)
 Sets an cookie header
@@ -290,6 +499,14 @@ Sets an cookie header
 | domain | <code>String</code> | cookie domain |
 | isHttpOnly | <code>Boolean</code> | is http only |
 
+**Example**  
+```js
+class User extends Controller {
+   actionLogin() {
+       this.setResponseCookie('user', 'id-1', 30)
+   }
+}
+```
 <a name="Controller+setResponseHeader"></a>
 ### controller.setResponseHeader(key, value)
 Sets an response header
@@ -302,6 +519,16 @@ Sets an response header
 | key | <code>String</code> | header name |
 | value | <code>String</code> &#124; <code>Object</code> | header value |
 
+**Example**  
+```js
+class JSON extends Controller {
+   afterEach(html) {
+       if (!this.hasResponseHeader('Content-Type')) {
+          this.setResponseHeader('Content-Type', 'application/json');
+       }
+   }
+}
+```
 <a name="Controller+hasResponseHeader"></a>
 ### controller.hasResponseHeader(key) ⇒ <code>Boolean</code>
 Check if response header is present
@@ -313,6 +540,16 @@ Check if response header is present
 | --- | --- | --- |
 | key | <code>String</code> | header name |
 
+**Example**  
+```js
+class JSON extends Controller {
+   afterEach(html) {
+       if (!this.hasResponseHeader('Content-Type')) {
+          this.setResponseHeader('Content-Type', 'application/json');
+       }
+   }
+}
+```
 <a name="Controller+addFilter"></a>
 ### controller.addFilter(FilterToInitialize, priority, route)
 Add filter
@@ -351,8 +588,7 @@ Stop chain of actions, use this when needed. You can use it as well in filters t
 **Since**: 1.0.0  
 **Example**  
 ```js
-// route home/index
- class MyAppController extends Controller {
+class MyAppController extends Controller {
 
    beforeEach() {
      if (
@@ -368,7 +604,7 @@ Stop chain of actions, use this when needed. You can use it as well in filters t
       // this will never be executed since chain is stopped
    }
 
- }
+}
 ```
 <a name="Controller+redirect"></a>
 ### controller.redirect(url, code)
@@ -382,15 +618,50 @@ Redirect to page
 | url | <code>String</code> | string url |
 | code | <code>Number</code> | status code |
 
+**Example**  
+```js
+class User extends Controller {
+   beforeEach() {
+       if (!this.isLoggedIn) {
+          return this.redirect(this.createUrl('user/login'))
+       }
+   }
+   actionIndex() {
+
+   }
+}
+```
 <a name="Controller+beforeEach"></a>
 ### controller.beforeEach()
 before each request do some logic if needed
 
 **Kind**: instance method of <code>[Controller](#Controller)</code>  
 **Since**: 1.0.0  
+**Example**  
+```js
+class User extends Controller {
+   beforeEach() {
+       if (!this.isLoggedIn) {
+          return this.redirect(this.createUrl('user/login'))
+       }
+   }
+}
+```
 <a name="Controller+afterEach"></a>
 ### controller.afterEach()
 after each request do some logic if needed
 
 **Kind**: instance method of <code>[Controller](#Controller)</code>  
 **Since**: 1.0.0  
+**Example**  
+```js
+class User extends Controller {
+   afterEach(html) {
+       if (this.getMethod() === 'GET') {
+         let cache = this.getComponent('mycache');
+         cache.set(this.getPathname(), html);
+       }
+       return html;
+   }
+}
+```
