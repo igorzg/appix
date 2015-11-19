@@ -1,31 +1,20 @@
+
+# Controller examples
+
+- app/controllers/home.js
+```js
 'use strict';
-
-let di = require('../../../');
-let key = 'en-demo';
-let logger = di.getInstance(key).getComponent('appix/logger');
+let di = require('appix');
+let Type = di.load('typed-js');
 let Controller = di.load('@{appix}/controller');
-let Filter = di.load('@{appix}/filter');
-
-class F1 extends Filter {
-    afterEach(data) {
-
-        return data + ' ' + new Date;
-    }
-}
-
-class F2 extends Filter {
-    afterEach(data) {
-        return di.async(function* gen() {
-            return yield data + ' prio';
-        });
-    }
-}
-
+// Controllers can be inherited as many levels as you need
 
 class Home extends Controller {
 
-    constructor(api) {
-        super(api);
+    constructor(api, types) {
+        super(api, Object.assign(types, {
+            locals: Type.OBJECT
+        })); // All ways pass the types in order to have possibility to add an controller member
         this.addFilter(F1, 10);
         this.addFilter(F2, -100);
     }
@@ -94,3 +83,4 @@ class Home extends Controller {
 }
 
 module.exports = Home;
+```
