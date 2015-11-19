@@ -20,9 +20,14 @@ describe('server', () => {
         'typed-js': di.load('typed-js')
     });
     let http;
+    let logger = {};
 
     beforeEach(() => {
-        http = new Server({});
+        http = new Server({}, {
+            getComponent: function () {
+               return logger;
+            }
+        });
     });
 
     it('on', () => {
