@@ -62,7 +62,7 @@ router.add([
     },
     {
         url: '/favicon.ico',
-        route: 'home/myfaviconhandler'
+        route: 'home/Favicon'
     }
 ]);
 // run server
