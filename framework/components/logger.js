@@ -30,12 +30,12 @@ let error = di.load('@{appix}/error');
  * class User extends Controller {
  *    beforeEach() {
  *      let logger = this.getComponent('appix/logger');
- *      logger.info('My message', dataObject);
- *      logger.error('My message', dataObject);
- *      logger.warn('My message', dataObject);
- *      logger.trace('My message', dataObject);
- *      logger.fatal('My message', dataObject);
- *      logger.debug('My message', dataObject);
+ *      logger.info('My message', {});
+ *      logger.error('My message', {});
+ *      logger.warn('My message', {});
+ *      logger.trace('My message', {});
+ *      logger.fatal('My message', {});
+ *      logger.debug('My message', {});
  *    }
  * }
  */
