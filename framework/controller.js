@@ -355,7 +355,7 @@ class Controller extends Type {
      * @since 1.0.0
      * @function
      * @name Controller#onEnd
-     *
+     * @param {Function} callback destroy callback
      * @description
      * On end is an happening on destroy event
      * @example
@@ -565,7 +565,10 @@ class Controller extends Type {
      * @example
      * class User extends Controller {
      *    actionLogin() {
-     *        this.setResponseCookie('user', 'id-1', 30)
+     *        this.setResponseCookie('user', 'id-1', 30);
+     *        this.setResponseCookie('user1', 'id-2', 50, '/');
+     *        this.setResponseCookie('user2', 'id-3', 50, '/', '.igorivanovic.info');
+     *        this.setResponseCookie('user2', 'id-3', 50, '/', '.igorivanovic.info', true);
      *    }
      * }
      */
@@ -685,7 +688,7 @@ class Controller extends Type {
      * @param {Number} priority
      * @param {String} route
      * @description
-     * Add filter
+     * Add filter, all filters must be inherited from appix/filter
      * @example
      *  class MyAppController extends Controller {
      *
@@ -697,7 +700,8 @@ class Controller extends Type {
      *       this.addFilter(F1, 10);
      *       this.addFilter(F2, 10);
      *       this.addFilter(F3, 10, 'home/index'); // will be executed only on home controller action index
-     *       this.addFilter(F3, 10, 'home/*'); // will be executed on all home controllers actions
+     *       this.addFilter(F4, 10, 'home/*'); // will be executed on all home controllers actions
+     *       this.addFilter(F5, 10, '*'); // apply on all controllers actions
      *    }
      *
      *  }

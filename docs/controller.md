@@ -21,7 +21,7 @@
   * [.getRequestRemotePort()](#Controller+getRequestRemotePort) ⇒ <code>Number</code>
   * [.getRequestCookies()](#Controller+getRequestCookies) ⇒ <code>Object</code>
   * [.getRequestCookie(name)](#Controller+getRequestCookie) ⇒ <code>String</code>
-  * [.onEnd()](#Controller+onEnd)
+  * [.onEnd(callback)](#Controller+onEnd)
   * [.forwardRoute(route, params)](#Controller+forwardRoute) ⇒ <code>Promise</code>
   * [.forwardUrl(url)](#Controller+forwardUrl) ⇒ <code>Promise</code>
   * [.getRequestRoute()](#Controller+getRequestRoute) ⇒ <code>String</code>
@@ -318,11 +318,16 @@ class Platform extends Controller {
 }
 ```
 <a name="Controller+onEnd"></a>
-### controller.onEnd()
+### controller.onEnd(callback)
 On end is an happening on destroy event
 
 **Kind**: instance method of <code>[Controller](#Controller)</code>  
 **Since**: 1.0.0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| callback | <code>function</code> | destroy callback |
+
 **Example**  
 ```js
 class Platform extends Controller {
@@ -503,7 +508,10 @@ Sets an cookie header
 ```js
 class User extends Controller {
    actionLogin() {
-       this.setResponseCookie('user', 'id-1', 30)
+       this.setResponseCookie('user', 'id-1', 30);
+       this.setResponseCookie('user1', 'id-2', 50, '/');
+       this.setResponseCookie('user2', 'id-3', 50, '/', '.igorivanovic.info');
+       this.setResponseCookie('user2', 'id-3', 50, '/', '.igorivanovic.info', true);
    }
 }
 ```
@@ -552,7 +560,7 @@ class JSON extends Controller {
 ```
 <a name="Controller+addFilter"></a>
 ### controller.addFilter(FilterToInitialize, priority, route)
-Add filter
+Add filter, all filters must be inherited from appix/filter
 
 **Kind**: instance method of <code>[Controller](#Controller)</code>  
 **Since**: 1.0.0  
@@ -575,7 +583,8 @@ class MyAppController extends Controller {
       this.addFilter(F1, 10);
       this.addFilter(F2, 10);
       this.addFilter(F3, 10, 'home/index'); // will be executed only on home controller action index
-      this.addFilter(F3, 10, 'home/*'); // will be executed on all home controllers actions
+      this.addFilter(F4, 10, 'home/*'); // will be executed on all home controllers actions
+      this.addFilter(F5, 10, '*'); // apply on all controllers actions
    }
 
  }
