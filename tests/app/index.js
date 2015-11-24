@@ -5,8 +5,6 @@ let Bootstrap = di.load('@{appix}/bootstrap');
 let easyInit = new Bootstrap({
     listenPort: 9500,
     appPath:  __dirname + '/'
-}, function dynamicComponentConfig(components) {
-    //components.set('key', {});
 });
 
 di.setInstance('en-demo', easyInit);

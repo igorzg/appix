@@ -610,7 +610,6 @@ class Request extends Type {
             route: controllerName + '/' + actionName
         });
 
-
         if (!(controller instanceof Controller)) {
             throw new error.HttpException(500, `${controllerName} must be inherited from @{appix}/controller`, {
                 controllerName,
@@ -774,7 +773,7 @@ class Request extends Type {
                 request: this.getParsedUrl(),
                 method: this.getMethod(),
                 error
-            }))
+            }));
     }
 }
 
