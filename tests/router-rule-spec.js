@@ -19,6 +19,52 @@ describe('router rule', () => {
         'typed-js': di.load('typed-js')
     });
 
+    it('pattern check /', () => {
+        let rule = new RouteRule(app, {
+            url: '/',
+            route: 'home/index'
+        });
+        let url = '/';
+        let q;
+        let parsed;
+        let urlResult;
+
+        parsed = rule.parseRequest(url, 'GET');
+        expect(parsed.route).toBe('home/index');
+        q = new Map(parsed.query);
+        urlResult = rule.createUrl('home/index', q);
+        expect(urlResult).toBe(url);
+    });
+
+    it('pattern check /assets/css/*', () => {
+        let rule = new RouteRule(app, {
+            url: '/assets/<file:(.*)>',
+            route: 'assets/file'
+        });
+        let url = '/assets/css/style.css';
+        let parsed = rule.parseRequest(url, 'GET');
+        expect(parsed.query.get('file')).toBe('css/style.css');
+        let q = new Map(parsed.query);
+        let urlResult = rule.createUrl('assets/file', q);
+        expect(urlResult).toBe(url);
+
+        url = '/assets/js/test/app.js';
+        parsed = rule.parseRequest(url, 'GET');
+        expect(parsed.query.get('file')).toBe('js/test/app.js');
+
+        q = new Map(parsed.query);
+        urlResult = rule.createUrl('assets/file', q);
+        expect(urlResult).toBe(url);
+
+        rule = new RouteRule(app, {
+            url: '/assets/<file:([^\\/]+)>',
+            route: 'assets/file'
+        });
+
+        url = '/assets/js/test/app.js';
+        parsed = rule.parseRequest(url, 'GET');
+        expect(parsed).toBe(false);
+    });
 
     it('pattern check /can<any>one/<name:\\w+>/should<now:\\W+>do-it/<see:(\\w+)>-<nice:([a-zA-Z]+)>-now-<only:\\d+>-not/user/<id:\\d+>', () => {
         let rule = new RouteRule(app, {
@@ -81,27 +127,27 @@ describe('router rule', () => {
         var a6 = rule.pattern.shift();
         expect(a.source).toBe('can([\\s\\S]+)one');
         expect(a.original).toBe('can<any>one');
-        expect(a.pattern).toEqual(/can([\s\S]+)one/);
+        expect(a.pattern).toEqual(/^can([\s\S]+)one$/);
 
         expect(a1.source).toBe('(\\w+)');
         expect(a1.original).toBe('<name:\\w+>');
-        expect(a1.pattern).toEqual(/(\w+)/);
+        expect(a1.pattern).toEqual(/^(\w+)$/);
 
         expect(a2.source).toBe('should(\\W+)do-it');
         expect(a2.original).toBe('should<now:\\W+>do-it');
-        expect(a2.pattern).toEqual(/should(\W+)do-it/);
+        expect(a2.pattern).toEqual(/^should(\W+)do-it$/);
 
         expect(a3.source).toBe('(\\w+)-([a-zA-Z]+)-now-(\\d+)-not');
         expect(a3.original).toBe('<see:(\\w+)>-<nice:([a-zA-Z]+)>-now-<only:\\d+>-not');
-        expect(a3.pattern).toEqual(/(\w+)-([a-zA-Z]+)-now-(\d+)-not/);
+        expect(a3.pattern).toEqual(/^(\w+)-([a-zA-Z]+)-now-(\d+)-not$/);
 
         expect(a4.source).toBe('user');
         expect(a4.original).toBe('user');
-        expect(a4.pattern).toEqual(/user/);
+        expect(a4.pattern).toEqual(/^user$/);
 
         expect(a5.source).toBe('(\\d+)');
         expect(a5.original).toBe('<id:\\d+>');
-        expect(a5.pattern).toEqual(/(\d+)/);
+        expect(a5.pattern).toEqual(/^(\d+)$/);
 
         expect(a6).toBe(undefined);
     });
@@ -111,6 +157,7 @@ describe('router rule', () => {
             parseRequest() {
 
             }
+
             createUrl() {
 
             }

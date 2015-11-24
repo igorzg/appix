@@ -93,8 +93,7 @@ class RouteRule extends Type {
      * Creates pattern based on url provided
      */
     getPattern(url) {
-
-        return url.split('/').filter(item => !!item).map(item => {
+        return url.split(/\/([^\/]+)\//g).filter(item => !!item).map(item => {
             // pattern definition
             let obj = {
                 patterns: [],
@@ -143,7 +142,7 @@ class RouteRule extends Type {
                     if (!HAS_GROUP.test(source)) {
                         source = '(' + source + ')';
                     }
-                    let pattern = new RegExp(source);
+                    let pattern = new RegExp('^' + source + '$');
                     let start = index;
                     let end = start + replace.length;
                     obj.patterns.push({
@@ -170,7 +169,7 @@ class RouteRule extends Type {
                     let start = index;
                     let end = start + replace.length;
                     let source = '([\\s\\S]+)';
-                    let pattern = new RegExp(source);
+                    let pattern = new RegExp('^' + source + '$');
                     obj.patterns.push({
                         source,
                         key,
@@ -213,7 +212,7 @@ class RouteRule extends Type {
                 obj.source = item.replace(obj.source, item.source);
             });
             // pattern
-            obj.pattern = new RegExp(obj.source);
+            obj.pattern = new RegExp('^' + obj.source + '$');
 
             return obj;
         });
@@ -230,16 +229,21 @@ class RouteRule extends Type {
      * Parse request and get result
      */
     parseRequest(pathname, method) {
-        let url = pathname.split('/').filter(item => !!item);
-        if (this.pattern.length !== url.length || this.methods.indexOf(method) === -1) {
+        let url = pathname.split(/\/([^\/]+)\//g).filter(item => !!item);
+        let pl = this.pattern.length;
+        if (this.methods.indexOf(method) === -1) {
             return false;
+        } else if (url.length > pl) {
+            let last = url.splice(pl, url.length - 1);
+            last.unshift(url.pop());
+            url.push(last.join('/'));
         }
         let query = new Map();
         let isValidRequest = this.pattern.every((pattern, index) => {
             let part = url[index];
             let result = pattern.match(part);
             if (result) {
-                result.forEach((k, v) => query.set(k, v));
+                result.forEach((v, k) => query.set(k, v));
                 return Type.isObject(result);
             }
             return false;
@@ -293,16 +297,14 @@ class RouteRule extends Type {
 
         keys.forEach(key => paramsMap.delete(key));
 
-        let url = matches.join('/');
-
+        let url = ('/' + matches.join('/')).replace(/\/\//g, '/');
         if (paramsMap.size > 0) {
             url += '?';
             paramsMap.forEach((v, k) => {
                 url += k + '=' + encodeURIComponent(v);
             });
         }
-
-        return '/' + url;
+        return url;
     }
 }
 
