@@ -101,6 +101,7 @@ class RouteRule extends Type {
      * @function
      * @name RouteRule#getPattern
      * @param {String} url
+     * @private
      *
      * @description
      * Creates pattern based on url provided
