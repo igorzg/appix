@@ -7,12 +7,13 @@
 * [RouteRule](#RouteRule)
   * [new RouteRule(bootstrap, config, types)](#new_RouteRule_new)
   * [.getPattern(url)](#RouteRule+getPattern)
-  * [.parseRequest(pathname, method)](#RouteRule+parseRequest)
+  * [.parseRequest(pathname, method)](#RouteRule+parseRequest) ⇒ <code>Object</code>
   * [.createUrl(route, params)](#RouteRule+createUrl)
 
 <a name="new_RouteRule_new"></a>
 ### new RouteRule(bootstrap, config, types)
-Route rule is used to add route definitions to router
+Route rule is used to add route definitions to router.
+To enable data event dataEvent property has to be passed to router as dataEvent: true
 
 
 | Param | Type | Description |
@@ -24,8 +25,16 @@ Route rule is used to add route definitions to router
 **Example**  
 ```js
 class DynamicRule extends RouteRule {
-  parseRequest() {
-
+  parseRequest(pathname, method) {
+     let query = {};
+     let route = 'user/contact';
+     return {
+            pathname,
+            method,
+            query,
+            dataEvent: true,
+            route
+        }
   }
   createUrl() {
 
@@ -39,7 +48,8 @@ router.add(DynamicRule);
 router.add([
    {
        url: '/',
-       route: 'app/Index'
+       route: 'app/Index',
+       dataEvent: true
    },
    {
        url: '/favicon.ico',
@@ -59,8 +69,9 @@ Creates pattern based on url provided
 | url | <code>String</code> | 
 
 <a name="RouteRule+parseRequest"></a>
-### routeRule.parseRequest(pathname, method)
+### routeRule.parseRequest(pathname, method) ⇒ <code>Object</code>
 Parse request and get result
+When route rule is extend following object structure has to be returned
 
 **Kind**: instance method of <code>[RouteRule](#RouteRule)</code>  
 **Since**: 1.0.0  
@@ -70,6 +81,18 @@ Parse request and get result
 | pathname | <code>String</code> | 
 | method | <code>String</code> | 
 
+**Example**  
+```js
+parseRequest(pathname, method) {
+ return {
+   pathname,
+   method,
+   query,
+   dataEvent: true,
+   route
+ }
+}
+```
 <a name="RouteRule+createUrl"></a>
 ### routeRule.createUrl(route, params)
 Create url based on parameters and route

@@ -17,11 +17,20 @@ const HAS_GROUP = /^\(([^\)]+)\)$/;
  * @param {Object} types to extend route rule on inherit while implementing custom parseRequest and createUrl
  * @constructor
  * @description
- * Route rule is used to add route definitions to router
+ * Route rule is used to add route definitions to router.
+ * To enable data event dataEvent property has to be passed to router as dataEvent: true
  * @example
  * class DynamicRule extends RouteRule {
- *   parseRequest() {
- *
+ *   parseRequest(pathname, method) {
+ *      let query = {};
+ *      let route = 'user/contact';
+ *      return {
+            pathname,
+            method,
+            query,
+            dataEvent: true,
+            route
+        }
  *   }
  *   createUrl() {
  *
@@ -35,7 +44,8 @@ const HAS_GROUP = /^\(([^\)]+)\)$/;
  * router.add([
  *    {
  *        url: '/',
- *        route: 'app/Index'
+ *        route: 'app/Index',
+ *        dataEvent: true
  *    },
  *    {
  *        url: '/favicon.ico',
@@ -52,7 +62,8 @@ class RouteRule extends Type {
             route: Type.STRING,
             validMethods: Type.ARRAY,
             methods: Type.ARRAY,
-            bootstrap: Type.OBJECT
+            bootstrap: Type.OBJECT,
+            dataEvent: Type.BOOLEAN
         }, types));
 
         logger = bootstrap.getComponent('appix/logger');
@@ -60,6 +71,8 @@ class RouteRule extends Type {
         this.bootstrap = bootstrap;
         this.validMethods = ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'TRACE', 'OPTIONS', 'CONNECT', 'PATCH'];
         this.methods = ['GET'];
+        this.dataEvent = config.dataEvent || false;
+
         if (Type.isArray(config.methods) && !config.methods.every(item => this.validMethods.indexOf(item) > -1)) {
             throw new error.HttpError(500, `RouteRule: rule must contain valid methods`, {
                 config: config,
@@ -227,6 +240,19 @@ class RouteRule extends Type {
      *
      * @description
      * Parse request and get result
+     * When route rule is extend following object structure has to be returned
+     * @return {Object}
+     *
+     * @example
+     * parseRequest(pathname, method) {
+     *  return {
+     *    pathname,
+     *    method,
+     *    query,
+     *    dataEvent: true,
+     *    route
+     *  }
+     * }
      */
     parseRequest(pathname, method) {
         let url = pathname.split(/\/([^\/]+)\//g).filter(item => !!item);
@@ -255,6 +281,7 @@ class RouteRule extends Type {
             pathname,
             method,
             query,
+            dataEvent: this.dataEvent,
             route: this.route
         };
     }

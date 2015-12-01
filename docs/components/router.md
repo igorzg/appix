@@ -42,7 +42,8 @@ router.add([
    },
    {
        url: '/forward',
-       route: 'app/Forward'
+       route: 'app/Forward',
+       dataEvent: true
    },
    {
        url: '/test',

@@ -89,6 +89,7 @@ describe('router rule', () => {
         expect(parsed).toEqual({
             pathname: '/canbeone/igor/should#+do-it/whata-smile-now-2306-not/user/1412',
             method: 'GET',
+            dataEvent: false,
             query: paramsMap,
             route: 'user/view'
         });

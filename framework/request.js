@@ -712,20 +712,31 @@ class Request extends Type {
             this.response.once('finish', () => this.destroy());
             // destroy if connection was terminated before end
             this.response.once('close', () => this.destroy());
-            // push data
-            this.request.on('data', item => this.data.push(item));
         }
         // on data end process request
-        let request = this.isForwarded ? Promise.resolve(true) : new Promise(resolve => this.request.on('end', resolve));
-
-        return request
-            .then(() => {
+        return router.parseRequest(this.getPathname(), this.getMethod(), this.getRequestHeaders())
+            .then(result => {
+                if (result.dataEvent && !this.isForwarded) {
+                    logger.info('Route.parseRequest.withDataEvent', {
+                        id: this.id,
+                        isCustomError: this.isCustomError,
+                        isForwarded: this.isForwarded,
+                        path: this.getPathname(),
+                        method: this.getMethod(),
+                        result: result
+                    });
+                    this.request.on('data', item => this.data.push(item));
+                    return new Promise(resolve => this.request.on('end', resolve.bind({}, result)));
+                }
                 logger.info('Route.parseRequest', {
                     id: this.id,
+                    isCustomError: this.isCustomError,
+                    isForwarded: this.isForwarded,
                     path: this.getPathname(),
-                    method: this.getMethod()
+                    method: this.getMethod(),
+                    result: result
                 });
-                return router.parseRequest(this.getPathname(), this.getMethod(), this.getRequestHeaders());
+                return result;
             })
             .then(result => {
 
