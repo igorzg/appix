@@ -20,7 +20,7 @@ To enable data event dataEvent property has to be passed to router as dataEvent:
 | --- | --- | --- |
 | bootstrap | <code>Bootstrap</code> | instance |
 | config | <code>Object</code> |  |
-| types | <code>Object</code> | to extend route rule on inherit while implementing custom parseRequest and createUrl |
+| types | <code>Object</code> | extend route rule on inherit while implementing custom parseRequest and createUrl |
 
 **Example**  
 ```js
@@ -70,8 +70,7 @@ Creates pattern based on url provided
 
 <a name="RouteRule+parseRequest"></a>
 ### routeRule.parseRequest(pathname, method) ⇒ <code>Object</code>
-Parse request and get result
-When route rule is extend following object structure has to be returned
+Parse request and get result when route rule is extend following object structure has to be returned.
 
 **Kind**: instance method of <code>[RouteRule](#RouteRule)</code>  
 **Since**: 1.0.0  

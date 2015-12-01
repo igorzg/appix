@@ -14,7 +14,7 @@ const HAS_GROUP = /^\(([^\)]+)\)$/;
  * @name RouteRule
  * @param {Bootstrap} bootstrap instance
  * @param {Object} config
- * @param {Object} types to extend route rule on inherit while implementing custom parseRequest and createUrl
+ * @param {Object} types extend route rule on inherit while implementing custom parseRequest and createUrl
  * @constructor
  * @description
  * Route rule is used to add route definitions to router.
@@ -239,8 +239,7 @@ class RouteRule extends Type {
      * @param {String} method
      *
      * @description
-     * Parse request and get result
-     * When route rule is extend following object structure has to be returned
+     * Parse request and get result when route rule is extend following object structure has to be returned.
      * @return {Object}
      *
      * @example
