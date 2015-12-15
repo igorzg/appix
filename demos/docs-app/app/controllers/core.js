@@ -11,7 +11,6 @@ class Core extends Controller {
         this.addFilter(HttpFilter, 10, '*');
     }
 
-
     getRequestCacheKey() {
         return this.getPathname() + this.getMethod() + JSON.stringify(this.getParams());
     }

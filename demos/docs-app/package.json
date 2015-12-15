@@ -1,0 +1,29 @@
+{
+  "name": "docs-app",
+  "description": "Docs app",
+  "version": "1.0.0-alpha-09",
+  "dependencies": {
+    "appix": "1.0.0-alpha-09",
+    "nunjucks": "2.2.0"
+  },
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "homepage": "https://github.com/igorzg/appix",
+  "author": {
+    "name": "Igor Ivanovic",
+    "email": "igor.zg1987@gmail.com"
+  },
+  "keywords": [
+    "appix",
+    "node",
+    "framework"
+  ],
+  "maintainers": [
+    {
+      "name": "igorzg",
+      "email": "igor.zg1987@gmail.com"
+    }
+  ],
+  "license": "MIT"
+}
