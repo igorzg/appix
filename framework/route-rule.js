@@ -264,12 +264,12 @@ class RouteRule extends Type {
             last.unshift(url.pop());
             url.push(last.join('/'));
         }
-        let query = new Map();
+        let query = {};
         let isValidRequest = this.pattern.every((pattern, index) => {
             let part = url[index];
             let result = pattern.match(part);
             if (result) {
-                result.forEach((v, k) => query.set(k, v));
+                result.forEach((v, k) => query[k] = v);
                 return Type.isObject(result);
             }
             return false;

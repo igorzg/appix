@@ -31,7 +31,7 @@ describe('router rule', () => {
 
         parsed = rule.parseRequest(url, 'GET');
         expect(parsed.route).toBe('home/index');
-        q = new Map(parsed.query);
+        q = parsed.query;
         urlResult = rule.createUrl('home/index', q);
         expect(urlResult).toBe(url);
     });
@@ -43,16 +43,16 @@ describe('router rule', () => {
         });
         let url = '/assets/css/style.css';
         let parsed = rule.parseRequest(url, 'GET');
-        expect(parsed.query.get('file')).toBe('css/style.css');
-        let q = new Map(parsed.query);
+        expect(parsed.query.file).toBe('css/style.css');
+        let q = parsed.query;
         let urlResult = rule.createUrl('assets/file', q);
         expect(urlResult).toBe(url);
 
         url = '/assets/js/test/app.js';
         parsed = rule.parseRequest(url, 'GET');
-        expect(parsed.query.get('file')).toBe('js/test/app.js');
+        expect(parsed.query.file).toBe('js/test/app.js');
 
-        q = new Map(parsed.query);
+        q = parsed.query;
         urlResult = rule.createUrl('assets/file', q);
         expect(urlResult).toBe(url);
 
@@ -75,7 +75,7 @@ describe('router rule', () => {
         let url = '/canbeone/igor/should#+do-it/whata-smile-now-2306-not/user/1412';
         let parsed = rule.parseRequest(url, 'GET');
 
-        let paramsMap = new Map();
+        let paramsMap = {};
         let params = {
             any: 'be',
             name: 'igor',
@@ -85,7 +85,7 @@ describe('router rule', () => {
             only: '2306',
             id: '1412'
         };
-        Object.keys(params).forEach(k => paramsMap.set(k, params[k]));
+        Object.assign(paramsMap, params);
         expect(parsed).toEqual({
             pathname: '/canbeone/igor/should#+do-it/whata-smile-now-2306-not/user/1412',
             method: 'GET',
@@ -97,18 +97,18 @@ describe('router rule', () => {
         let urlResult = rule.createUrl('user/view', paramsMap);
         expect(urlResult).toBe(url);
 
-        let nmap = new Map(paramsMap);
-        nmap.set('g', '1 und 1');
+        let nmap = Object.assign({}, paramsMap);
+        nmap.g = '1 und 1';
         urlResult = rule.createUrl('user/view', nmap);
         expect(urlResult).toBe(url + '?g=1%20und%201');
 
-        parsed.query.delete('id');
+        delete parsed.query.id;
 
-        urlResult = rule.createUrl('user/view', new Map(parsed.query));
+        urlResult = rule.createUrl('user/view', Object.assign({}, parsed.query));
         expect(urlResult).toBe(false);
 
-        parsed.query.set('id', 'MY TEST');
-        urlResult = rule.createUrl('user/view', new Map(parsed.query));
+        parsed.query.id = 'MY TEST';
+        urlResult = rule.createUrl('user/view', Object.assign({}, parsed.query));
         expect(urlResult).toBe(false);
     });
 

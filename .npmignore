@@ -10,3 +10,4 @@ gulpfile.js
 /.jshintrc
 /.travis.yml
 /docs
+/demos

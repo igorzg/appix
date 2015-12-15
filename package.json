@@ -2,7 +2,7 @@
   "name": "appix",
   "main": "./framework/di.js",
   "description": "Lightweight application framework with dyependency injection and dynamic type checking for node js",
-  "version": "1.0.0-alpha-06",
+  "version": "1.0.0-alpha-09",
   "dependencies": {
     "di-node": "0.2.x",
     "typed-js": "0.2.x"

@@ -114,7 +114,7 @@ class Bootstrap extends Type {
             }
             let aliases = new Map();
             Object.keys(config.aliases).forEach(key => aliases.set(key, config.aliases[key]));
-            aliases.forEach((key, value) => di.setAlias(key, value));
+            aliases.forEach((value, key) => di.setAlias(key, value));
         }
 
         if (!di.hasAlias('controllersPath')) {

@@ -158,9 +158,8 @@ class Request extends Type {
      * @return {Map}
      */
     getParams() {
-        return new Map(Object.assign({}, this.parsedUrl.query, this.params));
+        return Object.assign({}, this.parsedUrl.query, this.params);
     }
-
     /**
      * @since 1.0.0
      * @function
