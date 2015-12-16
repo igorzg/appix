@@ -5,13 +5,12 @@ let CoreController = di.load('@{controllersPath}/core');
 
 class App extends CoreController {
 
-
     beforeIndex() {
         return Promise.resolve({
             body: 'showed using Appix and custom templating engine',
             title: 'Appix demo app',
-            template: function (name) {
-                return di.normalize('@{views}/'+ name + '.twig');
+            template: name => {
+                return di.normalize('@{views}/' + name + '.twig');
             }
         });
     }

@@ -11,8 +11,8 @@ class ViewLoader extends Type {
     }
 
     renderFile(file, context) {
-        return new Promise(function (resolve, reject) {
-            nunjucks.render(di.normalize('@{views}/' + file + '.twig'), context || {}, function (err, data) {
+        return new Promise((resolve, reject) => {
+            nunjucks.render(di.normalize('@{views}/' + file + '.twig'), context || {}, (err, data)  => {
                 if (err) {
                     reject(err);
                 } else {

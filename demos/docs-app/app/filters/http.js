@@ -6,16 +6,13 @@ let Filter = di.load('@{appix}/filter');
 class HttpFilter extends Filter {
 
     beforeEach() {
-        let that = this;
-        return di.async(function* () {
-            let cache = that.controller.getComponent('cache');
-            let cached = cache.get(that.controller.getRequestCacheKey());
-            if (!!cached) {
-                that.controller.stopChain();
-                return cached;
-            }
-            return false;
-        });
+        let cache = this.controller.getComponent('cache');
+        let cached = cache.get(this.controller.getRequestCacheKey());
+        if (!!cached) {
+            this.controller.stopChain();
+            return cached;
+        }
+        return false;
     }
 
     afterEach(data) {

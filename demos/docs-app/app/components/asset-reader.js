@@ -11,8 +11,8 @@ class AssetLoader extends Type {
     }
 
     load(file) {
-        return new Promise(function (resolve, reject) {
-            fs.readFile(di.normalize('@{assets}/' + file), function (err, data) {
+        return new Promise((resolve, reject) => {
+            fs.readFile(di.normalize('@{assets}/' + file), (err, data) => {
                 if (err) {
                     reject(err);
                 } else {
