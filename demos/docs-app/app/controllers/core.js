@@ -1,6 +1,7 @@
 'use strict';
 
 let di = require('appix');
+let Type = di.load('typed-js');
 let Controller = di.load('@{appix}/controller');
 let HttpFilter = di.load('@{filters}/http');
 /**
@@ -13,16 +14,30 @@ let HttpFilter = di.load('@{filters}/http');
  * @example
  * class CoreController extends Controller {
  *   constructor(api) {
- *       super(api);
- *      this.addFilter(HttpFilter, 10, '*');
+ *      super(api, {
+ *           locals: Type.OBJECT
+ *       });
+ *       this.addFilter(HttpFilter, 10, '*');
+ *       this.locals = {
+ *           template: name => {
+ *               return di.normalize('@{views}/' + name + '.twig');
+ *           }
+ *       };
  *   }
  * }
  */
 class CoreController extends Controller {
 
     constructor(api) {
-        super(api);
+        super(api, {
+            locals: Type.OBJECT
+        });
         this.addFilter(HttpFilter, 10, '*');
+        this.locals = {
+            template: name => {
+                return di.normalize('@{views}/' + name + '.twig');
+            }
+        };
     }
     /**
      * @since 1.0.0

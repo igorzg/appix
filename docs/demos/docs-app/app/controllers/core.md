@@ -11,8 +11,15 @@ All app controllers are inherited from core controller
 ```js
 class CoreController extends Controller {
   constructor(api) {
-      super(api);
-     this.addFilter(HttpFilter, 10, '*');
+     super(api, {
+          locals: Type.OBJECT
+      });
+      this.addFilter(HttpFilter, 10, '*');
+      this.locals = {
+          template: name => {
+              return di.normalize('@{views}/' + name + '.twig');
+          }
+      };
   }
 }
 ```

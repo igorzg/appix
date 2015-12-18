@@ -27,10 +27,7 @@ class AppController extends CoreController {
     beforeIndex() {
         return Promise.resolve({
             body: 'showed using Appix and custom templating engine',
-            title: 'Appix demo app',
-            template: name => {
-                return di.normalize('@{views}/' + name + '.twig');
-            }
+            title: 'Appix demo app'
         });
     }
     /**
@@ -43,7 +40,8 @@ class AppController extends CoreController {
      */
     actionIndex(data) {
         let view = this.getComponent('view');
-        return view.renderFile('home/index', data);
+        Object.assign(this.locals, data);
+        return view.renderFile('home/index', this.locals);
     }
     /**
      * @since 1.0.0
