@@ -3,6 +3,7 @@
 let di = require('../di');
 let Type = di.load('typed-js');
 let http = di.load('http');
+let Component = di.load('@{appix}/component');
 let logger;
 /**
  * @license Mit Licence 2015
@@ -16,9 +17,9 @@ let logger;
  * This is an mock over http service so we can provide custom one.
  * If we want to use https, socket or similar we provide custom Server service.
  */
-class Server extends Type {
+class Server extends Component {
     constructor(config, bootstrap) {
-        super({
+        super(config, bootstrap, {
             server: Type.OBJECT
         });
         logger = bootstrap.getComponent('appix/logger');

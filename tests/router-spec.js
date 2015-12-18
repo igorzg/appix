@@ -22,6 +22,7 @@ describe('router', () => {
 
     let Router = di.mock('@{appix}/components/router', {
         'typed-js': di.load('typed-js'),
+        '@{appix}/component': di.load('@{appix}/component'),
         '@{appix}/error': di.load('@{appix}/error'),
         '@{appix}/route-rule': RouteRule
     });

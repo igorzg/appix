@@ -3,6 +3,7 @@
 describe('bootstrap', () => {
     let di = require('../');
     let Type = di.load('typed-js');
+    let CP = di.load('@{appix}/component');
     let fs = {
         readFileSync: () => {
             return new Buffer(`{
@@ -27,7 +28,7 @@ describe('bootstrap', () => {
     };
     let path = {};
     let Bootstrap = di.mock('@{appix}/bootstrap', {
-        '@{appix}/component': Map,
+        '@{appix}/component': CP,
         'fs': fs,
         'path': path,
         '@{appix}/error': di.load('@{appix}/error'),
@@ -84,7 +85,7 @@ describe('bootstrap', () => {
             hasComponent: () => false
         };
         spyOn(ctx.components, 'set').and.callThrough();
-        class A extends Type{};
+        class A extends CP{};
         bootstrap.setComponent.call(ctx, 'key', A);
         expect(ctx.components.set).toHaveBeenCalled();
         bootstrap.setComponent('key', A);
@@ -107,7 +108,7 @@ describe('bootstrap', () => {
         } catch (e) {
             m = e.message;
         }
-        expect(m).toBe('Component must be inherited from typed-js');
+        expect(m).toBe('Component must be inherited from {appix}/component');
 
     });
 

@@ -4,6 +4,7 @@ let di = require('../di');
 let Type = di.load('typed-js');
 let error = di.load('@{appix}/error');
 let RouteRule = di.load('@{appix}/route-rule');
+let Component = di.load('@{appix}/component');
 let logger;
 /**
  * @license Mit Licence 2015
@@ -63,9 +64,9 @@ let logger;
  *
  * easyInit.listen();
  */
-class Router extends Type {
+class Router extends Component {
     constructor(config, bootstrap) {
-        super({
+        super(config, bootstrap, {
             routes: Type.OBJECT,
             bootstrap: Type.OBJECT,
             methods: Type.ARRAY,

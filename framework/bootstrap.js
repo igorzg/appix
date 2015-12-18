@@ -3,6 +3,7 @@
 let di = require('./di');
 let Type = di.load('typed-js');
 let error = di.load('@{appix}/error');
+let Component = di.load('@{appix}/component');
 let fs = di.load('fs');
 const COMPONENTS = [
     'appix/logger',
@@ -191,7 +192,7 @@ class Bootstrap extends Type {
      * Set component
      */
     setComponent(key, config) {
-        let Component = config;
+        let ComponentToConstruct = config;
         if (this.hasComponent(key)) {
             throw new error.Exception('Component is already initialized', {
                 name: key,
@@ -200,21 +201,21 @@ class Bootstrap extends Type {
         }
 
         if (Type.isString(config.filePath)) {
-            Component = di.load(config.filePath);
+            ComponentToConstruct = di.load(config.filePath);
         } else if (COMPONENTS.indexOf(key) > -1) {
-            Component = di.load('@{appix}/components/' + key.slice(5));
+            ComponentToConstruct = di.load('@{appix}/components/' + key.slice(5));
         } else if (!Type.isFunction(config)) {
-            Component = di.load(key);
+            ComponentToConstruct = di.load(key);
         }
 
-        if (!Type.isFunction(Component)) {
+        if (!Type.isFunction(ComponentToConstruct)) {
             throw new error.Exception('Component must be function type');
         }
 
-        let initialized = new Component(config, this);
+        let initialized = new ComponentToConstruct(config, this);
 
-        if (!(initialized instanceof Type)) {
-            throw new error.Exception('Component must be inherited from typed-js');
+        if (!(initialized instanceof Component)) {
+            throw new error.Exception('Component must be inherited from {appix}/component');
         }
 
         this.components.set(key, initialized);
