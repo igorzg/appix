@@ -10,10 +10,9 @@ let Component = di.load('@{appix}/component');
  * @constructor
  * @description
  * This is custom view loader class which is registered in system as component
- * In each component super must be provided in order to
  * @example
- *  "asset-reader": {
- *      "filePath": "@{components}/asset-reader"
+ *  "view": {
+ *      "filePath": "@{components}/view"
  *  }
  */
 class ViewLoader extends Component {
