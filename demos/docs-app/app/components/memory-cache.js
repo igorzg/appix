@@ -1,12 +1,13 @@
 'use strict';
 
 let di = require('appix');
+let Component = di.load('@{appix}/component');
 let Type = di.load('typed-js');
 
-class Cache extends Type {
+class Cache extends Component {
 
-    constructor() {
-        super({
+    constructor(config, bootstrap) {
+        super(config, bootstrap, {
             data: Type.OBJECT
         });
         this.data = new Map();

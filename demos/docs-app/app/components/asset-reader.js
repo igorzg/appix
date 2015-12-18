@@ -1,14 +1,10 @@
 'use strict';
 
 let di = require('appix');
-let Type = di.load('typed-js');
+let Component = di.load('@{appix}/component');
 let fs = di.load('fs');
 
-class AssetLoader extends Type {
-
-    constructor() {
-        super({});
-    }
+class AssetLoader extends Component {
 
     load(file) {
         return new Promise((resolve, reject) => {
