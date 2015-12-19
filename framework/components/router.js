@@ -63,6 +63,14 @@ let logger;
  * ]);
  *
  * easyInit.listen();
+ *
+ * // env.json change or add component configs
+ * // in order to have custom handler useCustomErrorHandler must be true
+ * "appix/router": {
+ *    "useCustomErrorHandler": true,
+ *    "url": "/error",
+ *    "route": "error/handler"
+ * }
  */
 class Router extends Component {
     constructor(config, bootstrap) {

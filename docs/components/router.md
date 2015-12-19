@@ -68,6 +68,14 @@ router.add([
 ]);
 
 easyInit.listen();
+
+// env.json change or add component configs
+// in order to have custom handler useCustomErrorHandler must be true
+"appix/router": {
+   "useCustomErrorHandler": true,
+   "url": "/error",
+   "route": "error/handler"
+}
 ```
 <a name="Router+add"></a>
 ### router.add(Rule)
