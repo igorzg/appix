@@ -1,16 +1,18 @@
 <a name="Router"></a>
+
 ## Router
 **Kind**: global class  
 **Since**: 1.0.0  
 **License**: Mit Licence 2015  
 
 * [Router](#Router)
-  * [new Router(config, bootstrap)](#new_Router_new)
-  * [.add(Rule)](#Router+add)
-  * [.parseRequest(pathName, method, headers)](#Router+parseRequest)
-  * [.createUrl(routeName, params)](#Router+createUrl)
+    * [new Router(config, bootstrap)](#new_Router_new)
+    * [.add(Rule)](#Router+add)
+    * [.parseRequest(pathName, method, headers)](#Router+parseRequest)
+    * [.createUrl(routeName, params)](#Router+createUrl)
 
 <a name="new_Router_new"></a>
+
 ### new Router(config, bootstrap)
 Router is a component in easy node application.
 Router handles routing for application.
@@ -78,6 +80,7 @@ easyInit.listen();
 }
 ```
 <a name="Router+add"></a>
+
 ### router.add(Rule)
 Add route to resolve list.
 To add custom rule you must inherit from RouteRule class.
@@ -92,6 +95,7 @@ If you add array or object it will be converted to RouteRule.
 | Rule | <code>RouteRule</code> &#124; <code>Object</code> &#124; <code>Array</code> &#124; <code>function</code> | 
 
 <a name="Router+parseRequest"></a>
+
 ### router.parseRequest(pathName, method, headers)
 Parse request based on pathName and method
 
@@ -105,6 +109,7 @@ Parse request based on pathName and method
 | headers | <code>Object</code> | 
 
 <a name="Router+createUrl"></a>
+
 ### router.createUrl(routeName, params)
 Create url based on route and params
 

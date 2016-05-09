@@ -1,7 +1,7 @@
 'use strict';
 
 let di = require('../di');
-let Type = di.load('typed-js');
+let core = di.load('@{appix}/core');
 let http = di.load('http');
 let Component = di.load('@{appix}/component');
 let logger;
@@ -19,9 +19,7 @@ let logger;
  */
 class Server extends Component {
     constructor(config, bootstrap) {
-        super(config, bootstrap, {
-            server: Type.OBJECT
-        });
+        super(config, bootstrap);
         logger = bootstrap.getComponent('appix/logger');
         this.server = http.createServer();
     }
@@ -85,7 +83,7 @@ class Server extends Component {
     startUp(bootstrap) {
         let Request = di.load('@{appix}/request');
         this.on('request', (request, response) => {
-            di.async(function* () {
+            di.async(function* asyncRequest() {
                 di.setAlias('controllersPath', bootstrap.defaults.controllersPath);
                 di.setAlias('modulesPath', bootstrap.defaults.modulesPath);
                 let nRequest = new Request(bootstrap, {
@@ -101,7 +99,7 @@ class Server extends Component {
                 });
             });
         });
-        if (Type.isString(bootstrap.defaults.listenHost)) {
+        if (core.isString(bootstrap.defaults.listenHost)) {
             this.listen(bootstrap.defaults.listenPort, bootstrap.defaults.listenHost);
         } else {
             this.listen(bootstrap.defaults.listenPort);

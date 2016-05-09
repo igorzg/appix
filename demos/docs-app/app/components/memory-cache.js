@@ -2,7 +2,6 @@
 
 let di = require('appix');
 let Component = di.load('@{appix}/component');
-let Type = di.load('typed-js');
 /**
  * @license Mit Licence 2015
  * @since 1.0.0
@@ -25,16 +24,12 @@ class Cache extends Component {
      * This is how you extend your component types
      * @example
      * constructor(config, bootstrap) {
-     *   super(config, bootstrap, {
-     *       data: Type.OBJECT
-     *   });
+     *   super(config, bootstrap);
      *   this.data = new Map();
      * }
      */
     constructor(config, bootstrap) {
-        super(config, bootstrap, {
-            data: Type.OBJECT
-        });
+        super(config, bootstrap);
         this.data = new Map();
     }
     /**

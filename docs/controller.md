@@ -1,45 +1,47 @@
 <a name="Controller"></a>
+
 ## Controller
 **Kind**: global class  
 **Since**: 1.0.0  
 **License**: Mit Licence 2015  
 
 * [Controller](#Controller)
-  * [new Controller(api, types)](#new_Controller_new)
-  * [.getComponent(key)](#Controller+getComponent) ⇒ <code>String</code>
-  * [.getMethod()](#Controller+getMethod) ⇒ <code>String</code>
-  * [.getParams()](#Controller+getParams) ⇒ <code>Object</code>
-  * [.getParsedUrl()](#Controller+getParsedUrl) ⇒ <code>Object</code>
-  * [.getRequestBody()](#Controller+getRequestBody) ⇒ <code>Buffer</code> &#124; <code>Object</code>
-  * [.getPathname()](#Controller+getPathname) ⇒ <code>String</code>
-  * [.getRequestDomain()](#Controller+getRequestDomain) ⇒ <code>String</code>
-  * [.getRequestHeader(name)](#Controller+getRequestHeader) ⇒ <code>String</code>
-  * [.getRequestHeaders()](#Controller+getRequestHeaders) ⇒ <code>Object</code>
-  * [.getRequestLocalAddress()](#Controller+getRequestLocalAddress) ⇒ <code>String</code>
-  * [.getRequestLocalPort()](#Controller+getRequestLocalPort) ⇒ <code>Number</code>
-  * [.getRequestRemoteAddress()](#Controller+getRequestRemoteAddress) ⇒ <code>String</code>
-  * [.getRequestRemotePort()](#Controller+getRequestRemotePort) ⇒ <code>Number</code>
-  * [.getRequestCookies()](#Controller+getRequestCookies) ⇒ <code>Object</code>
-  * [.getRequestCookie(name)](#Controller+getRequestCookie) ⇒ <code>String</code>
-  * [.onEnd(callback)](#Controller+onEnd)
-  * [.forwardRoute(route, params)](#Controller+forwardRoute) ⇒ <code>Promise</code>
-  * [.forwardUrl(url)](#Controller+forwardUrl) ⇒ <code>Promise</code>
-  * [.getRequestRoute()](#Controller+getRequestRoute) ⇒ <code>String</code>
-  * [.getRequestController()](#Controller+getRequestController) ⇒ <code>String</code>
-  * [.getRequestAction()](#Controller+getRequestAction) ⇒ <code>String</code>
-  * [.getRequestId()](#Controller+getRequestId) ⇒ <code>String</code>
-  * [.getUserAgent()](#Controller+getUserAgent) ⇒ <code>String</code>
-  * [.setResponseStatusCode(num)](#Controller+setResponseStatusCode)
-  * [.setResponseCookie(key, value, expires, path, domain, isHttpOnly)](#Controller+setResponseCookie)
-  * [.setResponseHeader(key, value)](#Controller+setResponseHeader)
-  * [.hasResponseHeader(key)](#Controller+hasResponseHeader) ⇒ <code>Boolean</code>
-  * [.addFilter(FilterToInitialize, priority, route)](#Controller+addFilter)
-  * [.stopChain()](#Controller+stopChain)
-  * [.redirect(url, code)](#Controller+redirect)
-  * [.beforeEach()](#Controller+beforeEach)
-  * [.afterEach()](#Controller+afterEach)
+    * [new Controller(api, types)](#new_Controller_new)
+    * [.getComponent(key)](#Controller+getComponent) ⇒ <code>String</code>
+    * [.getMethod()](#Controller+getMethod) ⇒ <code>String</code>
+    * [.getParams()](#Controller+getParams) ⇒ <code>Object</code>
+    * [.getParsedUrl()](#Controller+getParsedUrl) ⇒ <code>Object</code>
+    * [.getRequestBody()](#Controller+getRequestBody) ⇒ <code>Buffer</code> &#124; <code>Object</code>
+    * [.getPathname()](#Controller+getPathname) ⇒ <code>String</code>
+    * [.getRequestDomain()](#Controller+getRequestDomain) ⇒ <code>String</code>
+    * [.getRequestHeader(name)](#Controller+getRequestHeader) ⇒ <code>String</code>
+    * [.getRequestHeaders()](#Controller+getRequestHeaders) ⇒ <code>Object</code>
+    * [.getRequestLocalAddress()](#Controller+getRequestLocalAddress) ⇒ <code>String</code>
+    * [.getRequestLocalPort()](#Controller+getRequestLocalPort) ⇒ <code>Number</code>
+    * [.getRequestRemoteAddress()](#Controller+getRequestRemoteAddress) ⇒ <code>String</code>
+    * [.getRequestRemotePort()](#Controller+getRequestRemotePort) ⇒ <code>Number</code>
+    * [.getRequestCookies()](#Controller+getRequestCookies) ⇒ <code>Object</code>
+    * [.getRequestCookie(name)](#Controller+getRequestCookie) ⇒ <code>String</code>
+    * [.onEnd(callback)](#Controller+onEnd)
+    * [.forwardRoute(route, params)](#Controller+forwardRoute) ⇒ <code>Promise</code>
+    * [.forwardUrl(url)](#Controller+forwardUrl) ⇒ <code>Promise</code>
+    * [.getRequestRoute()](#Controller+getRequestRoute) ⇒ <code>String</code>
+    * [.getRequestController()](#Controller+getRequestController) ⇒ <code>String</code>
+    * [.getRequestAction()](#Controller+getRequestAction) ⇒ <code>String</code>
+    * [.getRequestId()](#Controller+getRequestId) ⇒ <code>String</code>
+    * [.getUserAgent()](#Controller+getUserAgent) ⇒ <code>String</code>
+    * [.setResponseStatusCode(num)](#Controller+setResponseStatusCode)
+    * [.setResponseCookie(key, value, expires, path, domain, isHttpOnly)](#Controller+setResponseCookie)
+    * [.setResponseHeader(key, value)](#Controller+setResponseHeader)
+    * [.hasResponseHeader(key)](#Controller+hasResponseHeader) ⇒ <code>Boolean</code>
+    * [.addFilter(FilterToInitialize, priority, route)](#Controller+addFilter)
+    * [.stopChain()](#Controller+stopChain)
+    * [.redirect(url, code)](#Controller+redirect)
+    * [.beforeEach()](#Controller+beforeEach)
+    * [.afterEach()](#Controller+afterEach)
 
 <a name="new_Controller_new"></a>
+
 ### new Controller(api, types)
 Controller is constructed on each request.
 All application controllers should be inherited from controller class
@@ -65,9 +67,6 @@ let di = require('appix');
  class MyAppController extends Controller {
 
    constructor(api) {
-      super(api, {
-         name: Type.STRING
-      });
       this.name = 'We must define type if we want to have extended object with new members';
       this.addFilter(F1, 10);
    }
@@ -78,6 +77,7 @@ let di = require('appix');
  }
 ```
 <a name="Controller+getComponent"></a>
+
 ### controller.getComponent(key) ⇒ <code>String</code>
 Return component instance which is singleton
 
@@ -110,6 +110,7 @@ class MyAppController extends Controller {
  }
 ```
 <a name="Controller+getMethod"></a>
+
 ### controller.getMethod() ⇒ <code>String</code>
 Return method
 
@@ -124,6 +125,7 @@ class Platform extends Controller {
 }
 ```
 <a name="Controller+getParams"></a>
+
 ### controller.getParams() ⇒ <code>Object</code>
 Return params
 
@@ -138,6 +140,7 @@ class Platform extends Controller {
 }
 ```
 <a name="Controller+getParsedUrl"></a>
+
 ### controller.getParsedUrl() ⇒ <code>Object</code>
 Return parsed url
 
@@ -154,6 +157,7 @@ class Platform extends Controller {
 }
 ```
 <a name="Controller+getRequestBody"></a>
+
 ### controller.getRequestBody() ⇒ <code>Buffer</code> &#124; <code>Object</code>
 Get request body, return data sent to server.
 
@@ -168,6 +172,7 @@ class Platform extends Controller {
 }
 ```
 <a name="Controller+getPathname"></a>
+
 ### controller.getPathname() ⇒ <code>String</code>
 Get request pathname
 
@@ -182,6 +187,7 @@ class Platform extends Controller {
 }
 ```
 <a name="Controller+getRequestDomain"></a>
+
 ### controller.getRequestDomain() ⇒ <code>String</code>
 Get request domain
 
@@ -196,6 +202,7 @@ class Platform extends Controller {
 }
 ```
 <a name="Controller+getRequestHeader"></a>
+
 ### controller.getRequestHeader(name) ⇒ <code>String</code>
 Get request header, by header name
 
@@ -215,6 +222,7 @@ class Platform extends Controller {
 }
 ```
 <a name="Controller+getRequestHeaders"></a>
+
 ### controller.getRequestHeaders() ⇒ <code>Object</code>
 Get request headers, key value pairs
 
@@ -229,6 +237,7 @@ class Platform extends Controller {
 }
 ```
 <a name="Controller+getRequestLocalAddress"></a>
+
 ### controller.getRequestLocalAddress() ⇒ <code>String</code>
 Get request local address
 
@@ -243,6 +252,7 @@ class Platform extends Controller {
 }
 ```
 <a name="Controller+getRequestLocalPort"></a>
+
 ### controller.getRequestLocalPort() ⇒ <code>Number</code>
 Get request local port
 
@@ -257,6 +267,7 @@ class Platform extends Controller {
 }
 ```
 <a name="Controller+getRequestRemoteAddress"></a>
+
 ### controller.getRequestRemoteAddress() ⇒ <code>String</code>
 Get request remote address
 
@@ -271,6 +282,7 @@ class Platform extends Controller {
 }
 ```
 <a name="Controller+getRequestRemotePort"></a>
+
 ### controller.getRequestRemotePort() ⇒ <code>Number</code>
 Get request remote port
 
@@ -285,6 +297,7 @@ class Platform extends Controller {
 }
 ```
 <a name="Controller+getRequestCookies"></a>
+
 ### controller.getRequestCookies() ⇒ <code>Object</code>
 get all cookies
 
@@ -299,6 +312,7 @@ class Platform extends Controller {
 }
 ```
 <a name="Controller+getRequestCookie"></a>
+
 ### controller.getRequestCookie(name) ⇒ <code>String</code>
 get cookie value
 
@@ -318,6 +332,7 @@ class Platform extends Controller {
 }
 ```
 <a name="Controller+onEnd"></a>
+
 ### controller.onEnd(callback)
 On end is an happening on destroy event
 
@@ -340,6 +355,7 @@ class Platform extends Controller {
 }
 ```
 <a name="Controller+forwardRoute"></a>
+
 ### controller.forwardRoute(route, params) ⇒ <code>Promise</code>
 forward url
 
@@ -362,6 +378,7 @@ class Platform extends Controller {
 }
 ```
 <a name="Controller+forwardUrl"></a>
+
 ### controller.forwardUrl(url) ⇒ <code>Promise</code>
 forward url
 
@@ -383,6 +400,7 @@ class Platform extends Controller {
 }
 ```
 <a name="Controller+getRequestRoute"></a>
+
 ### controller.getRequestRoute() ⇒ <code>String</code>
 Get request route
 
@@ -397,6 +415,7 @@ class Platform extends Controller {
 }
 ```
 <a name="Controller+getRequestController"></a>
+
 ### controller.getRequestController() ⇒ <code>String</code>
 Get request controller
 
@@ -411,6 +430,7 @@ class Platform extends Controller {
 }
 ```
 <a name="Controller+getRequestAction"></a>
+
 ### controller.getRequestAction() ⇒ <code>String</code>
 Get request action
 
@@ -425,6 +445,7 @@ class Platform extends Controller {
 }
 ```
 <a name="Controller+getRequestId"></a>
+
 ### controller.getRequestId() ⇒ <code>String</code>
 Returns uuid request id
 
@@ -439,6 +460,7 @@ class Platform extends Controller {
 }
 ```
 <a name="Controller+getUserAgent"></a>
+
 ### controller.getUserAgent() ⇒ <code>String</code>
 Get user agent
 
@@ -467,6 +489,7 @@ class Mobile extends Platform {
 }
 ```
 <a name="Controller+setResponseStatusCode"></a>
+
 ### controller.setResponseStatusCode(num)
 Set status code which will be sent to client
 
@@ -488,6 +511,7 @@ class Error extends Controller {
 }
 ```
 <a name="Controller+setResponseCookie"></a>
+
 ### controller.setResponseCookie(key, value, expires, path, domain, isHttpOnly)
 Sets an cookie header
 
@@ -516,6 +540,7 @@ class User extends Controller {
 }
 ```
 <a name="Controller+setResponseHeader"></a>
+
 ### controller.setResponseHeader(key, value)
 Sets an response header
 
@@ -538,6 +563,7 @@ class JSON extends Controller {
 }
 ```
 <a name="Controller+hasResponseHeader"></a>
+
 ### controller.hasResponseHeader(key) ⇒ <code>Boolean</code>
 Check if response header is present
 
@@ -559,6 +585,7 @@ class JSON extends Controller {
 }
 ```
 <a name="Controller+addFilter"></a>
+
 ### controller.addFilter(FilterToInitialize, priority, route)
 Add filter, all filters must be inherited from appix/filter
 
@@ -576,9 +603,6 @@ Add filter, all filters must be inherited from appix/filter
 class MyAppController extends Controller {
 
    constructor(api) {
-      super(api, {
-         name: Type.STRING
-      });
       this.name = 'We must define type if we want to have extended object with new members';
       this.addFilter(F1, 10);
       this.addFilter(F2, 10);
@@ -590,6 +614,7 @@ class MyAppController extends Controller {
  }
 ```
 <a name="Controller+stopChain"></a>
+
 ### controller.stopChain()
 Stop chain of actions, use this when needed. You can use it as well in filters to
 
@@ -616,6 +641,7 @@ class MyAppController extends Controller {
 }
 ```
 <a name="Controller+redirect"></a>
+
 ### controller.redirect(url, code)
 Redirect to page
 
@@ -641,6 +667,7 @@ class User extends Controller {
 }
 ```
 <a name="Controller+beforeEach"></a>
+
 ### controller.beforeEach()
 before each request do some logic if needed
 
@@ -657,6 +684,7 @@ class User extends Controller {
 }
 ```
 <a name="Controller+afterEach"></a>
+
 ### controller.afterEach()
 after each request do some logic if needed
 

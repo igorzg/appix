@@ -1,15 +1,17 @@
 <a name="Filter"></a>
+
 ## Filter
 **Kind**: global class  
 **Since**: 1.0.0  
 **License**: Mit Licence 2015  
 
 * [Filter](#Filter)
-  * [new Filter(bootstrap, config, types)](#new_Filter_new)
-  * [.beforeEach()](#Filter+beforeEach)
-  * [.afterEach()](#Filter+afterEach)
+    * [new Filter(bootstrap, config, types)](#new_Filter_new)
+    * [.beforeEach()](#Filter+beforeEach)
+    * [.afterEach()](#Filter+afterEach)
 
 <a name="new_Filter_new"></a>
+
 ### new Filter(bootstrap, config, types)
 Controller filters. Filters are executed before and after controller process.
 If you want to do etc. Http caching, Zipping output and similar stuff it's better to use filters.
@@ -48,12 +50,14 @@ class Http extends Filter{
 }
 ```
 <a name="Filter+beforeEach"></a>
+
 ### filter.beforeEach()
 Apply on each action
 
 **Kind**: instance method of <code>[Filter](#Filter)</code>  
 **Since**: 1.0.0  
 <a name="Filter+afterEach"></a>
+
 ### filter.afterEach()
 Apply after each function
 

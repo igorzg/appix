@@ -2,7 +2,6 @@
 
 describe('bootstrap', () => {
     let di = require('../');
-    let Type = di.load('typed-js');
     let CP = di.load('@{appix}/component');
     let fs = {
         readFileSync: () => {
@@ -32,6 +31,7 @@ describe('bootstrap', () => {
         'fs': fs,
         'path': path,
         '@{appix}/error': di.load('@{appix}/error'),
+        '@{appix}/core': di.load('@{appix}/core'),
         'typed-js': di.load('typed-js')
     });
     let bootstrap;

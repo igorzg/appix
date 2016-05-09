@@ -1,9 +1,11 @@
 <a name="HttpFilter"></a>
+
 ## HttpFilter
 **Kind**: global class  
 **Since**: 1.0.0  
 **License**: Mit Licence 2015  
 <a name="new_HttpFilter_new"></a>
+
 ### new HttpFilter()
 Apply filter to some requests
 

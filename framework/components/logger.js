@@ -1,7 +1,6 @@
 'use strict';
 
 let di = require('../di');
-let Type = di.load('typed-js');
 let core = di.load('@{appix}/core');
 let error = di.load('@{appix}/error');
 let Component = di.load('@{appix}/component');
@@ -42,12 +41,8 @@ let Component = di.load('@{appix}/component');
  */
 class Logger extends Component {
     constructor(config, bootstrap) {
-        super(config, bootstrap, {
-            config: Type.OBJECT,
-            hooks: Type.OBJECT,
-            levels: Type.ARRAY
-        });
-        if (!Type.isObject(config)) {
+        super(config, bootstrap);
+        if (!core.isObject(config)) {
             config = {};
         }
         this.hooks = new Set();
@@ -185,7 +180,7 @@ class Logger extends Component {
         let logLevel = this.levels.find(item => {
             return item.level === level;
         });
-        if (Type.isObject(logLevel)) {
+        if (core.isObject(logLevel)) {
             return logLevel.name;
         }
         return 'TRACE';
@@ -246,7 +241,7 @@ class Logger extends Component {
      * Add hook to log output so developer can extend where to store log
      */
     addHook(callback) {
-        if (!Type.isFunction(callback)) {
+        if (!core.isFunction(callback)) {
             throw new error.Exception('Logger hook must be function');
         }
         this.hooks.add(callback);

@@ -16,6 +16,7 @@ describe('router rule', () => {
     };
     let RouteRule = di.mock('@{appix}/route-rule', {
         '@{appix}/error': di.load('@{appix}/error'),
+        '@{appix}/core': di.load('@{appix}/core'),
         'typed-js': di.load('typed-js')
     });
 

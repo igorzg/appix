@@ -1,15 +1,17 @@
 <a name="RouteRule"></a>
+
 ## RouteRule
 **Kind**: global class  
 **Since**: 1.0.0  
 **License**: Mit Licence 2015  
 
 * [RouteRule](#RouteRule)
-  * [new RouteRule(bootstrap, config, types)](#new_RouteRule_new)
-  * [.parseRequest(pathname, method)](#RouteRule+parseRequest) ⇒ <code>Object</code>
-  * [.createUrl(route, params)](#RouteRule+createUrl)
+    * [new RouteRule(bootstrap, config, types)](#new_RouteRule_new)
+    * [.parseRequest(pathname, method)](#RouteRule+parseRequest) ⇒ <code>Object</code>
+    * [.createUrl(route, params)](#RouteRule+createUrl)
 
 <a name="new_RouteRule_new"></a>
+
 ### new RouteRule(bootstrap, config, types)
 Route rule is used to add route definitions to router.
 To enable data event dataEvent property has to be passed to router as dataEvent: true
@@ -57,6 +59,7 @@ router.add([
 ]);
 ```
 <a name="RouteRule+parseRequest"></a>
+
 ### routeRule.parseRequest(pathname, method) ⇒ <code>Object</code>
 Parse request and get result when route rule is extend following object structure has to be returned.
 
@@ -81,6 +84,7 @@ parseRequest(pathname, method) {
 }
 ```
 <a name="RouteRule+createUrl"></a>
+
 ### routeRule.createUrl(route, params)
 Create url based on parameters and route
 

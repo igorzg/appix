@@ -1,7 +1,6 @@
 'use strict';
 
 let di = require('./di');
-let Type = di.load('typed-js');
 let EventEmitter = di.load('events');
 let URLParser = di.load('url');
 let error = di.load('@{appix}/error');
@@ -26,28 +25,8 @@ let router;
  * Developer don't have access to request class itself, instead of it,
  * API is provided to developer in order to manipulate with request
  */
-class Request extends Type {
+class Request {
     constructor(bootstrap, config, url) {
-        super({
-            request: Type.OBJECT,
-            response: Type.OBJECT,
-            logger: Type.OBJECT,
-            router: Type.OBJECT,
-            url: Type.STRING,
-            parsedUrl: Type.OBJECT,
-            data: Type.ARRAY,
-            id: Type.STRING,
-            events: Type.OBJECT,
-            params: Type.OBJECT,
-            bootstrap: Type.OBJECT,
-            isCustomError: Type.BOOLEAN,
-            isForwarded: Type.BOOLEAN,
-            isForwarder: Type.BOOLEAN,
-            isRedirected: Type.BOOLEAN,
-            statusCode: Type.NUMBER,
-            requestCookies: Type.OBJECT,
-            responseHeaders: Type.OBJECT
-        });
         logger = bootstrap.getComponent('appix/logger');
         router = bootstrap.getComponent('appix/router');
         this.bootstrap = bootstrap;
@@ -61,7 +40,7 @@ class Request extends Type {
         this.id = di.uuid();
         this.url = url;
         this.parsedUrl = URLParser.parse(this.url, true);
-        this.data = Type.isArray(config.data) ? config.data : [];
+        this.data = core.isArray(config.data) ? config.data : [];
         this.events = new EventEmitter();
         this.statusCode = 200;
         this.responseHeaders = {};
@@ -69,7 +48,7 @@ class Request extends Type {
 
         if (!this.isForwarded) {
             let cookies = this.getRequestHeader('Cookie');
-            if (Type.isString(cookies)) {
+            if (core.isString(cookies)) {
                 cookies.replace(
                     COOKIE_PARSE_REGEX,
                     (cookie, key, value) => this.requestCookies[key] = value
@@ -89,7 +68,6 @@ class Request extends Type {
     destroy() {
         this.events.emit('destroy');
         this.events.removeAllListeners();
-        super.destroy();
     }
 
     /**
@@ -170,7 +148,7 @@ class Request extends Type {
      * Get an request header by header name
      */
     getRequestHeader(name) {
-        if (!Type.isString(name)) {
+        if (!core.isString(name)) {
             throw new error.HttpException(500, `Request header name must be string type`);
         }
         let keys = Object.keys(this.request.headers);
@@ -298,7 +276,7 @@ class Request extends Type {
      * @return {Boolean}
      */
     hasResponseHeader(key) {
-        if (Type.isString(key)) {
+        if (core.isString(key)) {
             key = key.toLocaleLowerCase();
         } else {
             throw new error.HttpException(500, `Response header key must be string type`);
@@ -346,7 +324,7 @@ class Request extends Type {
     setResponseCookie(key, value, expires, path, domain, isHttpOnly) {
         var cookie, date;
 
-        if (Type.isUndefined(key) || Type.isUndefined(value)) {
+        if (core.isUndefined(key) || core.isUndefined(value)) {
             throw new error.HttpException(500, 'Request.setResponseCookie: key and value must be provided!', {
                 key,
                 value,
@@ -358,13 +336,13 @@ class Request extends Type {
         }
         cookie = key + '=' + value;
         if (!!expires) {
-            if (Type.isNumber(expires)) {
+            if (core.isNumber(expires)) {
                 date = new Date();
                 date.setTime(date.getTime() + expires);
                 cookie += '; Expires=' + date.toGMTString();
-            } else if (Type.isString(expires)) {
+            } else if (core.isString(expires)) {
                 cookie += '; Expires=' + expires;
-            } else if (Type.isDate(expires)) {
+            } else if (core.isDate(expires)) {
                 cookie += '; Expires=' + expires.toGMTString();
             }
         }
@@ -390,7 +368,7 @@ class Request extends Type {
      * Sets an response header
      */
     setResponseHeader(key, value) {
-        if (Type.isString(key)) {
+        if (core.isString(key)) {
             key = key.toLocaleLowerCase();
         } else {
             throw new error.HttpException(500, `Response header key must be string type ${key}`);
@@ -402,12 +380,12 @@ class Request extends Type {
 
         value = value.toString();
 
-        if (this.hasResponseHeader(key) && !Type.isArray(this.responseHeaders[key])) {
+        if (this.hasResponseHeader(key) && !core.isArray(this.responseHeaders[key])) {
             let header = this.responseHeaders[key];
             this.responseHeaders[key] = [];
             this.responseHeaders[key].push(header);
             this.responseHeaders[key].push(value);
-        } else if (this.hasResponseHeader(key) && Type.isArray(this.responseHeaders[key])) {
+        } else if (this.hasResponseHeader(key) && core.isArray(this.responseHeaders[key])) {
             this.responseHeaders[key].push(value);
         } else {
             this.responseHeaders[key] = value;
@@ -423,7 +401,7 @@ class Request extends Type {
      * Set status code which will be sent to client
      */
     setResponseStatusCode(num) {
-        if (!Type.isNumber(num)) {
+        if (!core.isNumber(num)) {
             num = parseInt(num);
         }
         if (isNaN(num)) {
@@ -453,7 +431,7 @@ class Request extends Type {
             statusCode: this.statusCode,
             headers: this.responseHeaders
         });
-        if (Type.isString(response) || (response instanceof Buffer)) {
+        if (core.isString(response) || (response instanceof Buffer)) {
             this.response.writeHead(this.statusCode, this.responseHeaders);
             this.response.write(response);
             this.response.end();
@@ -627,15 +605,15 @@ class Request extends Type {
             }
 
             if (controller.isChaining()) {
-                if (Type.isArray(action)) {
+                if (core.isArray(action)) {
                     action = yield Promise.all(action);
                     action = yield controller.beforeEach.apply(controller, action);
                 } else {
                     action = yield controller.beforeEach(action);
                 }
             }
-            if (Type.isFunction(controller[beforeKey]) && controller.isChaining()) {
-                if (Type.isArray(action)) {
+            if (core.isFunction(controller[beforeKey]) && controller.isChaining()) {
+                if (core.isArray(action)) {
                     action = yield Promise.all(action);
                     action = yield controller[beforeKey].apply(controller, action);
                 } else {
@@ -643,8 +621,8 @@ class Request extends Type {
                 }
             }
             if (controller.isChaining()) {
-                if (Type.isFunction(controller[actionKey])) {
-                    if (Type.isArray(action)) {
+                if (core.isFunction(controller[actionKey])) {
+                    if (core.isArray(action)) {
                         action = yield Promise.all(action);
                         action = yield controller[actionKey].apply(controller, action);
                     } else {
@@ -660,8 +638,8 @@ class Request extends Type {
                     );
                 }
             }
-            if (Type.isFunction(controller[afterKey]) && controller.isChaining()) {
-                if (Type.isArray(action)) {
+            if (core.isFunction(controller[afterKey]) && controller.isChaining()) {
+                if (core.isArray(action)) {
                     action = yield Promise.all(action);
                     action = yield controller[afterKey].apply(controller, action);
                 } else {
@@ -669,7 +647,7 @@ class Request extends Type {
                 }
             }
             if (controller.isChaining()) {
-                if (Type.isArray(action)) {
+                if (core.isArray(action)) {
                     action = yield Promise.all(action);
                     action = yield controller.afterEach.apply(controller, action);
                 } else {
@@ -679,7 +657,7 @@ class Request extends Type {
             // on redirection don't apply filters
 
             if (!request.isRedirected && !request.isForwarder) {
-                if (Type.isArray(action)) {
+                if (core.isArray(action)) {
                     action = yield Promise.all(action);
                     return yield controller.applyAfterEachFilters.apply(controller, action);
                 } else {

@@ -21,7 +21,6 @@ class F2 extends Filter {
     }
 }
 
-
 class Home extends Controller {
 
     constructor(api) {
@@ -29,10 +28,12 @@ class Home extends Controller {
         this.addFilter(F1, 10);
         this.addFilter(F2, -100);
     }
+
     actionFavicon() {
         this.setResponseHeader('Content-Type', 'image/png');
         return new Buffer('This is my favicon');
     }
+
     actionRedirect() {
         return this.redirect('/', 302);
     }
@@ -44,6 +45,7 @@ class Home extends Controller {
     beforeForward() {
         return this.forwardRoute('app/Index');
     }
+
     actionForward() {
         return 'ACTION FORWARD CHAIN MUST BE STOPPED';
     }
@@ -72,8 +74,9 @@ class Home extends Controller {
         logger.fatal('Logger works', {
             p1Data: p1Data,
             p2Data: p2Data
-        })
-        return 'WORKS '+ p1Data + p2Data;
+        });
+
+        return 'WORKS ' + p1Data + p2Data;
     }
 
     beforeTest() {
@@ -89,7 +92,8 @@ class Home extends Controller {
             p1Data: p1Data,
             p2Data: p2Data
         });
-        return 'WORKS '+ p1Data + p2Data;
+
+        return 'WORKS ' + p1Data + p2Data;
     }
 }
 

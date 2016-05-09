@@ -1,7 +1,5 @@
 'use strict';
 
-let di = require('./di');
-let Type = di.load('typed-js');
 /**
  * @license Mit Licence 2015
  * @since 1.0.0
@@ -38,14 +36,9 @@ let Type = di.load('typed-js');
  *      }
  * }
  */
-class Filter extends Type {
+class Filter {
 
-    constructor(bootstrap, config, types) {
-        super(Object.assign({
-            controller: Type.OBJECT,
-            priority: Type.NUMBER,
-            route: Type.STRING
-        }, types));
+    constructor(bootstrap, config) {
         let logger = bootstrap.getComponent('appix/logger');
         logger.info('Add filter', {
             priority: config.priority,

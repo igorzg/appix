@@ -1,17 +1,19 @@
 <a name="Bootstrap"></a>
+
 ## Bootstrap
 **Kind**: global class  
 **Since**: 1.0.0  
 **License**: Mit Licence 2015  
 
 * [Bootstrap](#Bootstrap)
-  * [new Bootstrap(appConfig, callback)](#new_Bootstrap_new)
-  * [.listen()](#Bootstrap+listen)
-  * [.setComponent(key, config)](#Bootstrap+setComponent)
-  * [.hasComponent(key)](#Bootstrap+hasComponent)
-  * [.getComponent(key)](#Bootstrap+getComponent)
+    * [new Bootstrap(appConfig, callback)](#new_Bootstrap_new)
+    * [.listen()](#Bootstrap+listen)
+    * [.setComponent(key, config)](#Bootstrap+setComponent)
+    * [.hasComponent(key)](#Bootstrap+hasComponent)
+    * [.getComponent(key)](#Bootstrap+getComponent)
 
 <a name="new_Bootstrap_new"></a>
+
 ### new Bootstrap(appConfig, callback)
 Use Bootstrap class to bootstrap an application.
 It could be with server listen but it could be server side simulation to.
@@ -51,12 +53,14 @@ router.add([
 easyInit.listen();
 ```
 <a name="Bootstrap+listen"></a>
+
 ### bootstrap.listen()
 Listen server
 
 **Kind**: instance method of <code>[Bootstrap](#Bootstrap)</code>  
 **Since**: 1.0.0  
 <a name="Bootstrap+setComponent"></a>
+
 ### bootstrap.setComponent(key, config)
 Set component
 
@@ -69,6 +73,7 @@ Set component
 | config | <code>Object</code> | of component |
 
 <a name="Bootstrap+hasComponent"></a>
+
 ### bootstrap.hasComponent(key)
 Check if has component
 
@@ -80,6 +85,7 @@ Check if has component
 | key | <code>String</code> | 
 
 <a name="Bootstrap+getComponent"></a>
+
 ### bootstrap.getComponent(key)
 Get component
 

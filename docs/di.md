@@ -1,17 +1,19 @@
 <a name="DI"></a>
+
 ## DI
 **Kind**: global class  
 **Since**: 1.0.0  
 **License**: Mit Licence 2015  
 
 * [DI](#DI)
-  * [.uuid()](#DI+uuid) ⇒ <code>String</code>
-  * [.async(genFunc)](#DI+async) ⇒ <code>Promise</code>
-  * [.setInstance(key, value)](#DI+setInstance)
-  * [.getInstance(key)](#DI+getInstance)
-  * [.mock(file, mocks)](#DI+mock)
+    * [.uuid()](#DI+uuid) ⇒ <code>String</code>
+    * [.async(genFunc)](#DI+async) ⇒ <code>Promise</code>
+    * [.setInstance(key, value)](#DI+setInstance)
+    * [.getInstance(key)](#DI+getInstance)
+    * [.mock(file, mocks)](#DI+mock)
 
 <a name="DI+uuid"></a>
+
 ### dI.uuid() ⇒ <code>String</code>
 Generate universally unique identifier
 
@@ -23,6 +25,7 @@ let di = require('appix');
 di.uuid();
 ```
 <a name="DI+async"></a>
+
 ### dI.async(genFunc) ⇒ <code>Promise</code>
 Use di.async to write easier async functions
 
@@ -44,6 +47,7 @@ di.async(function* gen() {
 });
 ```
 <a name="DI+setInstance"></a>
+
 ### dI.setInstance(key, value)
 Add instance of bootstraped version
 
@@ -56,6 +60,7 @@ Add instance of bootstraped version
 | value | <code>Object</code> | 
 
 <a name="DI+getInstance"></a>
+
 ### dI.getInstance(key)
 Return bootstraped instance
 
@@ -67,6 +72,7 @@ Return bootstraped instance
 | key | <code>String</code> | 
 
 <a name="DI+mock"></a>
+
 ### dI.mock(file, mocks)
 Return module with mocked objects
 

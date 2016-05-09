@@ -1,7 +1,7 @@
 'use strict';
 
 let di = require('./di');
-let Type = di.load('typed-js');
+let core = di.load('@{appix}/core');
 let error = di.load('@{appix}/error');
 let Component = di.load('@{appix}/component');
 let fs = di.load('fs');
@@ -48,16 +48,11 @@ const COMPONENTS = [
  *
  * easyInit.listen();
  */
-class Bootstrap extends Type {
+class Bootstrap {
 
     constructor(appConfig, callback) {
 
-        super({
-            components: Type.OBJECT,
-            defaults: Type.OBJECT
-        });
-
-        if (!Type.isObject(appConfig)) {
+        if (!core.isObject(appConfig)) {
             throw new error.Exception('Config must be object type', appConfig);
         }
 
@@ -72,7 +67,7 @@ class Bootstrap extends Type {
             modulesPath: '@{appPath}/modules/'
         }, appConfig);
 
-        if (!Type.isString(this.defaults.appPath)) {
+        if (!core.isString(this.defaults.appPath)) {
             throw new error.Exception('appPath must be defined in configuration object', this.defaults);
         }
 
@@ -105,12 +100,12 @@ class Bootstrap extends Type {
             });
         }
 
-        if (Type.isArray(config)) {
+        if (core.isArray(config)) {
             throw new error.Exception('environment must be object type', config);
         }
         // set aliases
-        if (!Type.isUndefined(config.aliases)) {
-            if (!Type.isObject(config.aliases)) {
+        if (!core.isUndefined(config.aliases)) {
+            if (!core.isObject(config.aliases)) {
                 throw new error.Exception('environment aliases must be object type', config.aliases);
             }
             let aliases = new Map();
@@ -126,13 +121,13 @@ class Bootstrap extends Type {
             di.setAlias('modulesPath', this.defaults.modulesPath);
         }
 
-        if (!Type.isUndefined(config.components)) {
-            if (!Type.isObject(config.components)) {
+        if (!core.isUndefined(config.components)) {
+            if (!core.isObject(config.components)) {
                 throw new error.Exception('environment components must be object type', config.components);
             }
             let components = new Map();
 
-            if (Type.isFunction(callback)) {
+            if (core.isFunction(callback)) {
                 callback(components);
             }
 
@@ -200,15 +195,15 @@ class Bootstrap extends Type {
             });
         }
 
-        if (Type.isString(config.filePath)) {
+        if (core.isString(config.filePath)) {
             ComponentToConstruct = di.load(config.filePath);
         } else if (COMPONENTS.indexOf(key) > -1) {
             ComponentToConstruct = di.load('@{appix}/components/' + key.slice(5));
-        } else if (!Type.isFunction(config)) {
+        } else if (!core.isFunction(config)) {
             ComponentToConstruct = di.load(key);
         }
 
-        if (!Type.isFunction(ComponentToConstruct)) {
+        if (!core.isFunction(ComponentToConstruct)) {
             throw new error.Exception('Component must be function type');
         }
 

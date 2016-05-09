@@ -1,7 +1,7 @@
 'use strict';
 
 let di = require('./di');
-let Type = di.load('typed-js');
+let core = di.load('@{appix}/core');
 let error = di.load('@{appix}/error');
 let Filter = di.load('@{appix}/filter');
 /**
@@ -28,9 +28,6 @@ let Filter = di.load('@{appix}/filter');
  *  class MyAppController extends Controller {
  *
  *    constructor(api) {
- *       super(api, {
- *          name: Type.STRING
- *       });
  *       this.name = 'We must define type if we want to have extended object with new members';
  *       this.addFilter(F1, 10);
  *    }
@@ -40,13 +37,8 @@ let Filter = di.load('@{appix}/filter');
  *    }
  *  }
  */
-class Controller extends Type {
-    constructor(api, types) {
-        super(Object.assign({
-            __request__: Type.OBJECT,
-            __chaining__: Type.BOOLEAN,
-            __filters__: Type.ARRAY
-        }, types));
+class Controller {
+    constructor(api) {
         this.__chaining__ = true;
         this.__request__ = api;
         this.__filters__ = [];
@@ -693,9 +685,6 @@ class Controller extends Type {
      *  class MyAppController extends Controller {
      *
      *    constructor(api) {
-     *       super(api, {
-     *          name: Type.STRING
-     *       });
      *       this.name = 'We must define type if we want to have extended object with new members';
      *       this.addFilter(F1, 10);
      *       this.addFilter(F2, 10);
@@ -707,7 +696,7 @@ class Controller extends Type {
      *  }
      */
     addFilter(FilterToInitialize, priority, route) {
-        if (!Type.isNumber(priority)) {
+        if (!core.isNumber(priority)) {
             throw new error.HttpException(500, `Filter priority must be number type or defined ${priority}`);
         }
         let filter = new FilterToInitialize(this.__request__.bootstrap, {

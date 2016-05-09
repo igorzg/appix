@@ -1,9 +1,9 @@
 {
   "name": "docs-app",
   "description": "Docs app",
-  "version": "1.0.0-alpha-10",
+  "version": "1.0.0-beta",
   "dependencies": {
-    "appix": "1.0.0-alpha-10",
+    "appix": "1.0.0-beta",
     "nunjucks": "2.2.0"
   },
   "engines": {

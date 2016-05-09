@@ -1,7 +1,7 @@
 'use strict';
 
 let di = require('../di');
-let Type = di.load('typed-js');
+let core = di.load('@{appix}/core');
 let error = di.load('@{appix}/error');
 let RouteRule = di.load('@{appix}/route-rule');
 let Component = di.load('@{appix}/component');
@@ -74,14 +74,8 @@ let logger;
  */
 class Router extends Component {
     constructor(config, bootstrap) {
-        super(config, bootstrap, {
-            routes: Type.OBJECT,
-            bootstrap: Type.OBJECT,
-            methods: Type.ARRAY,
-            error: Type.OBJECT,
-            useCustomErrorHandler: Type.BOOLEAN
-        });
-        if (!Type.isObject(config)) {
+        super(config, bootstrap);
+        if (!core.isObject(config)) {
             config = {};
         }
 
@@ -97,7 +91,7 @@ class Router extends Component {
             instance: this
         });
 
-        if (Type.isObject(config) && !!config.useCustomErrorHandler) {
+        if (core.isObject(config) && !!config.useCustomErrorHandler) {
             this.error = Object.assign({
                 url: '/error',
                 route: 'error/handler',
@@ -122,11 +116,11 @@ class Router extends Component {
      *
      */
     add(Rule) {
-        if (Type.isArray(Rule)) {
+        if (core.isArray(Rule)) {
             return Rule.forEach(item => this.add(item));
-        } else if (Type.isObject(Rule) && !(Rule instanceof RouteRule)) {
+        } else if (core.isObject(Rule) && !(Rule instanceof RouteRule)) {
             return this.add(new RouteRule(this.bootstrap, Rule));
-        } else if (Type.isFunction(Rule)) {
+        } else if (core.isFunction(Rule)) {
             return this.add(new Rule());
         }
 

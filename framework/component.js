@@ -1,7 +1,5 @@
 'use strict';
 
-let di = require('./di');
-let Type = di.load('typed-js');
 /**
  * @license Mit Licence 2015
  * @since 1.0.0
@@ -27,10 +25,8 @@ let Type = di.load('typed-js');
  *
  * }
  */
-class Component extends Type {
-    constructor(config, bootstrap, types) {
-        super(Object.assign({}, types));
-    }
+class Component {
+    constructor(config, bootstrap) {}
 }
 
 module.exports = Component;

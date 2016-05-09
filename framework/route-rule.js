@@ -1,7 +1,7 @@
 'use strict';
 
 let di = require('./di');
-let Type = di.load('typed-js');
+let core = di.load('@{appix}/core');
 let error = di.load('@{appix}/error');
 let logger;
 const IS_ANY_PATTERN = /<([^>]+)>/;
@@ -53,18 +53,9 @@ const HAS_GROUP = /^\(([^\)]+)\)$/;
  *    }
  * ]);
  */
-class RouteRule extends Type {
-    constructor(bootstrap, config, types) {
-
-        super(Object.assign({
-            pattern: Type.ARRAY,
-            url: Type.STRING,
-            route: Type.STRING,
-            validMethods: Type.ARRAY,
-            methods: Type.ARRAY,
-            bootstrap: Type.OBJECT,
-            dataEvent: Type.BOOLEAN
-        }, types));
+class RouteRule {
+    constructor(bootstrap, config) {
+        
 
         logger = bootstrap.getComponent('appix/logger');
 
@@ -73,12 +64,12 @@ class RouteRule extends Type {
         this.methods = ['GET'];
         this.dataEvent = config.dataEvent || false;
 
-        if (Type.isArray(config.methods) && !config.methods.every(item => this.validMethods.indexOf(item) > -1)) {
+        if (core.isArray(config.methods) && !config.methods.every(item => this.validMethods.indexOf(item) > -1)) {
             throw new error.HttpError(500, `RouteRule: rule must contain valid methods`, {
                 config: config,
                 methods: this.methods
             });
-        } else if (Type.isArray(config.methods)) {
+        } else if (core.isArray(config.methods)) {
             this.methods = config.methods;
         }
         if (config.hasOwnProperty('url') || config.hasOwnProperty('route')) {
@@ -113,7 +104,7 @@ class RouteRule extends Type {
                 patterns: [],
                 getKey(index) {
                     let pattern = this.patterns[index];
-                    if (Type.isObject(pattern)) {
+                    if (core.isObject(pattern)) {
                         return pattern.key;
                     }
                     return false;
@@ -139,7 +130,7 @@ class RouteRule extends Type {
                         while (patterns.length > 0) {
                             let pattern = patterns.shift();
                             let result = pattern.replace(source, value, key);
-                            if (Type.isString(result)) {
+                            if (core.isString(result)) {
                                 source = result;
                             }
                         }
@@ -169,7 +160,7 @@ class RouteRule extends Type {
                             return pattern.test(value.slice(start, end));
                         },
                         replace(item, value, nKey) {
-                            if (Type.isString(nKey)) {
+                            if (core.isString(nKey)) {
                                 if (nKey !== key || !pattern.test(value)) {
                                     return false;
                                 }
@@ -193,7 +184,7 @@ class RouteRule extends Type {
                             return true;
                         },
                         replace(item, value, nKey) {
-                            if (Type.isString(nKey)) {
+                            if (core.isString(nKey)) {
                                 if (nKey !== key || !pattern.test(value)) {
                                     return false;
                                 }
@@ -270,7 +261,7 @@ class RouteRule extends Type {
             let result = pattern.match(part);
             if (result) {
                 result.forEach((v, k) => query[k] = v);
-                return Type.isObject(result);
+                return core.isObject(result);
             }
             return false;
         });
@@ -306,7 +297,7 @@ class RouteRule extends Type {
 
         if (params instanceof Map) {
             paramsMap = new Map(params);
-        } else if (Type.isObject(params)) {
+        } else if (core.isObject(params)) {
             Object.keys(params).forEach(k => paramsMap.set(k, params[k]));
         }
 

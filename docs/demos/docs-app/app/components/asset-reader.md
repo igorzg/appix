@@ -1,14 +1,16 @@
 <a name="AssetLoader"></a>
+
 ## AssetLoader
 **Kind**: global class  
 **Since**: 1.0.0  
 **License**: Mit Licence 2015  
 
 * [AssetLoader](#AssetLoader)
-  * [new AssetLoader()](#new_AssetLoader_new)
-  * [.load()](#AssetLoader+load)
+    * [new AssetLoader()](#new_AssetLoader_new)
+    * [.load()](#AssetLoader+load)
 
 <a name="new_AssetLoader_new"></a>
+
 ### new AssetLoader()
 Asset loader is loading all files from disk and displaying to browser
 
@@ -30,6 +32,7 @@ Asset loader is loading all files from disk and displaying to browser
  }
 ```
 <a name="AssetLoader+load"></a>
+
 ### assetLoader.load()
 load file from disk
 
