@@ -11,10 +11,8 @@ let Controller = di.load('@{appix}/controller');
 
 class Home extends Controller {
 
-    constructor(api, types) {
-        super(api, Object.assign(types, {
-            locals: Type.OBJECT
-        })); // All ways pass the types in order to have possibility to add an controller member
+    constructor(api) {
+        super(api); // All ways pass the types in order to have possibility to add an controller member
         this.addFilter(F1, 10);
         this.addFilter(F2, -100);
     }
