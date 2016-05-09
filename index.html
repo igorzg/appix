@@ -32,7 +32,7 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
         <h1>
-<a id="appix-100-alpha-10-" class="anchor" href="#appix-100-alpha-10-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Appix 1.0.0-alpha-10 <a href="https://travis-ci.org/igorzg/appix"><img src="https://travis-ci.org/igorzg/appix.svg?branch=master" alt="Build Status"></a>
+<a id="appix-100-beta-" class="anchor" href="#appix-100-beta-" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Appix 1.0.0-beta <a href="https://travis-ci.org/igorzg/appix"><img src="https://travis-ci.org/igorzg/appix.svg?branch=master" alt="Build Status"></a>
 </h1>
 
 <ul>
@@ -42,7 +42,7 @@
 </ul>
 
 <h2>
-<a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h2>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Features</h2>
 
 <ol>
 <li>Appix follow <a href="http://www.reactivemanifesto.org/">reactive</a> design pattern. </li>
@@ -120,7 +120,7 @@
 <span class="pl-k">let</span> di <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>appix<span class="pl-pds">'</span></span>);
 <span class="pl-k">let</span> Controller <span class="pl-k">=</span> <span class="pl-smi">di</span>.<span class="pl-c1">load</span>(<span class="pl-s"><span class="pl-pds">'</span>@{appix}/controller<span class="pl-pds">'</span></span>);
 <span class="pl-c">// Controllers can be inherited as many levels as you need</span>
-<span class="pl-k">class</span> <span class="pl-en">Home</span> <span class="pl-k">extends</span> <span class="pl-en">Controller</span> {
+<span class="pl-k">class</span> <span class="pl-en">Home</span> <span class="pl-k">extends</span> <span class="pl-e">Controller</span> {
 
    <span class="pl-en">actionRedirect</span>() {
        <span class="pl-k">return</span> <span class="pl-v">this</span>.<span class="pl-en">redirect</span>(<span class="pl-s"><span class="pl-pds">'</span>/<span class="pl-pds">'</span></span>, <span class="pl-c1">302</span>);
@@ -134,7 +134,7 @@
        <span class="pl-k">return</span> <span class="pl-s"><span class="pl-pds">'</span>Hello world<span class="pl-pds">'</span></span>;
    }
 }
-<span class="pl-smi">module</span>.<span class="pl-smi">exports</span> <span class="pl-k">=</span> Home;</pre></div>
+<span class="pl-c1">module</span>.<span class="pl-smi">exports</span> <span class="pl-k">=</span> Home;</pre></div>
 
 <ul>
 <li>run node app/index.js</li>
